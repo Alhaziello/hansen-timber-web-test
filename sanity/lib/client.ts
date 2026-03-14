@@ -6,5 +6,6 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false, // Set to false to see instant updates during development
+  // Change this to true for the version that goes to Vercel
+  useCdn: process.env.NODE_ENV === 'production',
 })

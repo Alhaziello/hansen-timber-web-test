@@ -1,28 +1,14 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { useParams, notFound } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ClientMotionDiv, ClientMotionHeader, ClientMotionFooter } from "@/components/ClientMotionDiv";
+import { notFound } from "next/navigation";
 import { getArticleBySlug } from "@/lib/api";
 import Link from "next/link";
 import Image from "next/image";
-import { PortableText } from "@portabletext/react";
+import ShareButton from "@/components/ShareButton";
 
-export default function ArticlePage() {
-  const { slug } = useParams();
-  const [article, setArticle] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
 
-  useEffect(() => {
-    if (slug) {
-      getArticleBySlug(slug as string).then((data) => {
-        setArticle(data || null);
-        setLoading(false);
-      });
-    }
-  }, [slug]);
-
-  if (loading) return <div className="min-h-screen bg-sand pt-40 px-6 text-center text-charcoal/40 font-serif lowercase italic text-2xl">Loading narrative...</div>;
   if (!article) notFound();
 
   return (
@@ -35,7 +21,7 @@ export default function ArticlePage() {
           &larr; Back to Journal
         </Link>
         
-        <motion.header
+        <ClientMotionHeader
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -47,10 +33,10 @@ export default function ArticlePage() {
           <h1 className="text-5xl md:text-7xl font-serif text-charcoal mb-8 leading-tight lowercase italic">
             {article.title}
           </h1>
-        </motion.header>
+        </ClientMotionHeader>
 
         {article.image && (
-          <motion.div 
+          <ClientMotionDiv 
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2 }}
@@ -62,20 +48,20 @@ export default function ArticlePage() {
               fill
               className="object-cover grayscale"
             />
-          </motion.div>
+          </ClientMotionDiv>
         )}
 
-        <motion.div
+        <ClientMotionDiv
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
           className="prose prose-charcoal max-w-none font-sans text-charcoal/80 leading-relaxed text-lg"
         >
-          <PortableText value={article.content} />
-        </motion.div>
+          <div dangerouslySetInnerHTML={{ __html: article.content }} />
+        </ClientMotionDiv>
 
         {/* Footer CTAs */}
-        <motion.footer 
+        <ClientMotionFooter 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -93,17 +79,13 @@ export default function ArticlePage() {
             >
               Request Quote
             </Link>
-            <button 
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                alert("Link copied to clipboard");
-              }}
+            <ShareButton
               className="px-12 py-4 bg-transparent border border-muted-oak text-muted-oak text-[10px] uppercase tracking-[0.3em] font-sans font-bold rounded-full text-center hover:bg-muted-oak hover:text-charcoal transition-all duration-300"
             >
               Share Article
-            </button>
+            </ShareButton>
           </div>
-        </motion.footer>
+        </ClientMotionFooter>
       </div>
     </main>
   );

@@ -1,0 +1,31 @@
+# Hansen Timber Email Delivery Strategy
+
+Given that the client most likely just wants emails forwarded straight from the site to their existing inbox (`enquiries@hansentimber.co.nz`), we should avoid complex SMTP server configurations or writing custom Next.js API Routes if we don't have to.
+
+The best and easiest approach is to use a modern **Serverless Form Provider**. 
+
+## The Recommended Solution: Formspree (or Web3Forms)
+These platforms serve perfectly as the middleman between your React code and the client's email inbox. 
+
+### Why this is the best approach:
+- Zero backend code required.
+- No need to ask the client for their private email server passwords via SMTP.
+- Instant delivery with built-in spam protection.
+
+### How to implement it when you are ready:
+1. **Create an Account**: Go to [Formspree.io](https://formspree.io/) and create a free account.
+2. **Create a Form**: Click "New Form", and enter the client's target email (where they want the messages to go). Formspree will email them a confirmation link which they just click once to approve.
+3. **Get the Endpoint URL**: Formspree will give you a unique URL that looks something like: `https://formspree.io/f/xbjvqewr`.
+4. **Update The Component Code**: You simply turn your `/contact` page `div` wrapper into a native `form` element and plug that URL into the action handler:
+
+```tsx
+// Inside contact/page.tsx or a new ContactForm Client Component
+<form action="https://formspree.io/f/xbjvqewr" method="POST" className="space-y-6">
+  <input name="fullName" type="text" placeholder="Full Name" required ... />
+  <input name="email" type="email" placeholder="Email" required ... />
+  <textarea name="message" placeholder="Message" required ...></textarea>
+  <button type="submit">Send Inquiry</button>
+</form>
+```
+
+When a user hits Submit, Formspree catches the payload, bundles it into a beautiful email, and forwards it to the client instantly. This is the enterprise standard for static or headless marketing sites.

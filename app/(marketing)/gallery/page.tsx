@@ -1,11 +1,9 @@
-"use client";
-
-import { motion } from "framer-motion";
+import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 
 export default function GalleryPage() {
   return (
     <main className="min-h-screen bg-sand pt-32 pb-24 px-6 md:px-12">
-      <motion.div 
+      <ClientMotionDiv 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -21,7 +19,7 @@ export default function GalleryPage() {
             </div>
           ))}
         </div>
-      </motion.div>
+      </ClientMotionDiv>
     </main>
   );
 }

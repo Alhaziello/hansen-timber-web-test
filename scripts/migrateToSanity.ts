@@ -2,7 +2,7 @@ import { createClient } from '@sanity/client'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { PRODUCTS, SPECIES, CATEGORIES } from '../data/products'
+import { PRODUCTS, SPECIES, CATEGORIES } from '@/data/products'
 
 // Define __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url)
@@ -10,7 +10,11 @@ const __dirname = path.dirname(__filename)
 
 // Simple .env.local parser
 function loadEnv() {
-  const envPath = path.resolve(process.cwd(), '.env.local')
+  let envPath = path.resolve(process.cwd(), '.env.local')
+  if (!fs.existsSync(envPath)) {
+    envPath = path.resolve(process.cwd(), '.env')
+  }
+  
   if (fs.existsSync(envPath)) {
     const envFile = fs.readFileSync(envPath, 'utf-8')
     envFile.split('\n').forEach((line) => {

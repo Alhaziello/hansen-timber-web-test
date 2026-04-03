@@ -9,3 +9,15 @@ export const ClientMotionDiv = (props: HTMLMotionProps<"div">) => {
 export const ClientMotionSpan = (props: HTMLMotionProps<"span">) => {
   return <motion.span {...props}>{props.children}</motion.span>;
 };
+
+export const ClientMotionHeader = (props: HTMLMotionProps<"header">) => {
+  return <motion.header {...props}>{props.children}</motion.header>;
+};
+
+export const ClientMotionFooter = (props: HTMLMotionProps<"footer">) => {
+  return <motion.footer {...props}>{props.children}</motion.footer>;
+};
+
+export const ClientMotionArticle = (props: HTMLMotionProps<"article">) => {
+  return <motion.article {...props}>{props.children}</motion.article>;
+};

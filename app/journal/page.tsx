@@ -1,23 +1,15 @@
-"use client";
-
-import { motion } from "framer-motion";
+import { ClientMotionDiv, ClientMotionArticle } from "@/components/ClientMotionDiv";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { Article } from "@/data/articles";
 import { getArticles } from "@/lib/api";
 
-export default function JournalPage() {
-  const [articles, setArticles] = useState<Article[]>([]);
-
-  useEffect(() => {
-    getArticles().then(setArticles);
-  }, []);
+export default async function JournalPage() {
+  const articles = await getArticles();
 
   return (
     <main className="min-h-screen bg-sand pt-32 pb-24 px-6 md:px-12">
       <div className="max-w-4xl mx-auto">
-        <motion.div 
+        <ClientMotionDiv 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -26,11 +18,11 @@ export default function JournalPage() {
           <span className="text-[10px] uppercase tracking-[0.3em] text-muted-oak font-sans font-bold block mb-4">Architectural Perspective</span>
           <h1 className="text-6xl md:text-8xl font-serif text-charcoal mb-8 lowercase italic">The Journal</h1>
           <div className="w-12 h-px bg-muted-oak mx-auto"></div>
-        </motion.div>
+        </ClientMotionDiv>
 
         <div className="space-y-32">
           {articles.map((article, index) => (
-            <motion.article 
+            <ClientMotionArticle 
               key={article.slug}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -71,7 +63,7 @@ export default function JournalPage() {
                   </div>
                 </div>
               </Link>
-            </motion.article>
+            </ClientMotionArticle>
           ))}
         </div>
       </div>

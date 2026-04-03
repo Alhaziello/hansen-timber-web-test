@@ -1,83 +1,85 @@
-# Hansen Timber Web
+# Hansen Timber Digital Experience
 
-A premium, luxury digital experience for Hansen Timber, featuring a high-end architectural aesthetic and seamless content management via Sanity CMS.
+A premium, luxury digital experience, built with enterprise-grade architecture for Hansen Timber. This platform features a high-end, animated architectural aesthetic powered by Next.js Server Components, rigorous SEO optimizations, and seamless headless content management via Sanity CMS.
 
-## 🌟 Key Features
+## 🌟 Architecture & Features
 
-- **Luxury Design**: Minamalist, high-contrast UI with smooth animations (Framer Motion).
-- **Dynamic Content**: Product, species, and blog data managed through Sanity CMS.
-- **Micro-animations**: Subtle transitions and hover effects for a premium feel.
-- **Responsive Layout**: Fully optimized for all device sizes.
-- **Sanity Studio**: Embedded content management at `/studio`.
+- **Server-First Architecture**: Built using Next.js 16 App Router natively utilizing Server Components to guarantee blazing fast initial load times and top-tier SEO discoverability. 
+- **Automated Technical SEO**: Programmatic generation of `sitemap.xml`, configuration of `robots.txt`, and advanced pre-configured 301 URL redirects mapping `hansentimber.co.nz` legacy paths to the new architecture.
+- **Client-Side Micro-animations**: Complex page transitions and UI physics isolated into client-side layout abstractions (`ClientMotionDiv`) using Framer Motion.
+- **Sanity Studio Integration**: Embedded Headless CMS at `/studio` for intuitive, zero-code management of Products, Species, and the Architectural Journal.
+- **Serverless Form Ready**: UI configured for easy drop-in of headless form providers (like Formspree) for secure email delivery.
 
-## 🛠️ Tech Stack
+## 🛠️ Technology Stack
 
-- **Framework**: [Next.js 15 (App Router)](https://nextjs.org/)
-- **CMS**: [Sanity.io](https://www.sanity.io/)
+- **Framework**: [Next.js 16](https://nextjs.org/)
+- **CMS / Database**: [Sanity.io](https://www.sanity.io/)
 - **Styling**: Tailwind CSS & Styled Components
 - **Animations**: Framer Motion
 - **Language**: TypeScript
 
-## 🚀 Getting Started
+---
+
+## 🚀 Getting Started Locally
 
 ### Prerequisites
-
 - Node.js 20+
-- A Sanity.io account
+- A Sanity.io account and API Token
 
-### Installation
+### 1. Installation
+```bash
+git clone <your-repo-url>
+cd hansen-timber-web
+npm install
+```
 
-1.  **Clone the repository**:
-    ```bash
-    git clone <your-repo-url>
-    cd hansen-timber-web
-    ```
+### 2. Environment Variables
+You must connect the application to the Sanity database.
+```bash
+cp .env.example .env.local
+```
+Fill in `.env.local` with your exact Project ID, Dataset name, and the Write Token.
 
-2.  **Install dependencies**:
-    ```bash
-    npm install
-    ```
-
-3.  **Set up environment variables**:
-    Copy the example file and fill in your Sanity credentials.
-    ```bash
-    cp .env.example .env.local
-    ```
-    *Required variables*: `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `SANITY_API_WRITE_TOKEN`.
-
-### Development
-
-Run the development server:
-
+### 3. Development Server
+Start the localized Turbopack server:
 ```bash
 npm run dev
 ```
+Navigate to [http://localhost:3000](http://localhost:3000)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
+
+## 🌱 Production Seeding (First-Time Setup)
+
+When the client provides the final, high-resolution photography and official copy, you can push the data straight into the Sanity Production Database using the included migration script.
+
+1. **Update Local Data**: Replace the placeholder strings and objects in `data/products.ts` and `data/articles.ts` with the real client content. 
+2. **Add Images**: Place all referenced `.png` or `.jpg` image files directly into the `public/` directory.
+3. **Execute the Migration Pipeline**:
+```bash
+npx tsx scripts/migrateToSanity.ts
+```
+The script will programmatically upload the images into the Sanity cloud CDN, link them to the documents, and build the category relationships in seconds.
+
+---
 
 ## 📝 Content Management (Sanity Studio)
 
-The site uses Sanity Studio to manage content dynamically.
+Once deployed, Hansen Timber staff will manage their content dynamically without interacting with code.
 
 ### Accessing the Studio
+Navigate to `yourdomain.com/studio` to log in. 
 
-Navigate to `/studio` on your local or deployed site. You can edit:
-- **Products**: Manage timber product listings and details.
-- **Species**: Update information on different timber species.
-- **Journal Posts**: Write and publish articles for the "Journal" section.
+*Note: For the studio to work on the live domain, the production URL (e.g., `https://www.hansentimber.co.nz`) must be added to the **CORS Origins** whitelist inside the Sanity Management Dashboard.*
 
-### Instructions for Content Managers
+---
 
-1.  **Authentication**: Sign in using your Sanity credentials.
-2.  **Creating Content**: Use the "Desk" tool to find the relevant schema (e.g., "Journal Post").
-3.  **Publishing**: Click the "Publish" button to push changes live instantly.
+## 📧 Contact Form Delivery
 
-## 🛡️ Security & Publication
+The platform is designed to use **Serverless Form Providers** (such as Formspree or Web3Forms) for lead generation to avoid exposing private SMTP credentials.
 
-- This project is configured with a robust `.gitignore` to prevent leaking secrets.
-- Environment variables are managed via `.env.local` (ignored) and documented in `.env.example`.
-- All dependencies have been audited for security.
+To hook up the production form, refer to the strategy guide located at:
+`docs/emailstrategy`
 
 ## 📄 License
-
 [MIT](LICENSE)

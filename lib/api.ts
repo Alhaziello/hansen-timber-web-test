@@ -1,5 +1,5 @@
-import { client } from "@/sanity/lib/client";
 import { Article } from "../data/articles";
+import { sanityFetch } from "@/sanity/lib/live";
 
 export async function getArticles(): Promise<Article[]> {
   const query = `*[_type == "post"] | order(publishedAt desc) {
@@ -10,7 +10,8 @@ export async function getArticles(): Promise<Article[]> {
     excerpt,
     "image": mainImage.asset->url
   }`;
-  return await client.fetch(query);
+  const { data } = await sanityFetch({ query });
+  return data;
 }
 
 export async function getArticleBySlug(slug: string): Promise<Article | undefined> {
@@ -23,5 +24,6 @@ export async function getArticleBySlug(slug: string): Promise<Article | undefine
     "content": body,
     "image": mainImage.asset->url
   }`;
-  return await client.fetch(query, { slug });
+  const { data } = await sanityFetch({ query, params: { slug } });
+  return data;
 }

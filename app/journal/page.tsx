@@ -38,6 +38,7 @@ export default async function JournalPage() {
                       alt={article.title}
                       fill
                       sizes="(max-width: 768px) 100vw, 896px"
+                      priority={index === 0}
                       className="object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105"
                     />
                   </div>

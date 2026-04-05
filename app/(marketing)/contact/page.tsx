@@ -8,8 +8,7 @@ export default function ContactPage() {
   const router = useRouter();
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
   
-  const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID || "PLACEHOLDER";
-  const actionUrl = `https://formspree.io/f/${formspreeId}`;
+  const actionUrl = `https://formspree.io/f/${process.env.NEXT_PUBLIC_FORMSPREE_ID || "PLACEHOLDER"}`;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -127,7 +126,7 @@ export default function ContactPage() {
                 </p>
               )}
 
-              {formspreeId === "PLACEHOLDER" && (
+              {(process.env.NEXT_PUBLIC_FORMSPREE_ID || "PLACEHOLDER") === "PLACEHOLDER" && (
                 <p className="text-[10px] text-red-500/60 font-sans tracking-tight italic mt-4">
                   Note: Formspree ID not set. Please add NEXT_PUBLIC_FORMSPREE_ID to your .env file.
                 </p>

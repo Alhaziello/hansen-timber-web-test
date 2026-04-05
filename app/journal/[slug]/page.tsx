@@ -1,3 +1,4 @@
+/** Hansen Timber Blog Detail - Production Ready */
 import { ClientMotionDiv, ClientMotionHeader, ClientMotionFooter } from "@/components/ClientMotionDiv";
 import { notFound } from "next/navigation";
 import { getArticleBySlug } from "@/lib/api";

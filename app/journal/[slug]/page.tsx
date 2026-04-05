@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getArticleBySlug } from "@/lib/api";
 import Link from "next/link";
 import Image from "next/image";
+import { PortableText } from "@portabletext/react";
 import ShareButton from "@/components/ShareButton";
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -46,7 +47,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               src={article.image}
               alt={article.title}
               fill
-              sizes="100vw"
+              sizes="(max-width: 768px) 100vw, 672px"
               className="object-cover grayscale"
             />
           </ClientMotionDiv>
@@ -56,9 +57,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="prose prose-charcoal max-w-none font-sans text-charcoal/80 leading-relaxed text-lg"
+          className="prose prose-charcoal-hansen max-w-none"
         >
-          <div dangerouslySetInnerHTML={{ __html: article.content }} />
+          {article.content && <PortableText value={article.content} />}
         </ClientMotionDiv>
 
         {/* Footer CTAs */}

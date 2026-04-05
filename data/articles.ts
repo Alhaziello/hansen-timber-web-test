@@ -4,7 +4,7 @@ export interface Article {
   date: string;
   category: string;
   excerpt: string;
-  content: string;
+  content: string | any[];
   image: string;
 }
 

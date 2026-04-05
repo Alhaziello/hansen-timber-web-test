@@ -30,12 +30,18 @@ export default function ProductCard({ product }: ProductCardProps) {
       className="group relative bg-white/5 border border-muted-oak/10 p-8 flex flex-col h-full"
     >
       <div className="relative aspect-video overflow-hidden mb-8">
-        <Image
-          src={imageUrl}
-          alt={product.name}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-        />
+        {product.image ? (
+          <Image
+            src={urlFor(product.image).url()}
+            alt={product.name}
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+        ) : (
+          <div className="w-full h-full bg-charcoal/5 flex items-center justify-center transition-transform duration-700 group-hover:scale-110">
+            <span className="text-charcoal/40 text-[10px] uppercase tracking-widest font-bold">Image Coming Soon</span>
+          </div>
+        )}
         <div className="absolute inset-0 bg-charcoal/20 group-hover:bg-charcoal/0 transition-colors duration-500"></div>
       </div>
 

@@ -16,6 +16,8 @@ const navLinks = [
   { name: "Journal", href: "/journal" },
   { name: "Gallery", href: "/gallery" },
   { name: "Contact", href: "/contact" },
+  { name: "About Us", href: "/about" },
+  { name: "Trees Wanted", href: "/nz-grown-trees-wanted" },
 ];
 
 export default function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
@@ -40,7 +42,7 @@ export default function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed top-0 right-0 w-full max-w-md h-screen bg-charcoal z-[101] p-12 flex flex-col"
+            className="fixed top-0 right-0 w-full max-w-md h-screen bg-charcoal z-[101] p-12 flex flex-col overflow-y-auto"
           >
             {/* Close Button */}
             <button
@@ -65,21 +67,23 @@ export default function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
             </button>
 
             {/* Links */}
-            <nav className="mt-20 flex flex-col gap-8">
+            <nav className="mt-15 flex flex-col gap-8">
               {navLinks.map((link) => (
                 <div key={link.href} className="group relative w-fit">
                   <Link
                     href={link.href}
                     onClick={onClose}
                     className={`text-4xl md:text-5xl font-serif transition-colors duration-300 ${
-                      pathname === link.href ? "text-muted-oak" : "text-sand hover:text-muted-oak"
+                      pathname === link.href
+                        ? "text-muted-oak"
+                        : "text-sand hover:text-muted-oak"
                     }`}
                   >
                     {link.name}
                   </Link>
                   {/* Expanding Underline */}
                   <motion.div
-                    className="absolute -bottom-2 left-1/2 h-px bg-muted-oak w-0"
+                    className="absolute -bottom-4 left-1/2 h-px bg-muted-oak w-0"
                     initial={{ width: 0, x: "-50%" }}
                     whileHover={{ width: "100%" }}
                     transition={{ duration: 0.3, ease: "easeOut" }}
@@ -88,7 +92,7 @@ export default function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
               ))}
             </nav>
 
-            {/* Footer info maybe? */}
+            {/* Footer info  */}
             <div className="mt-auto">
               <p className="text-sand/40 text-sm tracking-widest uppercase font-sans">
                 Hansen Timber &copy; 2026

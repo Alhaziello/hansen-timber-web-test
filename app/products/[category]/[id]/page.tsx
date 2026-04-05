@@ -6,6 +6,25 @@ import { notFound } from "next/navigation";
 import { sanityFetch } from "@/sanity/lib/live";
 import { productBySlugQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
+import { PortableText } from "@portabletext/react";
+
+const ptComponents = {
+  block: {
+    h3: ({ children }: any) => <h3 className="text-2xl font-serif text-charcoal mt-10 mb-4">{children}</h3>,
+    normal: ({ children }: any) => <p className="text-charcoal/70 mb-6 leading-relaxed text-lg">{children}</p>,
+  },
+  list: {
+    bullet: ({ children }: any) => <ul className="space-y-3 mb-8 ml-4">{children}</ul>,
+  },
+  listItem: {
+    bullet: ({ children }: any) => (
+      <li className="flex items-start gap-3 text-charcoal/70">
+        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-muted-oak shrink-0" />
+        <span>{children}</span>
+      </li>
+    ),
+  },
+};
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ category: string, id: string }> }) {
   const { id, category } = await params;
@@ -66,11 +85,19 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             <h1 className="text-5xl md:text-7xl font-serif text-charcoal mb-8 leading-tight">
               {product.name}
             </h1>
-            <p className="text-charcoal/70 text-lg font-sans leading-relaxed mb-12 max-w-xl">
-              {product.description}
-            </p>
+            
+            {/* Extended Editorial Content */}
+            <div className="prose-hansen max-w-xl">
+              {product.content ? (
+                <PortableText value={product.content} components={ptComponents} />
+              ) : (
+                <p className="text-charcoal/70 text-lg font-sans leading-relaxed mb-12">
+                  {product.description}
+                </p>
+              )}
+            </div>
 
-            <div className="mt-auto">
+            <div className="mt-12">
               <h2 className="text-xs uppercase tracking-widest font-sans font-semibold text-charcoal/40 mb-4">Technical Specifications</h2>
               <TechnicalTable specs={product.specs} />
             </div>

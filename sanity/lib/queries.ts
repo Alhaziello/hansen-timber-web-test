@@ -6,6 +6,7 @@ export const allProductsQuery = defineQuery(`
     name,
     "id": slug.current,
     description,
+    content,
     specs,
     image,
     category-> {
@@ -20,17 +21,41 @@ export const allProductsQuery = defineQuery(`
 `)
 
 export const featuredProductsQuery = defineQuery(`
-  *[_type == "product" && slug.current in ["hardwood-flooring", "spc-flooring", "panelling-sarking", "decking"]] {
+  *[_type == "product" && featured == true] | order(_updatedAt desc)[0...4] {
     _id,
     name,
     "id": slug.current,
     description,
-    specs,
     image,
     category-> {
       "id": id.current,
       title
     }
+  }
+`)
+
+export const allProjectsQuery = defineQuery(`
+  *[_type == "project"] | order(completionDate desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    mainImage,
+    client
+  }
+`)
+
+export const projectBySlugQuery = defineQuery(`
+  *[_type == "project" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    mainImage,
+    gallery,
+    client,
+    content,
+    completionDate
   }
 `)
 
@@ -60,6 +85,7 @@ export const productBySlugQuery = defineQuery(`
     name,
     "id": slug.current,
     description,
+    content,
     specs,
     image,
     category-> {
@@ -87,6 +113,7 @@ export const categoryWithProductsQuery = defineQuery(`
       name,
       "id": slug.current,
       description,
+      content,
       specs,
       image,
       species-> {
@@ -103,12 +130,14 @@ export const speciesBySlugQuery = defineQuery(`
     name,
     "slug": slug.current,
     description,
+    content,
     image,
     "products": *[_type == "product" && references(^._id)] {
       _id,
       name,
       "id": slug.current,
       description,
+      content,
       specs,
       image,
       category-> {

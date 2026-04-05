@@ -2,11 +2,15 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import MenuDrawer from "./MenuDrawer";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+
+  if (pathname?.startsWith("/studio")) return null;
 
   useEffect(() => {
     const handleScroll = () => {

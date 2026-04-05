@@ -12,7 +12,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-sand">
-      <Hero bgImage="/hero_timber_home_1773443975023.png" />
+      <Hero bgImage="/images/home/hero-home.png" />
 
       {/* Featured Collections */}
       <section className="bg-sand py-24 px-6 md:px-12">

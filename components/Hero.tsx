@@ -2,6 +2,7 @@
 
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 // The generated background image name. We'll find exactly what was copied over.
@@ -42,10 +43,10 @@ export default function Hero({ bgImage }: { bgImage: string }) {
           src={bgImage}
           alt="Hansen Timber Hero"
           fill
-          className="object-cover opacity-60 mix-blend-overlay"
+          className="object-cover opacity-70"
           priority
         />
-        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 bg-charcoal/30"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/40 to-transparent"></div>
       </div>
 
@@ -74,14 +75,16 @@ export default function Hero({ bgImage }: { bgImage: string }) {
         >
           Discover the natural beauty and unmatched durability of New Zealand grown Eucalyptus and Macrocarpa timber.
         </motion.p>
-        <motion.button 
-          variants={itemVariants}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-muted-oak text-charcoal px-8 py-4 font-sans uppercase tracking-widest text-sm hover:bg-charcoal hover:text-white transition-colors duration-300"
-        >
-          Explore Collection
-        </motion.button>
+        <Link href="/products">
+          <motion.button 
+            variants={itemVariants}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-muted-oak text-charcoal px-8 py-4 font-sans uppercase tracking-widest text-sm hover:bg-charcoal hover:text-white transition-colors duration-300"
+          >
+            Explore Collection
+          </motion.button>
+        </Link>
       </motion.div>
     </section>
   );

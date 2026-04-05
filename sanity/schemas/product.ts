@@ -11,6 +11,13 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: 'featured',
+      title: 'Featured on Home Page',
+      type: 'boolean',
+      description: 'Check this to show this product in the Featured Collections on the Home Page.',
+      initialValue: false,
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
@@ -33,8 +40,14 @@ export default defineType({
     }),
     defineField({
       name: 'description',
-      title: 'Description',
+      title: 'Short Description',
       type: 'text',
+    }),
+    defineField({
+      name: 'content',
+      title: 'Deep Content (Portable Text)',
+      type: 'array',
+      of: [{ type: 'block' }],
     }),
     defineField({
       name: 'specs',

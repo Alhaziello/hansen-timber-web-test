@@ -46,9 +46,10 @@ export default function AboutPage() {
             style={{ WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}
           >
             <Image
-              src="/Gemini_Generated_Image_wvbie6wvbie6wvbi.png"
+              src="/images/ui/Gemini_Generated_Image_wvbie6wvbie6wvbi.png"
               alt="Hansen Timber Heritage"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
               priority
             />
@@ -70,9 +71,10 @@ export default function AboutPage() {
             style={{ WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}
           >
             <Image
-              src="/Gemini_Generated_Image_6z47ys6z47ys6z47.png"
+              src="/images/ui/Gemini_Generated_Image_6z47ys6z47ys6z47.png"
               alt="Hansen Timber Craftsmanship"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
             />
             <div className="absolute inset-0 border border-white/20 rounded-3xl z-10 pointer-events-none mix-blend-overlay"></div>

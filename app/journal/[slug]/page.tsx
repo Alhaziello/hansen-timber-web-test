@@ -46,6 +46,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               src={article.image}
               alt={article.title}
               fill
+              sizes="100vw"
               className="object-cover grayscale"
             />
           </ClientMotionDiv>

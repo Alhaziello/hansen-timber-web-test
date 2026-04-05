@@ -67,6 +67,7 @@ export default function SpeciesGallery({ speciesList = [] }: SpeciesGalleryProps
                       src={imageUrl}
                       alt={species.name}
                       fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-charcoal/10 group-hover:bg-charcoal/0 transition-colors duration-500"></div>

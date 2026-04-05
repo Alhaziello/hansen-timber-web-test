@@ -40,11 +40,12 @@ export default function Hero({ bgImage }: { bgImage: string }) {
       {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-black">
         <Image
-          src={bgImage}
-          alt="Hansen Timber Hero"
+          src="/images/home/hero-home.png"
+          alt="Hansen Timber Sawmill"
           fill
-          className="object-cover opacity-70"
           priority
+          sizes="100vw"
+          className="object-cover opacity-70"
         />
         <div className="absolute inset-0 bg-charcoal/30"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/40 to-transparent"></div>

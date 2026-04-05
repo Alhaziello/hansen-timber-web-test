@@ -64,7 +64,9 @@ export default async function SpeciesDetailPage({ params }: { params: Promise<{ 
               src={imageUrl} 
               alt={species.name} 
               fill 
+              sizes="(max-width: 1024px) 100vw, 40vw"
               className="object-cover"
+              priority
             />
           </ClientMotionDiv>
         </div>

@@ -41,6 +41,7 @@ export default async function SpeciesPage() {
                       src={imageUrl} 
                       alt={s.name} 
                       fill 
+                      sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                     />
                     <div className="absolute inset-0 bg-charcoal/20 group-hover:bg-transparent transition-colors duration-500"></div>

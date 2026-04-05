@@ -45,6 +45,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             src={heroUrl}
             alt={project.title}
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />

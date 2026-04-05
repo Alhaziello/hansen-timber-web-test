@@ -29,7 +29,8 @@ export default function CategoryCard({ category }: { category: any }) {
             src={imageUrl}
             alt={category.title}
             fill
-            className="object-cover opacity-80 transition-opacity duration-500 group-hover:opacity-60"
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/20 to-transparent"></div>
         </motion.div>

@@ -17,9 +17,10 @@ interface ProductCardProps {
       title: string;
     };
   };
+  priority?: boolean;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, priority = false }: ProductCardProps) {
   const imageUrl = product.image ? urlFor(product.image).url() : "/placeholder.png";
   const categorySlug = product.category?.id || "interior";
 
@@ -31,12 +32,14 @@ export default function ProductCard({ product }: ProductCardProps) {
     >
       <div className="relative aspect-video overflow-hidden mb-8">
         {product.image ? (
-          <Image
-            src={urlFor(product.image).url()}
-            alt={product.name}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-110"
-          />
+            <Image
+              src={urlFor(product.image).url()}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+              priority={priority}
+            />
         ) : (
           <div className="w-full h-full bg-charcoal/5 flex items-center justify-center transition-transform duration-700 group-hover:scale-110">
             <span className="text-charcoal/40 text-[10px] uppercase tracking-widest font-bold">Image Coming Soon</span>

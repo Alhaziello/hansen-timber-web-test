@@ -24,9 +24,10 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
         >
           <Image
             src={urlFor(image).url()}
-            alt={`Project detail ${index + 1}`}
+            alt={`Gallery image ${index + 1}`}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
         </motion.div>
       ))}

@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  env: {
+    NEXT_PUBLIC_FORMSPREE_ID: process.env.NEXT_PUBLIC_FORMSPREE_ID,
+  },
   transpilePackages: ["framer-motion"],
   experimental: {
     optimizePackageImports: ["framer-motion"],

@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { SanityLive } from "@/sanity/lib/live";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -63,6 +64,7 @@ export default function RootLayout({
         </div>
         <Footer />
         <SanityLive />
+        <Analytics />
       </body>
     </html>
   );

@@ -124,7 +124,10 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                   </div>
                 )}
                 <div>
-                  <Link href="/contact" className="block w-full">
+                  <Link 
+                    href={`/contact?subject=Enquiry - ${project.title}&message=I am interested in learning more about the ${project.title} project style.`} 
+                    className="block w-full"
+                  >
                     <button className="bg-charcoal text-sand w-full py-5 uppercase tracking-[0.3em] text-xs font-bold hover:bg-muted-oak hover:text-charcoal transition-all duration-500">
                       Enquire about this style
                     </button>

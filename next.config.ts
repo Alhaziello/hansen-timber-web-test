@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
         hostname: 'cdn.sanity.io',
       },
     ],
+    qualities: [75, 95],
   },
   async redirects() {
     return [

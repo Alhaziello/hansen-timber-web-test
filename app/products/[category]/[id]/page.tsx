@@ -103,7 +103,10 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               <TechnicalTable specs={product.specs} />
             </div>
             
-            <Link href="/contact" className="mt-12 block w-fit">
+            <Link 
+              href={`/contact?subject=Sample Request - ${product.name}&message=I would like to request a sample pack for the ${product.name} product.`} 
+              className="mt-12 block w-fit"
+            >
               <button className="bg-charcoal text-sand px-10 py-5 uppercase tracking-[0.2em] text-sm hover:bg-muted-oak hover:text-charcoal transition-all duration-300">
                 Request Sample Pack
               </button>

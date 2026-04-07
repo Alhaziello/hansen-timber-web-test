@@ -2,17 +2,46 @@ import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
+import { cache } from "react";
 import { sanityFetch } from "@/sanity/lib/live";
 import { speciesBySlugQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 import ProductGrid from "@/components/ProductGrid";
 
-export default async function SpeciesDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const { data: species } = await sanityFetch({ 
+/**
+ * Memoized fetch function to ensure Sanity is only hit once per page load
+ * across both generateMetadata and the main component.
+ */
+const getSpecies = cache(async (slug: string) => {
+  const { data } = await sanityFetch({ 
     query: speciesBySlugQuery, 
     params: { slug } 
   });
+  return data;
+});
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const species = await getSpecies(slug);
+  
+  if (!species) return {};
+
+  return {
+    title: `${species.name} Timber | Hansen Timber`,
+    description: species.description || `Discover our premium ${species.name} timber products.`,
+    openGraph: {
+      images: species.image ? [urlFor(species.image).url()] : [],
+    },
+  };
+}
+
+/** 
+ * Renders individual species page with fallback UI for missing data 
+ */
+export default async function SpeciesDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const species = await getSpecies(slug);
 
   if (!species) {
     notFound();
@@ -39,19 +68,23 @@ export default async function SpeciesDetailPage({ params }: { params: Promise<{ 
             <h1 className="text-6xl md:text-8xl font-serif text-charcoal mb-4 lowercase italic">
               {species.name}
             </h1>
-            <p className="text-muted-oak text-xl font-serif mb-8">{species.tagline}</p>
+            {species.tagline && (
+              <p className="text-muted-oak text-xl font-serif mb-8">{species.tagline}</p>
+            )}
             <p className="text-charcoal/70 text-lg font-sans leading-relaxed mb-12 max-w-xl">
               {species.description}
             </p>
             
-            <div className="space-y-4">
-              {species.features?.map((feature: string, i: number) => (
-                <div key={i} className="flex items-center gap-4">
-                  <div className="w-8 h-px bg-muted-oak"></div>
-                  <span className="text-xs uppercase tracking-widest font-sans font-bold text-charcoal">{feature}</span>
-                </div>
-              ))}
-            </div>
+            {species.features && species.features.length > 0 && (
+              <div className="space-y-4">
+                {species.features.map((feature: string, i: number) => (
+                  <div key={i} className="flex items-center gap-4">
+                    <div className="w-8 h-px bg-muted-oak"></div>
+                    <span className="text-xs uppercase tracking-widest font-sans font-bold text-charcoal">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </ClientMotionDiv>
 
           <ClientMotionDiv

@@ -1,18 +1,40 @@
 import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { cache } from "react";
 import { sanityFetch } from "@/sanity/lib/live";
 import { categoryWithProductsQuery } from "@/sanity/lib/queries";
+import { urlFor } from "@/sanity/lib/image";
 import ProductGrid from "@/components/ProductGrid";
 import { ClientMotionDiv } from "@/components/ClientMotionDiv"; // I will create this or use a client wrapper
 
-export default async function CategoryDetailPage({ params }: { params: Promise<{ category: string }> }) {
-  const { category: categoryId } = await params;
-  
-  const { data: category } = await sanityFetch({ 
+const getCategory = cache(async (categoryId: string) => {
+  const { data } = await sanityFetch({ 
     query: categoryWithProductsQuery, 
     params: { slug: categoryId } 
   });
+  return data;
+});
+
+export async function generateMetadata({ params }: { params: Promise<{ category: string }> }): Promise<Metadata> {
+  const { category: categoryId } = await params;
+  const category = await getCategory(categoryId);
+  
+  if (!category) return {};
+
+  return {
+    title: `${category.title} Timber | Hansen Timber`,
+    description: category.description || `Explore our ${category.title} collection.`,
+    openGraph: {
+      images: category.image ? [urlFor(category.image).url()] : [],
+    },
+  };
+}
+
+export default async function CategoryDetailPage({ params }: { params: Promise<{ category: string }> }) {
+  const { category: categoryId } = await params;
+  const category = await getCategory(categoryId);
 
   if (!category) {
     notFound();

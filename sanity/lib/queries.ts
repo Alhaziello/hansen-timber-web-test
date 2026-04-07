@@ -129,6 +129,8 @@ export const speciesBySlugQuery = defineQuery(`
     _id,
     name,
     "slug": slug.current,
+    tagline,
+    features,
     description,
     content,
     image,

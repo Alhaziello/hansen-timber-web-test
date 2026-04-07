@@ -124,9 +124,11 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                   </div>
                 )}
                 <div>
-                  <button className="bg-charcoal text-sand w-full py-5 uppercase tracking-[0.3em] text-xs font-bold hover:bg-muted-oak hover:text-charcoal transition-all duration-500">
-                    Enquire about this style
-                  </button>
+                  <Link href="/contact" className="block w-full">
+                    <button className="bg-charcoal text-sand w-full py-5 uppercase tracking-[0.3em] text-xs font-bold hover:bg-muted-oak hover:text-charcoal transition-all duration-500">
+                      Enquire about this style
+                    </button>
+                  </Link>
                 </div>
               </ClientMotionDiv>
             </div>

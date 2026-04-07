@@ -5,6 +5,15 @@ import { allSpeciesQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 
+// Interface for the data returned from allSpeciesQuery
+interface Species {
+  _id: string;
+  name: string;
+  slug: string;
+  description: string;
+  image: any;
+}
+
 export default async function SpeciesPage() {
   const { data: speciesList } = await sanityFetch({ query: allSpeciesQuery });
 
@@ -25,7 +34,7 @@ export default async function SpeciesPage() {
         </ClientMotionDiv>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
-          {speciesList.map((s: any, index: number) => {
+          {speciesList.map((s: Species, index: number) => {
             const imageUrl = s.image ? urlFor(s.image).url() : "/placeholder.png";
             return (
               <ClientMotionDiv

@@ -56,8 +56,13 @@ const projects = [
     slug: "clevedon-residence",
     client: "Martin & Miranda's",
     description: "A stunning application of Eucalyptus Blackbutt Hardwood Flooring in a local Clevedon home.",
-    mainImage: "/images/products/hardwood-flooring.png",
-    gallery: ["/images/products/hardwood-flooring.png", "/images/products/hardwood-flooring.png"],
+    mainImage: "/images/gallery/martinmiranda-1.jpg",
+    gallery: [
+      "/images/gallery/martinmiranda-1.jpg",
+      "/images/gallery/martinmiranda-2.jpg",
+      "/images/gallery/martinmiranda-3.jpg",
+      "/images/gallery/martinmiranda-4.jpg"
+    ],
     content: [
       {
         _type: "block",
@@ -85,8 +90,12 @@ const projects = [
     slug: "slab-studio-vanity",
     client: "Tony Gifford @Slabstudiosnz",
     description: "Handcrafted vanity masterpiece utilizing Ancient Swamp Kauri slabs.",
-    mainImage: "/images/products/swamp-kauri-slabs.png",
-    gallery: ["/images/products/swamp-kauri-slabs.png", "/images/products/swamp-kauri-slabs.png"],
+    mainImage: "/images/gallery/Slabstudiosnz-1.jpg",
+    gallery: [
+      "/images/gallery/Slabstudiosnz-1.jpg",
+      "/images/gallery/Slabstudiosnz-2.jpg",
+      "/images/gallery/Slabstudiosnz-3.jpg"
+    ],
     content: [
       {
         _type: "block",
@@ -96,6 +105,39 @@ const projects = [
       },
     ],
     completionDate: "2023-11-20",
+  },
+  {
+    title: "Clevedon Woolshed",
+    slug: "clevedon-woolshed",
+    client: "Clevedon Woolshed",
+    description: "A stunning piece of Blackbutt Timber made into a dramatic feature bench.",
+    mainImage: "/images/gallery/clevedon-woolshed-1.jpg",
+    gallery: [
+      "/images/gallery/clevedon-woolshed-1.jpg",
+      "/images/gallery/clevedon-woolshed-2.jpg",
+      "/images/gallery/clevedon-woolshed-3.jpg"
+    ],
+    content: [
+      {
+        _type: "block",
+        style: "normal",
+        markDefs: [],
+        children: [{ _type: "span", text: "A stunning piece of Blackbutt Timber made into a dramatic feature bench within the local Clevedon Woolshed store. Our client also sourced Macrocarpa boards which have been utilised as paneling internally for the walls and barn style seen in the images below." }],
+      },
+      {
+        _type: "block",
+        style: "h3",
+        markDefs: [],
+        children: [{ _type: "span", text: "Materials Used" }],
+      },
+      {
+        _type: "block",
+        style: "normal",
+        markDefs: [],
+        children: [{ _type: "span", text: "Blackbutt Timber for the feature bench and New Zealand grown Macrocarpa boards for the internal wall paneling." }],
+      },
+    ],
+    completionDate: "2024-04-05",
   },
 ];
 

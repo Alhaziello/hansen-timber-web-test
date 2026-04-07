@@ -33,10 +33,10 @@ export const metadata: Metadata = {
     description: "Discover our range of premium, sustainably sourced NZ timber products.",
     images: [
       {
-        url: "/hero_timber_home_1773443975023.png",
+        url: "/images/home/hero-high-res.png",
         width: 1200,
         height: 630,
-        alt: "Hansen Timber Architectural Design",
+        alt: "Hansen Timber Premium NZ Wood Crafting",
       },
     ],
   },
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Hansen Timber | Custom Timber Products",
     description: "Precision in wood crafting with NZ grown timber.",
-    images: ["/hero_timber_home_1773443975023.png"],
+    images: ["/images/home/hero-high-res.png"],
   },
 };
 

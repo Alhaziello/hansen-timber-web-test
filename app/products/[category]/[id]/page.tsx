@@ -103,9 +103,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               <TechnicalTable specs={product.specs} />
             </div>
             
-            <button className="mt-12 bg-charcoal text-sand px-10 py-5 uppercase tracking-[0.2em] text-sm hover:bg-muted-oak hover:text-charcoal transition-all duration-300 w-fit">
-              Request Sample Pack
-            </button>
+            <Link href="/contact" className="mt-12 block w-fit">
+              <button className="bg-charcoal text-sand px-10 py-5 uppercase tracking-[0.2em] text-sm hover:bg-muted-oak hover:text-charcoal transition-all duration-300">
+                Request Sample Pack
+              </button>
+            </Link>
           </ClientMotionDiv>
         </div>
       </div>

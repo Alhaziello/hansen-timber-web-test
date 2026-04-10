@@ -4,6 +4,16 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 
+/**
+ * ProjectGallery Component
+ * 
+ * Displays a Masonry-style grid of images (currently arranged in uniform squares/rectangles).
+ * This component maps over an array of Sanity image references and renders them using `next/image`.
+ * 
+ * Beginner Note:
+ * `next/image` is a core Next.js feature that automatically optimizes images. We use the `fill` 
+ * property here, which means the image will stretch to fill its parent `<motion.div>`.
+ */
 interface ProjectGalleryProps {
   images: any[];
 }

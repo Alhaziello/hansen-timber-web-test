@@ -1,5 +1,18 @@
 import { defineQuery } from 'next-sanity'
 
+/**
+ * Sanity GROQ Queries
+ * 
+ * This file contains all the database queries used to fetch data from Sanity CMS.
+ * It uses GROQ (Graph-Relational Object Queries), which is Sanity's purpose-built query language.
+ * 
+ * Beginner Note:
+ * A query like `*[_type == "product"]` means: 
+ * "Get EVERY document (*) where the type is exactly 'product'".
+ * The block following it `{ _id, name, ... }` tells Sanity exactly which fields we want back.
+ * The `->` symbol is a "dereference". It takes a reference (like an ID) and automatically expands it into the full object.
+ */
+
 export const allProductsQuery = defineQuery(`
   *[_type == "product"] {
     _id,

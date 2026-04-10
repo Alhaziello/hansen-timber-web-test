@@ -56,7 +56,7 @@ function ContactForm() {
         if (result.errors) {
           setStatus("validation_error");
           // Formspree returns an array of error objects
-          const msg = result.errors.map((error: any) => {
+          const msg = result.errors.map((error: { field?: string; message: string }) => {
             if (error.field) {
               return `${error.field.charAt(0).toUpperCase() + error.field.slice(1)} ${error.message}`;
             }

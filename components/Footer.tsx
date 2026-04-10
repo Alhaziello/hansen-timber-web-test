@@ -1,5 +1,16 @@
 import Link from "next/link";
 
+/**
+ * Footer Component
+ * 
+ * The main global footer that appears at the bottom of every page.
+ * Contains the brand messaging, social media links, quick navigation to important pages,
+ * and contact information. 
+ * 
+ * Beginner Note:
+ * This component is "static" (it doesn't use any hooks or state), which is why we don't 
+ * need the "use client" directive at the top. It renders on the server for better performance.
+ */
 export default function Footer() {
   return (
     <footer className="bg-charcoal text-sand pt-20 pb-10 border-t border-muted-oak/20 mt-22 md:mt-28">

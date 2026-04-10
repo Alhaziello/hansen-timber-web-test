@@ -1,5 +1,16 @@
 import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 
+/**
+ * Privacy Policy Page (Marketing Page)
+ * 
+ * A static marketing page located in the `(marketing)` folder, meaning it is NOT a product or species.
+ * It lives at the route `/privacy-policy`.
+ * 
+ * Beginner Note:
+ * This is a "Server Component" (no "use client"). We define `metadata` directly here.
+ * Next.js automatically picks up this `metadata` object to generate the `<title>` and `<meta name="description">` tags 
+ * in the HTML header, which helps Google understand what this page is about.
+ */
 export const metadata = {
   title: "Privacy Policy | Hansen Timber",
   description: "Our commitment to the privacy and security of your personal information.",
@@ -8,7 +19,7 @@ export const metadata = {
 export default function PrivacyPolicyPage() {
   return (
     <main className="min-h-screen bg-sand pt-32 pb-24 px-6 md:px-12">
-      <ClientMotionDiv 
+      <ClientMotionDiv
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -21,7 +32,7 @@ export default function PrivacyPolicyPage() {
         </div>
 
         <div className="bg-white/60 backdrop-blur-sm p-8 md:p-16 rounded-3xl shadow-sm border border-black/5 prose prose-stone prose-lg max-w-none prose-headings:font-serif prose-headings:text-charcoal prose-p:text-charcoal/80 prose-p:font-light prose-a:text-muted-oak hover:prose-a:text-charcoal transition-colors">
-          
+
           <h2>Respecting your privacy</h2>
           <p>
             Our company is committed to complying with the Privacy Amendment (Private Sector) Act 2020, and the privacy provisions of all applicable legislation.

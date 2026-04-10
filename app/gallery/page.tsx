@@ -3,6 +3,17 @@ import { allProjectsQuery } from "@/sanity/lib/queries";
 import ProjectCard from "@/components/ProjectCard";
 import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 
+/**
+ * Gallery Index Page (Server Component)
+ * 
+ * Located at `/gallery`. It queries all architectural projects from Sanity
+ * and sets up the primary grid view.
+ * 
+ * Beginner Note:
+ * This IS a "Server Component" (because it has no "use client" directive at the top). 
+ * By default, Next.js 13+ App Router components are rendered on the server. 
+ * We define `metadata` directly here, which Next.js uses to generate the `<title>` tags for SEO.
+ */
 export const metadata = {
   title: "Architectural Gallery | Hansen Timber",
   description: "Explore our portfolio of high-end architectural projects featuring premium New Zealand timber.",

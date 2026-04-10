@@ -1,4 +1,4 @@
-import { Article } from "../data/articles";
+import { Article } from "./types";
 import { sanityFetch } from "@/sanity/lib/live";
 
 export async function getArticles(): Promise<Article[]> {

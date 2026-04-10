@@ -5,15 +5,19 @@ import { allSpeciesQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 
-// Interface for the data returned from allSpeciesQuery
-interface Species {
-  _id: string;
-  name: string;
-  slug: string;
-  description: string;
-  image: any;
-}
+import { Species } from "@/lib/types";
 
+/**
+ * Species Index Page (Server Component)
+ * 
+ * Rendered when a user navigates to `/species`.
+ * This page queries Sanity CMS for every available timber species and displays 
+ * them in a grid format with links to a deeper "deep dive" page for each specific wood type.
+ * 
+ * Beginner Note:
+ * Any functional page inside the `app` router gets to automatically be an "async" function, 
+ * meaning we can `await` data fetches directly inside the page without needing `useEffect`.
+ */
 export default async function SpeciesPage() {
   const { data: speciesList } = await sanityFetch({ query: allSpeciesQuery });
 

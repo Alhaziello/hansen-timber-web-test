@@ -1,6 +1,19 @@
-"use client";
+"use client"; // Marks this as a client component because Framer Motion animations require the browser's DOM.
 
 import { motion, HTMLMotionProps } from "framer-motion";
+
+/**
+ * Client Motion Wrappers
+ * 
+ * What is this?
+ * Next.js App Router defaults to "Server Components" which cannot run browser animations.
+ * However, turning an entire page into a "Client Component" just to use Framer Motion ruins SEO and performance.
+ * 
+ * The Solution:
+ * We create these tiny wrapper components. They take standard HTML elements (div, span, header)
+ * and wrap them in Framer Motion functionality. By importing these wrappers into Server Components,
+ * we get the best of both worlds: Server-side rendering AND client-side animations!
+ */
 
 export const ClientMotionDiv = (props: HTMLMotionProps<"div">) => {
   return <motion.div {...props}>{props.children}</motion.div>;

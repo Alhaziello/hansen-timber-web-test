@@ -4,7 +4,20 @@ import ProductGrid from "@/components/ProductGrid";
 import { sanityFetch } from "@/sanity/lib/live";
 import { featuredProductsQuery, allSpeciesQuery } from "@/sanity/lib/queries";
 
+/**
+ * Homepage (Server Component)
+ * 
+ * The main landing page for Hansen Timber (`/`).
+ * 
+ * Beginner Note:
+ * Notice there is NO `"use client"` at the top of this file. This means this page 
+ * runs entirely on the server. We fetch the data directly from Sanity CMS here,
+ * then pass that data down into client components (like `Hero` or `ProductGrid` or `SpeciesGallery`) 
+ * as "props". This makes the initial page load lightning fast for SEO!
+ */
 export default async function Home() {
+  // Promise.all runs these two queries at the same time (parallel) so we don't have to wait 
+  // for the first one to finish before starting the second one.
   const [{ data: featuredProducts }, { data: speciesList }] = await Promise.all([
     sanityFetch({ query: featuredProductsQuery }),
     sanityFetch({ query: allSpeciesQuery }),
@@ -24,7 +37,7 @@ export default async function Home() {
             </p>
             <div className="w-20 h-px bg-muted-oak"></div>
           </div>
-          
+
           <ProductGrid products={featuredProducts} />
         </div>
       </section>

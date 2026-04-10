@@ -1,6 +1,17 @@
 import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 import Image from "next/image";
 
+/**
+ * About Page (Marketing Page)
+ * 
+ * A static marketing page located in the `(marketing)` folder, meaning it is NOT a product or species.
+ * It lives at the route `/about`.
+ * 
+ * Beginner Note:
+ * This is a "Server Component" (no "use client"). We define `metadata` directly here.
+ * Next.js automatically picks up this `metadata` object to generate the `<title>` and `<meta name="description">` tags 
+ * in the HTML header, which helps Google understand what this page is about.
+ */
 export const metadata = {
   title: "About Us | Hansen Timber",
   description:
@@ -41,7 +52,7 @@ export default function AboutPage() {
         {/* Left Column - Sticky Images */}
         <div className="lg:sticky top-28 self-start h-[80vh] lg:h-[80vh] xl:h-[calc(100vh_-_8rem)] flex flex-col gap-6 lg:gap-8 w-full">
           {/* First Image */}
-          <div 
+          <div
             className="relative flex-1 w-full rounded-3xl overflow-hidden shadow-xl group border border-white/10"
             style={{ WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}
           >
@@ -66,7 +77,7 @@ export default function AboutPage() {
           </div>
 
           {/* Second Image */}
-          <div 
+          <div
             className="relative flex-1 w-full rounded-3xl overflow-hidden shadow-xl group border border-white/10"
             style={{ WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}
           >

@@ -1,5 +1,14 @@
 "use client";
 
+/**
+ * TechnicalTable Component
+ * 
+ * A simple table that displays technical specifications (like dimensions, grade, or treatment).
+ * 
+ * Beginner Note:
+ * It takes an array of strings formatted like "Label: Value" (e.g., "Moisture: 12%").
+ * It uses javascript `.split(":")` to separate the bold label from the value before rendering.
+ */
 export default function TechnicalTable({ specs }: { specs: string[] }) {
   return (
     <div className="w-full border border-muted-oak/20 bg-white/50 backdrop-blur-sm overflow-hidden">
@@ -8,7 +17,7 @@ export default function TechnicalTable({ specs }: { specs: string[] }) {
         <div>Detail</div>
       </div>
       <div className="divide-y divide-muted-oak/10">
-        {specs.map((spec, index) => {
+        {specs && specs.map((spec, index) => {
           const [label, ...valueParts] = spec.split(":");
           const value = valueParts.join(":").trim();
           

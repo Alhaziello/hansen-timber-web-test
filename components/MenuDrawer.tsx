@@ -1,14 +1,20 @@
-"use client";
+"use client"; // Marks this component for client-side rendering because it relies on Framer Motion animations and browser path tracking.
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+/**
+ * MenuDrawerProps defines the structure of the data passed into MenuDrawer.
+ * @property {boolean} isOpen - Boolean flag passed down from the Navbar determining if the drawer should be on-screen.
+ * @property {function} onClose - Function passed from the Navbar to close the drawer when a user clicks a link or the exit button.
+ */
 interface MenuDrawerProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+// A static list of all navigation routes available in the drawer. Keeping this as an array makes it easy to add/remove links later.
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Products", href: "/products" },
@@ -20,6 +26,16 @@ const navLinks = [
   { name: "Trees Wanted", href: "/nz-grown-trees-wanted" },
 ];
 
+/**
+ * MenuDrawer Component
+ * 
+ * A full-screen slide-in navigation menu primarily used on mobile devices (but styled to look great on desktop too).
+ * Uses Framer Motion's `AnimatePresence` to smoothly animate the mounting (entering) and unmounting (exiting) of the menu.
+ * 
+ * Beginner Note:
+ * Normally in React, when you remove a component, it instantly disappears. 
+ * `AnimatePresence` allows us to play an "exit" animation before React actually removes the HTML element from the screen.
+ */
 export default function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
   const pathname = usePathname();
 

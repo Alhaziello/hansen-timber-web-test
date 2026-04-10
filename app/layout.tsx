@@ -16,6 +16,14 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
 });
 
+/**
+ * Global Metadata Configuration
+ * 
+ * This object tells Next.js how to generate the `<head>` tags (Title, Description, etc.) 
+ * which are critical for SEO and social media sharing. 
+ * `template: "%s | Hansen Timber"` means if a sub-page sets its title to "About", 
+ * the browser tab will read "About | Hansen Timber".
+ */
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.hansentimber.co.nz'),
   title: {
@@ -48,6 +56,17 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Root Layout Component
+ * 
+ * The ultimate wrapper for the entire Next.js application. Every single page in the 
+ * `/app` directory is injected into the `{children}` prop here. 
+ * 
+ * Beginner Note:
+ * This layout is where we place elements we want on EVERY page (like the Navbar and Footer).
+ * By defining our Google Fonts (`className={`${inter.variable}`}`) here, they become available globally.
+ * We also place `SanityLive` and `Analytics` here so they track site-wide activity.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

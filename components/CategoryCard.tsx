@@ -4,8 +4,20 @@ import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "@/sanity/lib/image";
+import { Category } from "@/lib/types";
 
-export default function CategoryCard({ category }: { category: any }) {
+/**
+ * CategoryCard Component
+ * 
+ * Displays a large, striking card for a specific product Category (like "Architectural Settings").
+ * It features a background image that slowly zooms in when the user hovers over it, 
+ * revealing short description text and a "Learn More" call to action.
+ * 
+ * Beginner Note:
+ * Framer Motion's `whileHover` prop makes setting up complex CSS-like hover animations extremely
+ * easy directly within React.
+ */
+export default function CategoryCard({ category }: { category: Category }) {
   const cardVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }

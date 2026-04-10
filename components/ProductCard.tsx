@@ -5,18 +5,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "@/sanity/lib/image";
 
+import { Product } from "@/lib/types";
+
+/**
+ * ProductCard Component
+ * 
+ * An individual card displaying a brief summary of a product.
+ * It's heavily used in grids (like CollectionsView) to let the user browse inventory.
+ * 
+ * Beginner Note:
+ * - `priority` is a Next.js Image property. If true, it tells the browser to load this image
+ *   immediately, which is great for images at the very top of the page (Above the Fold) to prevent layout shifts.
+ */
 interface ProductCardProps {
-  product: {
-    id: string;
-    name: string;
-    description: string;
-    specs: string[];
-    image: any;
-    category?: {
-      id: string;
-      title: string;
-    };
-  };
+  product: Product;
   priority?: boolean;
 }
 

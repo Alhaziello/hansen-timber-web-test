@@ -1,6 +1,17 @@
 import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 import Link from "next/link";
 
+/**
+ * Thank You Page (Marketing Page)
+ * 
+ * A static marketing page located in the `(marketing)` folder, meaning it is NOT a product or species.
+ * It lives at the route `/thanks`.
+ * 
+ * Beginner Note:
+ * This is a "Server Component" (no "use client"). We define `metadata` directly here.
+ * Next.js automatically picks up this `metadata` object to generate the `<title>` and `<meta name="description">` tags 
+ * in the HTML header, which helps Google understand what this page is about.
+ */
 export const metadata = {
   title: "Thank You | Hansen Timber",
   description: "A professional acknowledgement for your enquiry to Hansen Timber.",
@@ -25,8 +36,8 @@ export default function ThankYouPage() {
         <p className="text-charcoal/70 text-lg md:text-xl font-sans leading-relaxed mb-12">
           Your enquiry has been successfully delivered. A timber consultant from our Clevedon Mill will review your project and be in touch shortly.
         </p>
-        
-        <Link 
+
+        <Link
           href="/"
           className="inline-block bg-charcoal text-sand px-12 py-4 uppercase tracking-[0.2em] text-xs font-bold hover:bg-muted-oak hover:text-charcoal transition-all duration-500"
         >

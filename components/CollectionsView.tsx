@@ -3,13 +3,26 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import ProductGrid from "./ProductGrid";
+import { Product, Category } from "@/lib/types";
 
+/**
+ * CollectionsView Component
+ * 
+ * The main interactive component for browsing products. It takes an array of products
+ * and categories, and allows the user to filter the list using a row of buttons.
+ * 
+ * Beginner Note:
+ * - `useState` tracks `activeFilter`. When a user clicks a button, this state updates.
+ * - Because `activeFilter` changes, React re-renders this component.
+ * - During re-render, `filteredProducts` is dynamically recalculated using the `.filter()` method.
+ */
 interface CollectionsViewProps {
-  products: any[];
-  categories: any[];
+  products: Product[];
+  categories: Category[];
 }
 
 export default function CollectionsView({ products, categories }: CollectionsViewProps) {
+  // `activeFilter` tracks the ID of the currently selected category. Defaults to "all".
   const [activeFilter, setActiveFilter] = useState("all");
 
   const filteredProducts = activeFilter === "all" 

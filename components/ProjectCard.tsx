@@ -5,15 +5,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "@/sanity/lib/image";
 
+import { Project } from "@/lib/types";
+
+/**
+ * ProjectCard Component
+ * 
+ * Displays an individual architectural project (like a home or commercial building) that utilized Hansen Timber products.
+ * Includes a hover effect that scales the image and reveals an overlay.
+ * 
+ * Beginner Note:
+ * We use the `index` prop alongside Framer Motion's `delay` property to create a cascading
+ * entrance animation. If index = 1, it waits 0.1s. If index = 2, it waits 0.2s.
+ */
 interface ProjectCardProps {
-  project: {
-    _id: string;
-    title: string;
-    slug: string;
-    description?: string;
-    mainImage: any;
-    client?: string;
-  };
+  project: Project;
   index: number;
 }
 

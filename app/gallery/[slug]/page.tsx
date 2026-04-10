@@ -18,6 +18,17 @@ const ptComponents = {
   },
 };
 
+/**
+ * Project Detail Page (Dynamic Server Component)
+ * 
+ * Handles URLs like `/gallery/clevedon-estate`.
+ * It fetches the specific project based on the `slug` parameter in the URL.
+ * 
+ * Beginner Note:
+ * This page blends a full-screen image "Hero" section with a custom `PortableText` 
+ * article below it. The `ptComponents` object above tells Sanity how to convert 
+ * raw block text into our specific Tailwind-styled HTML tags (like `<h3 className="...">`).
+ */
 export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const { data: project } = await sanityFetch({ 

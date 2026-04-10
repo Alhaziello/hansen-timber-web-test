@@ -10,8 +10,12 @@ import { urlFor } from "@/sanity/lib/image";
 import ProductGrid from "@/components/ProductGrid";
 
 /**
- * Memoized fetch function to ensure Sanity is only hit once per page load
- * across both generateMetadata and the main component.
+ * Memoized fetch function
+ * 
+ * Beginner Note:
+ * `cache` is a React function that remembers the result of this data fetch. 
+ * Because we need the species data TWICE (once to generate the `<title>` tags for SEO, 
+ * and once to actually build the page html), this cache ensures we only make ONE request to Sanity CMS.
  */
 const getSpecies = cache(async (slug: string) => {
   const { data } = await sanityFetch({ 
@@ -21,6 +25,10 @@ const getSpecies = cache(async (slug: string) => {
   return data;
 });
 
+/**
+ * generateMetadata
+ * Next.js automatically looks for this exact function name to build out SEO logic for dynamic pages!
+ */
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const species = await getSpecies(slug);
@@ -37,7 +45,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 /** 
- * Renders individual species page with fallback UI for missing data 
+ * Species Detail Page (Dynamic Server Component)
+ * 
+ * Resolves URLs like `/species/macrocarpa`. 
+ * Displays deep information about the wood type and maps out which products use it.
  */
 export default async function SpeciesDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

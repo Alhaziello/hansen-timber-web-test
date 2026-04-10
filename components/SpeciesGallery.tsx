@@ -5,9 +5,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { urlFor } from "@/sanity/lib/image";
+import { Species } from "@/lib/types";
 
+/**
+ * SpeciesGallery Component
+ * 
+ * A showcase section that lists out the available timber species (e.g., Pine, Macrocarpa).
+ * Uses Framer Motion's `whileInView` to trigger an entrance animation ONLY when the user scrolls down to this section.
+ * 
+ * Beginner Note:
+ * Because this component renders dynamic animations on the browser, it starts with `"use client"`.
+ * We use `useState` and `useEffect` to set `mounted` to true only after the component has safely loaded
+ * in the client's browser, preventing SSR hydration errors.
+ */
 interface SpeciesGalleryProps {
-  speciesList?: any[];
+  speciesList?: Species[];
 }
 
 export default function SpeciesGallery({ speciesList = [] }: SpeciesGalleryProps) {

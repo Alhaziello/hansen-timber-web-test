@@ -5,11 +5,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-// The generated background image name. We'll find exactly what was copied over.
-// For now, let's look for hero_timber_home_* inside public or just pass it as prop if we map it out.
+/**
+ * Hero Component
+ * 
+ * The massive, screen-filling introduction section seen at the very top of the homepage.
+ * It displays a background image, a bold headline, and a call-to-action button, all with 
+ * a smooth staggered fade-in animation on initial load.
+ * 
+ * Beginner Note:
+ * This component uses `useState` and `useEffect` to ensure it only renders on the client
+ * after the component has fully "mounted". This avoids "Hydration Mismatches" (where the 
+ * server HTML differs from the client HTML).
+ */
 export default function Hero({ bgImage }: { bgImage: string }) {
+  // `mounted` keeps track of whether the component has loaded in the browser yet
   const [mounted, setMounted] = useState(false);
 
+  // `useEffect` runs right after the component appears in the browser, setting `mounted` to true.
   useEffect(() => {
     setMounted(true);
   }, []);

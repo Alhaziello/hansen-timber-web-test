@@ -168,7 +168,7 @@ export default function ContactPage() {
           <div className="space-y-12">
             <div>
               <h2 className="text-[10px] uppercase tracking-[0.4em] font-sans font-bold text-muted-oak mb-6 text-center md:text-left">Clevedon Mill</h2>
-              <p className="text-charcoal/70 text-lg font-serif italic mb-8 leading-relaxed">
+              <p className="text-charcoal/70 text-lg font-serif italic mb-8 leading-relaxed text-center md:text-left">
                 52 Eyres Road,<br />
                 Clevedon 2585<br />
                 New Zealand
@@ -177,6 +177,35 @@ export default function ContactPage() {
                 <p className="font-sans text-charcoal text-sm tracking-widest">09 242 3644</p>
                 <p className="font-sans text-charcoal text-sm tracking-widest">enquiries@hansentimber.co.nz</p>
               </div>
+            </div>
+
+            {/* Elegant Map Integration */}
+            <div className="pt-8 border-t border-muted-oak/10">
+              <div className="relative w-full h-80 bg-charcoal/5 border border-muted-oak/10 overflow-hidden mb-6 group">
+                <iframe 
+                  src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=52%20Eyres%20Road,%20Clevedon%202585,%20New%20Zealand+(Hansen%20Timber)&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0 }} 
+                  allowFullScreen={false} 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Map showing location of Hansen Timber Clevedon Mill"
+                  className="grayscale contrast-125 opacity-70 group-hover:opacity-90 group-hover:grayscale-[50%] transition-all duration-700 pointer-events-none md:pointer-events-auto"
+                ></iframe>
+              </div>
+              
+              <a 
+                href="https://maps.google.com/?q=52+Eyres+Road,Clevedon,New+Zealand" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 text-charcoal hover:text-muted-oak transition-colors font-sans group"
+              >
+                <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Get Directions</span>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="transform group-hover:translate-x-1 transition-transform">
+                  <path d="M4.16667 10H15.8333M15.8333 10L10 4.16667M15.8333 10L10 15.8333" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </a>
             </div>
           </div>
 

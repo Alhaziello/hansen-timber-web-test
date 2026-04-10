@@ -13,7 +13,7 @@ export const allProductsQuery = defineQuery(`
       "id": id.current,
       title
     },
-    species-> {
+    species[]-> {
       name,
       "slug": slug.current
     }
@@ -92,7 +92,7 @@ export const productBySlugQuery = defineQuery(`
       "id": id.current,
       title
     },
-    species-> {
+    species[]-> {
       name,
       "slug": slug.current,
       description,
@@ -116,7 +116,7 @@ export const categoryWithProductsQuery = defineQuery(`
       content,
       specs,
       image,
-      species-> {
+      species[]-> {
         name,
         "slug": slug.current
       }

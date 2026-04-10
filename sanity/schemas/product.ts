@@ -34,9 +34,9 @@ export default defineType({
     }),
     defineField({
       name: 'species',
-      title: 'Species',
-      type: 'reference',
-      to: [{ type: 'species' }],
+      title: 'Available Species',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'species' }] }],
     }),
     defineField({
       name: 'description',

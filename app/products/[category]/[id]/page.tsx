@@ -98,6 +98,23 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               )}
             </div>
 
+            {product.species && product.species.length > 0 && (
+              <div className="mt-8">
+                <h2 className="text-xs uppercase tracking-widest font-sans font-semibold text-charcoal/40 mb-4">Available Species</h2>
+                <div className="flex flex-wrap gap-2">
+                  {product.species.map((s: any) => (
+                    <Link 
+                      key={s.slug} 
+                      href={`/species/${s.slug}`}
+                      className="px-4 py-1.5 border border-muted-oak/20 text-xs uppercase tracking-widest text-muted-oak hover:border-charcoal hover:text-charcoal transition-all"
+                    >
+                      {s.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="mt-12">
               <h2 className="text-xs uppercase tracking-widest font-sans font-semibold text-charcoal/40 mb-4">Technical Specifications</h2>
               <TechnicalTable specs={product.specs} />

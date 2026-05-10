@@ -43,3 +43,7 @@ docs
 
 # heavy assets
 /public/images/
+
+# temporary development
+/scratch/
+DATA_AUDIT_REPORT.md

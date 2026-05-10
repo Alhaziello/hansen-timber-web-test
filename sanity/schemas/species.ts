@@ -21,8 +21,21 @@ export default defineType({
     }),
     defineField({
       name: 'description',
-      title: 'Description',
+      title: 'Short Description',
       type: 'text',
+    }),
+    defineField({
+      name: 'content',
+      title: 'Deep Content (Portable Text)',
+      type: 'array',
+      of: [{ type: 'block' }],
+    }),
+    defineField({
+      name: 'commonUses',
+      title: 'Common Uses',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'e.g. Hardwood Flooring, Decking, Beams',
     }),
     defineField({
       name: 'tagline',
@@ -37,8 +50,9 @@ export default defineType({
     }),
     defineField({
       name: 'image',
-      title: 'Image',
+      title: 'Species Showcase Image',
       type: 'image',
+      description: 'High-quality timber grain close-ups should be at least 1500px wide for a premium architectural look.',
       options: {
         hotspot: true,
       },

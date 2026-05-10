@@ -4,6 +4,7 @@ import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { urlFor } from "@/sanity/lib/image";
 
 /**
  * Hero Component
@@ -17,16 +18,30 @@ import { useEffect, useState } from "react";
  * after the component has fully "mounted". This avoids "Hydration Mismatches" (where the 
  * server HTML differs from the client HTML).
  */
-export default function Hero({ bgImage }: { bgImage: string }) {
+interface HeroProps {
+  title?: string;
+  subtitle?: string;
+  bgImage?: any; // Sanity image object or string
+}
+
+export default function Hero({ title, subtitle, bgImage }: HeroProps) {
   // `mounted` keeps track of whether the component has loaded in the browser yet
   const [mounted, setMounted] = useState(false);
 
-  // `useEffect` runs right after the component appears in the browser, setting `mounted` to true.
+  // `useEffect` runs right after the browser loads the component, setting `mounted` to true.
   useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) return null;
+
+  // Use Sanity image URL if bgImage is an object, otherwise fallback to placeholder
+  const heroImageUrl = bgImage?.asset 
+    ? urlFor(bgImage).url() 
+    : (typeof bgImage === 'string' ? bgImage : "/images/home/IMG_3072.jpg");
+
+  const displayTitle = title || "Precision in Wood Crafting";
+  const displaySubtitle = subtitle || "Discover the natural beauty and unmatched durability of New Zealand grown Eucalyptus and Macrocarpa timber.";
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -49,19 +64,18 @@ export default function Hero({ bgImage }: { bgImage: string }) {
 
   return (
     <section className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-charcoal">
-      {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-black">
         <Image
-          src="/images/home/hero-high-res.png"
-          alt="Hansen Timber Premium NZ Wood Crafting"
+          src={heroImageUrl}
+          alt={displayTitle}
           fill
           priority
           quality={95}
           sizes="100vw"
-          className="object-cover opacity-85"
+          className="object-cover opacity-90"
         />
-        <div className="absolute inset-0 bg-charcoal/40"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-transparent to-charcoal/10"></div>
+        <div className="absolute inset-0 bg-charcoal/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-charcoal/40"></div>
       </div>
 
       {/* Content */}
@@ -81,13 +95,13 @@ export default function Hero({ bgImage }: { bgImage: string }) {
           variants={itemVariants}
           className="text-sand text-5xl md:text-7xl lg:text-8xl font-serif font-medium leading-[1.1] mb-8 [text-wrap:balance]"
         >
-          Precision in Wood Crafting
+          {displayTitle}
         </motion.h1>
         <motion.p
           variants={itemVariants}
           className="text-sand/90 text-lg md:text-xl font-sans max-w-2xl mx-auto mb-10 leading-relaxed [text-wrap:balance]"
         >
-          Discover the natural beauty and unmatched durability of New Zealand grown Eucalyptus and Macrocarpa timber.
+          {displaySubtitle}
         </motion.p>
         <Link href="/products">
           <motion.button

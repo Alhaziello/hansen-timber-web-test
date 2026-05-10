@@ -1,15 +1,64 @@
-/** Hansen Timber Blog Detail - Production Ready */
+import { sanityFetch } from "@/sanity/lib/live";
+import { postBySlugQuery } from "@/sanity/lib/queries";
 import { ClientMotionDiv, ClientMotionHeader, ClientMotionFooter } from "@/components/ClientMotionDiv";
 import { notFound } from "next/navigation";
-import { getArticleBySlug } from "@/lib/api";
 import Link from "next/link";
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import ShareButton from "@/components/ShareButton";
+import { Metadata } from "next";
+import { cache } from "react";
+
+/**
+ * Strict interface for Sanity Post data
+ */
+interface SanityArticle {
+  _id: string;
+  title: string;
+  slug: string;
+  date: string;
+  category: string;
+  excerpt: string;
+  image: string;
+  content?: Array<{
+    _type: string;
+    _key: string;
+    [key: string]: unknown;
+  }>;
+}
+
+/**
+ * Memoized fetch function for Post data
+ */
+const getPost = cache(async (slug: string): Promise<SanityArticle | null> => {
+  const { data } = await sanityFetch({ 
+    query: postBySlugQuery, 
+    params: { slug } 
+  });
+  return data;
+});
+
+/**
+ * Dynamic Metadata for SEO
+ */
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPost(slug);
+  
+  if (!post) return {};
+
+  return {
+    title: `${post.title} | Hansen Timber Journal`,
+    description: post.excerpt || `Read our latest journal entry: ${post.title}`,
+    openGraph: {
+      images: post.image ? [post.image] : [],
+    },
+  };
+}
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const article = await getArticleBySlug(slug);
+  const article = await getPost(slug);
 
   if (!article) notFound();
 

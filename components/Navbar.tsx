@@ -28,26 +28,30 @@ export default function Navbar() {
   // If the user happens to be in the /studio route (the Sanity CMS interface), don't render the frontend navbar at all.
   if (pathname?.startsWith("/studio")) return null;
 
-  // The useEffect hook runs once when the component mounts because the dependency array `[]` is empty.
+  // The useEffect hook runs once when the component mounts
   useEffect(() => {
-    // This function checks the scroll position. If it's more than 20 pixels, we set `scrolled` to true.
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
     
-    // Add the event listener to the browser window
+    // Check initial scroll position
+    handleScroll();
+
     window.addEventListener("scroll", handleScroll);
-    
-    // Cleanup function: React runs this when the component unmounts to prevent memory leaks.
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Determine if we should show the solid background
+  // If we are NOT on the homepage, or if we have scrolled, make it solid.
+  const isHomePage = pathname === "/";
+  const showSolidNav = !isHomePage || scrolled;
 
   return (
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-[90] transition-all duration-500 border-b ${
-          scrolled
-            ? "bg-charcoal/80 backdrop-blur-md border-white/10 py-4"
+          showSolidNav
+            ? "bg-charcoal/90 backdrop-blur-md border-white/10 py-4 shadow-2xl"
             : "bg-transparent border-transparent py-6"
         }`}
       >

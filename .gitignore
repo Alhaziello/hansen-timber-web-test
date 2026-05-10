@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+HANSEN MATERIAL
 
 # debug
 npm-debug.log*
@@ -35,6 +36,10 @@ yarn-error.log*
 
 # vercel
 .vercel
+docs
 
 # typescript
 *.tsbuildinfo
+
+# heavy assets
+/public/images/

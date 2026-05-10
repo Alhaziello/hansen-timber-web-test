@@ -1,10 +1,24 @@
 import { ClientMotionDiv, ClientMotionArticle } from "@/components/ClientMotionDiv";
 import Link from "next/link";
 import Image from "next/image";
-import { getArticles } from "@/lib/api";
+import { sanityFetch } from "@/sanity/lib/live";
+import { allPostsQuery } from "@/sanity/lib/queries";
+
+/**
+ * Strict interface for Sanity Post data
+ */
+interface SanityArticle {
+  _id: string;
+  title: string;
+  slug: string;
+  date: string;
+  category: string;
+  excerpt: string;
+  image: string;
+}
 
 export default async function JournalPage() {
-  const articles = await getArticles();
+  const { data: articles } = await sanityFetch({ query: allPostsQuery });
 
   return (
     <main className="min-h-screen bg-sand pt-32 pb-24 px-6 md:px-12">
@@ -21,7 +35,7 @@ export default async function JournalPage() {
         </ClientMotionDiv>
 
         <div className="space-y-32">
-          {articles.map((article, index) => (
+          {(articles as SanityArticle[]).map((article: SanityArticle, index: number) => (
             <ClientMotionArticle 
               key={article.slug}
               initial={{ opacity: 0, y: 30 }}

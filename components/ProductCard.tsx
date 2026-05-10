@@ -70,7 +70,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
       <div className="mt-auto">
         <Link
-          href={`/products/${categorySlug}/${product.id}`}
+          href={categorySlug === "slabs" ? "/products/slabs" : `/products/${categorySlug}/${product.id}`}
           className="inline-block px-10 py-3 bg-muted-oak text-charcoal text-[10px] uppercase tracking-[0.2em] font-sans font-bold rounded-full hover:bg-charcoal hover:text-sand transition-all duration-300"
         >
           Learn More

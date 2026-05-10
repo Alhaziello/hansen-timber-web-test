@@ -29,23 +29,24 @@ export const allProductsQuery = defineQuery(`
     species[]-> {
       name,
       "slug": slug.current
+    },
+    colorVariants[] {
+      name,
+      "swatch": swatch.asset->url,
+      "image": image.asset->url
+    },
+    boardOptions[] {
+      species-> {
+        name,
+        "slug": slug.current,
+        image
+      },
+      sizes,
+      notes
     }
   }
 `)
 
-export const featuredProductsQuery = defineQuery(`
-  *[_type == "product" && featured == true] | order(_updatedAt desc)[0...4] {
-    _id,
-    name,
-    "id": slug.current,
-    description,
-    image,
-    category-> {
-      "id": id.current,
-      title
-    }
-  }
-`)
 
 export const allProjectsQuery = defineQuery(`
   *[_type == "project"] | order(completionDate desc) {
@@ -83,10 +84,11 @@ export const allCategoriesQuery = defineQuery(`
 `)
 
 export const allSpeciesQuery = defineQuery(`
-  *[_type == "species"] {
+  *[_type == "species"] | order(name asc) {
     _id,
     name,
     "slug": slug.current,
+    tagline,
     description,
     image
   }
@@ -101,6 +103,17 @@ export const productBySlugQuery = defineQuery(`
     content,
     specs,
     image,
+    specFiles[] {
+      asset-> {
+        url,
+        originalFilename
+      }
+    },
+    schematics[] {
+      asset-> {
+        url
+      }
+    },
     category-> {
       "id": id.current,
       title
@@ -110,6 +123,20 @@ export const productBySlugQuery = defineQuery(`
       "slug": slug.current,
       description,
       image
+    },
+    colorVariants[] {
+      name,
+      "swatch": swatch.asset->url,
+      "image": image.asset->url
+    },
+    boardOptions[] {
+      species-> {
+        name,
+        "slug": slug.current,
+        image
+      },
+      sizes,
+      notes
     }
   }
 `)
@@ -132,6 +159,20 @@ export const categoryWithProductsQuery = defineQuery(`
       species[]-> {
         name,
         "slug": slug.current
+      },
+      colorVariants[] {
+        name,
+        "swatch": swatch.asset->url,
+        "image": image.asset->url
+      },
+      boardOptions[] {
+        species-> {
+          name,
+          "slug": slug.current,
+          image
+        },
+        sizes,
+        notes
       }
     }
   }
@@ -144,6 +185,7 @@ export const speciesBySlugQuery = defineQuery(`
     "slug": slug.current,
     tagline,
     features,
+    commonUses,
     description,
     content,
     image,
@@ -160,5 +202,84 @@ export const speciesBySlugQuery = defineQuery(`
         title
       }
     }
+  }
+`)
+
+export const allSlabsQuery = defineQuery(`
+  *[_type == "slab"] | order(name asc) {
+    name,
+    "slug": slug.current,
+    dimensions,
+    status,
+    isSold,
+    image,
+    species-> {
+      name,
+      "slug": slug.current
+    }
+  }
+`);
+
+export const slabBySlugQuery = defineQuery(`
+  *[_type == "slab" && slug.current == $slug][0] {
+    name,
+    "slug": slug.current,
+    dimensions,
+    status,
+    isSold,
+    description,
+    image,
+    gallery,
+    species-> {
+      name,
+      "slug": slug.current
+    }
+  }
+`);
+
+export const allPostsQuery = defineQuery(`
+  *[_type == "post"] | order(publishedAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    "date": publishedAt,
+    category,
+    excerpt,
+    "image": mainImage.asset->url
+  }
+`)
+
+export const postBySlugQuery = defineQuery(`
+  *[_type == "post" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    "date": publishedAt,
+    category,
+    excerpt,
+    "content": body,
+    "image": mainImage.asset->url
+  }
+`)
+
+export const siteSettingsQuery = defineQuery(`
+  *[_type == "siteSettings"][0] {
+    title,
+    description,
+    logo,
+    phoneNumber,
+    email,
+    address,
+    socialLinks
+  }
+`)
+
+export const homePageQuery = defineQuery(`
+  *[_type == "homePage"][0] {
+    title,
+    heroSubtitle,
+    heroImage,
+    featuredSectionTitle,
+    featuredSectionDescription
   }
 `)

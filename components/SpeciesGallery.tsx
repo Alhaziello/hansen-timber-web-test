@@ -65,11 +65,11 @@ export default function SpeciesGallery({ speciesList = [] }: SpeciesGalleryProps
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {speciesList.map((species) => {
+          {speciesList.map((species, idx) => {
             const imageUrl = species.image ? urlFor(species.image).url() : "/placeholder.png";
             return (
               <motion.div
-                key={species.slug}
+                key={species._id || `${species.slug}-${idx}`}
                 variants={itemVariants}
                 className="group flex flex-col h-full bg-white/40 border border-muted-oak/10 backdrop-blur-sm"
               >

@@ -1,9 +1,14 @@
 import { MetadataRoute } from 'next';
-import { getArticles } from '@/lib/api';
 import { sanityFetch } from '@/sanity/lib/live';
-import { allProductsQuery, allCategoriesQuery, allSpeciesQuery } from '@/sanity/lib/queries';
+import { allProductsQuery, allCategoriesQuery, allSpeciesQuery, allPostsQuery } from '@/sanity/lib/queries';
+import { Category, Product, Species } from '@/lib/types';
 
 const BASE_URL = 'https://www.hansentimber.co.nz';
+
+interface SanitySitemapArticle {
+  slug: string;
+  date: string;
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static Routes
@@ -24,15 +29,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Fetch Dynamic Data
-  const [articles, categoriesResponse, productsResponse, speciesResponse] = await Promise.all([
-    getArticles(),
+  const [postsResponse, categoriesResponse, productsResponse, speciesResponse] = await Promise.all([
+    sanityFetch({ query: allPostsQuery }),
     sanityFetch({ query: allCategoriesQuery }),
     sanityFetch({ query: allProductsQuery }),
     sanityFetch({ query: allSpeciesQuery }),
   ]);
 
+  const articles = (postsResponse?.data || []) as SanitySitemapArticle[];
+
   // Create article routes
-  const articleRoutes = articles.map((article) => ({
+  const articleRoutes = articles.map((article: SanitySitemapArticle) => ({
     url: `${BASE_URL}/journal/${article.slug}`,
     lastModified: article.date ? new Date(article.date) : new Date(),
     changeFrequency: 'monthly' as const,
@@ -40,7 +47,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Create category routes
-  const categoryRoutes = (categoriesResponse?.data || []).map((cat: any) => ({
+  const categoryRoutes = (categoriesResponse?.data || []).map((cat: Category) => ({
     url: `${BASE_URL}/products/${cat.id}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
@@ -48,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Create product routes
-  const productRoutes = (productsResponse?.data || []).map((product: any) => {
+  const productRoutes = (productsResponse?.data || []).map((product: Product) => {
     const categorySlug = product.category?.id || 'other';
     return {
       url: `${BASE_URL}/products/${categorySlug}/${product.id}`,
@@ -59,7 +66,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   // Create species routes
-  const speciesRoutes = (speciesResponse?.data || []).map((speciesItem: any) => ({
+  const speciesRoutes = (speciesResponse?.data || []).map((speciesItem: Species) => ({
     url: `${BASE_URL}/species/${speciesItem.slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,

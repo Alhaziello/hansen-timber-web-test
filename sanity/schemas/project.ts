@@ -36,8 +36,9 @@ export default defineType({
     }),
     defineField({
       name: 'mainImage',
-      title: 'Main Image',
+      title: 'Main Feature Image',
       type: 'image',
+      description: 'The hero image for this project. Must be high resolution (at least 2500px wide) to look sharp on all screen sizes.',
       options: {
         hotspot: true,
       },
@@ -48,7 +49,7 @@ export default defineType({
       title: 'Project Gallery',
       type: 'array',
       of: [{ type: 'image', options: { hotspot: true } }],
-      description: 'Additional shots to showcase the project details.',
+      description: 'Additional shots to showcase the project details. For best results, use images at least 2000px wide.',
     }),
     defineField({
       name: 'content',

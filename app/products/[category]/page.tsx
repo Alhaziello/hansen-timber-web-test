@@ -4,10 +4,11 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { cache } from "react";
 import { sanityFetch } from "@/sanity/lib/live";
-import { categoryWithProductsQuery } from "@/sanity/lib/queries";
+import { allSlabsQuery, categoryWithProductsQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 import ProductGrid from "@/components/ProductGrid";
-import { ClientMotionDiv } from "@/components/ClientMotionDiv"; // I will create this or use a client wrapper
+import SlabGallery from "@/components/SlabGallery";
+import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 
 const getCategory = cache(async (categoryId: string) => {
   const { data } = await sanityFetch({ 
@@ -56,6 +57,13 @@ export default async function CategoryDetailPage({ params }: { params: Promise<{
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
+  const isSlabsCategory = categoryId === "slabs";
+  let slabs = [];
+
+  if (isSlabsCategory) {
+    const { data: slabsData } = await sanityFetch({ query: allSlabsQuery });
+    slabs = slabsData;
+  }
 
   return (
     <main className="min-h-screen bg-sand pt-32 pb-24 px-6 md:px-12">
@@ -88,7 +96,11 @@ export default async function CategoryDetailPage({ params }: { params: Promise<{
           <div className="w-24 h-px bg-muted-oak mt-12"></div>
         </div>
 
-        <ProductGrid products={category.products} />
+        {isSlabsCategory ? (
+          <SlabGallery slabs={slabs} />
+        ) : (
+          <ProductGrid products={category.products} />
+        )}
       </ClientMotionDiv>
     </main>
   );

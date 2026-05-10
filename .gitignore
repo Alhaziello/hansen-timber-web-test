@@ -41,9 +41,7 @@ docs
 # typescript
 *.tsbuildinfo
 
-# heavy assets
-/public/images/
-
-# temporary development
+# raw content assets (local archive, not for web)
+/_assets/
 /scratch/
 DATA_AUDIT_REPORT.md

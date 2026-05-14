@@ -4,11 +4,18 @@ export default defineType({
   name: 'product',
   title: 'Product',
   type: 'document',
+  fieldsets: [
+    { name: 'general', title: 'General Information' },
+    { name: 'visuals', title: 'Visual Assets' },
+    { name: 'technical', title: 'Technical Specifications' },
+    { name: 'specialized', title: 'Specialized Data (Flooring / Boards)' },
+  ],
   fields: [
     defineField({
       name: 'name',
-      title: 'Name',
+      title: 'Product Name',
       type: 'string',
+      fieldset: 'general',
     }),
     defineField({
       name: 'featured',
@@ -16,6 +23,7 @@ export default defineType({
       type: 'boolean',
       description: 'Check this to show this product in the Featured Collections on the Home Page.',
       initialValue: false,
+      fieldset: 'general',
     }),
     defineField({
       name: 'slug',
@@ -25,62 +33,72 @@ export default defineType({
         source: 'name',
         maxLength: 96,
       },
+      fieldset: 'general',
     }),
     defineField({
       name: 'category',
       title: 'Category',
       type: 'reference',
       to: [{ type: 'category' }],
-    }),
-    defineField({
-      name: 'species',
-      title: 'Available Species',
-      type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'species' }] }],
+      fieldset: 'general',
     }),
     defineField({
       name: 'description',
-      title: 'Short Description',
+      title: 'Short Summary',
       type: 'text',
-    }),
-    defineField({
-      name: 'content',
-      title: 'Deep Content (Portable Text)',
-      type: 'array',
-      of: [{ type: 'block' }],
-    }),
-    defineField({
-      name: 'specs',
-      title: 'Specifications',
-      type: 'array',
-      of: [{ type: 'string' }],
+      description: 'A 1-2 sentence hook for product cards.',
+      fieldset: 'general',
     }),
     defineField({
       name: 'image',
-      title: 'Main Product Image',
+      title: 'Main Hero Image',
       type: 'image',
       description: 'For a sharp display across all devices, use a high-resolution photo at least 2000px wide.',
-      options: {
-        hotspot: true,
-      },
+      options: { hotspot: true },
+      fieldset: 'visuals',
+    }),
+    defineField({
+      name: 'content',
+      title: 'Deep Content (Story & Details)',
+      type: 'array',
+      of: [{ type: 'block' }],
+      fieldset: 'general',
+    }),
+    defineField({
+      name: 'species',
+      title: 'Available Timber Species',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'species' }] }],
+      description: 'Which timber species is this product available in?',
+      fieldset: 'technical',
+    }),
+    defineField({
+      name: 'specs',
+      title: 'Key Attributes',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'Bullet points shown on product cards (e.g. "Naturally Durable").',
+      fieldset: 'technical',
     }),
     defineField({
       name: 'specFiles',
       title: 'Downloadable Spec Files',
       type: 'array',
       of: [{ type: 'file' }],
-      description: 'PDFs or Documents for architects (Spec files, user guides, etc.)'
+      description: 'PDFs or Documents for architects (Spec files, user guides, etc.)',
+      fieldset: 'technical',
     }),
     defineField({
       name: 'schematics',
-      title: 'Profiles & Schematics',
+      title: 'Technical Drawings / Profiles',
       type: 'array',
       of: [{ type: 'image', options: { hotspot: true } }],
-      description: 'Technical drawings and timber profiles. Use high-contrast images at least 1500px wide for crisp line detail.'
+      description: 'Technical drawings and timber profiles.',
+      fieldset: 'visuals',
     }),
     defineField({
       name: 'colorVariants',
-      title: 'Color Variants (for SPC Flooring)',
+      title: 'Color Variants (Flooring Only)',
       type: 'array',
       of: [
         {
@@ -92,11 +110,16 @@ export default defineType({
           ]
         }
       ],
-      description: 'Add color variants for products like SPC Hybrid Flooring that have a color range instead of timber species.'
+      description: 'Only for products like SPC Hybrid Flooring that use colors instead of timber species.',
+      fieldset: 'specialized',
+      hidden: ({ document }) => {
+        const name = (document?.name as string) || '';
+        return !name.toLowerCase().includes('flooring') && !name.toLowerCase().includes('spc');
+      }
     }),
     defineField({
       name: 'boardOptions',
-      title: 'Board Specifications (The Menu)',
+      title: 'Sizing & Pricing Menu (Boards)',
       type: 'array',
       of: [
         {
@@ -114,7 +137,8 @@ export default defineType({
           }
         }
       ],
-      description: 'Use this for Timber Boards to list available sizes grouped by species.'
+      description: 'Enable this to show a structured size/price grid (e.g. for Cladding, Decking, or Kitsets).',
+      fieldset: 'specialized',
     }),
   ],
 })

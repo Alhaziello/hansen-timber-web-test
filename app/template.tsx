@@ -10,6 +10,12 @@ import { usePathname } from "next/navigation";
 export default function Template({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   
+  // Sanity Studio handles its own internal routing and animations.
+  // We must bypass Framer Motion here to prevent the Studio from remounting/flashing on every click.
+  if (pathname?.startsWith("/studio")) {
+    return <>{children}</>;
+  }
+
   return (
     <AnimatePresence mode="wait">
       <motion.div

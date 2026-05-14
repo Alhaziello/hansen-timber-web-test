@@ -60,6 +60,7 @@ export default function BoardMenu({ options }: BoardMenuProps) {
                       src={speciesImage} 
                       alt={option.species.name} 
                       fill 
+                      sizes="(max-width: 1024px) 100vw, 40vw"
                       className="object-cover opacity-90"
                     />
                   </div>

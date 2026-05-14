@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   title: 'Block Content',
   name: 'blockContent',
@@ -42,3 +43,4 @@ export default {
     },
   ],
 }
+

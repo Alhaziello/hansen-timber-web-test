@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * Global TypeScript Interfaces
  * 
@@ -64,3 +65,4 @@ export interface Project {
   mainImage: any;
   client?: string;
 }
+

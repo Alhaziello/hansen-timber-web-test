@@ -22,11 +22,8 @@ export default function Navbar() {
   // `scrolled` tracks if the user has scrolled down the page, changing the navbar from transparent to a solid color
   const [scrolled, setScrolled] = useState(false);
   
-  // `usePathname` gets the current URL path. We use this to hide the Navbar on the Sanity Studio backend.
+  // `usePathname` gets the current URL path.
   const pathname = usePathname();
-
-  // If the user happens to be in the /studio route (the Sanity CMS interface), don't render the frontend navbar at all.
-  if (pathname?.startsWith("/studio")) return null;
 
   // The useEffect hook runs once when the component mounts
   useEffect(() => {

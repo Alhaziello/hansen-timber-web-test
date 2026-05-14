@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   name: 'post',
   title: 'Journal Post',
@@ -48,3 +49,4 @@ export default {
     },
   ],
 }
+

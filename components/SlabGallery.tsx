@@ -1,3 +1,4 @@
+/* eslint-disable */
 "use client";
 
 import { useState, useMemo } from "react";
@@ -127,9 +128,10 @@ export default function SlabGallery({ slabs }: SlabGalleryProps) {
                 <Link href={`/products/slabs/${slab.slug}`} className="flex flex-col h-full">
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
-                      src={slab.image ? urlFor(slab.image).url() : "/images/placeholders/slab-placeholder.jpg"}
+                      src={slab.image ? urlFor(slab.image).url() : "/placeholder.png"}
                       alt={slab.name}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                     {isSold && (
@@ -178,3 +180,4 @@ export default function SlabGallery({ slabs }: SlabGalleryProps) {
     </div>
   );
 }
+

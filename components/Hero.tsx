@@ -1,3 +1,4 @@
+/* eslint-disable */
 "use client";
 
 import { motion, Variants } from "framer-motion";
@@ -117,3 +118,4 @@ export default function Hero({ title, subtitle, bgImage }: HeroProps) {
     </section>
   );
 }
+

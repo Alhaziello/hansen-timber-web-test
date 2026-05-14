@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { SanityLive } from "@/sanity/lib/live";
 import { Analytics } from "@vercel/analytics/next";
+import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -63,9 +64,8 @@ export const metadata: Metadata = {
  * `/app` directory is injected into the `{children}` prop here. 
  * 
  * Beginner Note:
- * This layout is where we place elements we want on EVERY page (like the Navbar and Footer).
- * By defining our Google Fonts (`className={`${inter.variable}`}`) here, they become available globally.
- * We also place `SanityLive` and `Analytics` here so they track site-wide activity.
+ * We use `ClientLayoutWrapper` to conditionally render the Navbar and Footer,
+ * ensuring they don't break the layout of the Sanity Studio backend.
  */
 export default function RootLayout({
   children,
@@ -75,14 +75,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
       <body
-        className={`${inter.variable} ${playfair.variable} antialiased selection:bg-muted-oak/30 flex flex-col min-h-screen`}
+        className={`${inter.variable} ${playfair.variable} antialiased selection:bg-muted-oak/30 m-0 p-0`}
       >
-        <Navbar />
-        <div className="flex-grow">
+        <ClientLayoutWrapper>
           {children}
-        </div>
-        <Footer />
+        </ClientLayoutWrapper>
         <SanityLive />
+
         <Analytics />
       </body>
     </html>

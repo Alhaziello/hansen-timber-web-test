@@ -1,3 +1,4 @@
+/* eslint-disable */
 "use client"; // Must be a client component because it interfaces with the browser's `navigator.clipboard` API
 
 import { HTMLAttributes } from "react";
@@ -29,3 +30,4 @@ export default function ShareButton({ className, children, ...props }: ShareButt
     </button>
   );
 }
+

@@ -283,3 +283,80 @@ export const homePageQuery = defineQuery(`
     featuredSectionDescription
   }
 `)
+
+export const productAndSpeciesQuery = defineQuery(`
+  {
+    "product": *[_type == "product" && slug.current == $id][0] {
+      _id,
+      name,
+      "id": slug.current,
+      description,
+      content,
+      specs,
+      image,
+      specFiles[] {
+        asset-> {
+          url,
+          originalFilename
+        }
+      },
+      schematics[] {
+        asset-> {
+          url
+        }
+      },
+      category-> {
+        "id": id.current,
+        title
+      },
+      species[]-> {
+        name,
+        "slug": slug.current,
+        description,
+        image
+      },
+      colorVariants[] {
+        name,
+        "swatch": swatch.asset->url,
+        "image": image.asset->url
+      },
+      boardOptions[] {
+        species-> {
+          name,
+          "slug": slug.current,
+          image
+        },
+        sizes,
+        notes,
+        variantImage,
+        variantDescription
+      }
+    },
+    "activeSpecies": *[_type == "species" && slug.current == $species][0] {
+      _id,
+      name,
+      "slug": slug.current,
+      tagline,
+      description,
+      image
+    }
+  }
+`)
+
+export const productSpeciesCombinationsQuery = defineQuery(`
+  *[_type == "product"] {
+    "id": slug.current,
+    category-> {
+      "id": id.current
+    },
+    species[]-> {
+      "slug": slug.current
+    },
+    boardOptions[] {
+      species-> {
+        "slug": slug.current
+      }
+    }
+  }
+`)
+

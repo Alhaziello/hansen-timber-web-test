@@ -7,7 +7,7 @@ import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 import { ClientMotionDiv } from "./ClientMotionDiv";
 import TechnicalTable from "./TechnicalTable";
-import BoardMenu from "./BoardMenu";
+import SpeciesCardGrid from "./SpeciesCardGrid";
 import { urlFor } from "@/sanity/lib/image";
 
 const ptComponents = {
@@ -135,32 +135,6 @@ export default function ProductDisplay({ product, category }: ProductDisplayProp
           )}
         </div>
 
-        {(() => {
-          const speciesList = Array.isArray(product.species)
-            ? product.species
-            : (product.species ? [product.species] : []);
-
-          // Hide this list if we have the Board Menu to avoid redundancy
-          if (speciesList.length === 0 || (product.boardOptions && product.boardOptions.length > 0)) return null;
-
-          return (
-            <div className="mt-8">
-              <h2 className="text-xs uppercase tracking-widest font-sans font-semibold text-charcoal/40 mb-4">Available Species</h2>
-              <div className="flex flex-wrap gap-2">
-                {speciesList.map((s: { slug: string, name: string }) => (
-                  <Link
-                    key={s.slug}
-                    href={`/species/${s.slug}`}
-                    className="px-4 py-1.5 border border-muted-oak/20 text-xs uppercase tracking-widest text-muted-oak hover:border-charcoal hover:text-charcoal transition-all"
-                  >
-                    {s.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          );
-        })()}
-
         {/* Global Premium Feature List (Key Attributes) */}
         {product.specs && product.specs.length > 0 && (
           <div className="mt-12 space-y-6">
@@ -252,10 +226,15 @@ export default function ProductDisplay({ product, category }: ProductDisplayProp
         </Link>
       </ClientMotionDiv>
 
-      {/* Board Options Menu (Spec Sheet) */}
-      {product.boardOptions && product.boardOptions.length > 0 && (
+      {/* Interactive Species Specification Cards */}
+      {((product.boardOptions && product.boardOptions.length > 0) || (product.species && product.species.length > 0)) && (
         <div className="lg:col-span-2">
-          <BoardMenu options={product.boardOptions} />
+          <SpeciesCardGrid
+            boardOptions={product.boardOptions}
+            species={product.species}
+            categorySlug={category}
+            productSlug={product.id}
+          />
         </div>
       )}
     </div>

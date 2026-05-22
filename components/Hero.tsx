@@ -37,9 +37,9 @@ export default function Hero({ title, subtitle, bgImage }: HeroProps) {
   if (!mounted) return null;
 
   // Use Sanity image URL if bgImage is an object, otherwise fallback to placeholder
-  const heroImageUrl = bgImage?.asset 
-    ? urlFor(bgImage).url() 
-    : (typeof bgImage === 'string' ? bgImage : "/images/home/IMG_3072.JPG");
+  const heroImageUrl = bgImage?.asset
+    ? urlFor(bgImage).url()
+    : (typeof bgImage === 'string' ? bgImage : "/images/home/HERO-NEW2.png");
 
   const displayTitle = title || "Precision in Wood Crafting";
   const displaySubtitle = subtitle || "Discover the natural beauty and unmatched durability of New Zealand grown Eucalyptus and Macrocarpa timber.";

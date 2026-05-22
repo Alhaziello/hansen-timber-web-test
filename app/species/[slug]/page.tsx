@@ -8,6 +8,25 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { speciesBySlugQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 import ProductGrid from "@/components/ProductGrid";
+import { PortableText } from "@portabletext/react";
+
+const ptComponents = {
+  block: {
+    h3: ({ children }: { children?: React.ReactNode }) => <h3 className="text-2xl font-serif text-charcoal mt-10 mb-4">{children}</h3>,
+    normal: ({ children }: { children?: React.ReactNode }) => <p className="text-charcoal/70 mb-6 leading-relaxed text-lg">{children}</p>,
+  },
+  list: {
+    bullet: ({ children }: { children?: React.ReactNode }) => <ul className="space-y-3 mb-8 ml-4">{children}</ul>,
+  },
+  listItem: {
+    bullet: ({ children }: { children?: React.ReactNode }) => (
+      <li className="flex items-start gap-3 text-charcoal/70">
+        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-muted-oak shrink-0" />
+        <span>{children}</span>
+      </li>
+    ),
+  },
+};
 
 /**
  * Memoized fetch function
@@ -18,9 +37,9 @@ import ProductGrid from "@/components/ProductGrid";
  * and once to actually build the page html), this cache ensures we only make ONE request to Sanity CMS.
  */
 const getSpecies = cache(async (slug: string) => {
-  const { data } = await sanityFetch({ 
-    query: speciesBySlugQuery, 
-    params: { slug } 
+  const { data } = await sanityFetch({
+    query: speciesBySlugQuery,
+    params: { slug }
   });
   return data;
 });
@@ -32,7 +51,7 @@ const getSpecies = cache(async (slug: string) => {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const species = await getSpecies(slug);
-  
+
   if (!species) return {};
 
   return {
@@ -63,13 +82,13 @@ export default async function SpeciesDetailPage({ params }: { params: Promise<{ 
   return (
     <main className="min-h-screen bg-sand pt-32 pb-24 px-6 md:px-12">
       <div className="max-w-7xl mx-auto">
-        <Link 
+        <Link
           href="/species"
           className="text-muted-oak text-xs uppercase tracking-widest hover:text-charcoal transition-colors mb-12 inline-block"
         >
           &larr; All Species
         </Link>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-24">
           <ClientMotionDiv
             initial={{ opacity: 0, x: -20 }}
@@ -85,7 +104,7 @@ export default async function SpeciesDetailPage({ params }: { params: Promise<{ 
             <p className="text-charcoal/70 text-lg font-sans leading-relaxed mb-12 max-w-xl">
               {species.description}
             </p>
-            
+
             {species.features && species.features.length > 0 && (
               <div className="space-y-4">
                 {species.features.map((feature: string, i: number) => (
@@ -104,16 +123,35 @@ export default async function SpeciesDetailPage({ params }: { params: Promise<{ 
             transition={{ duration: 1 }}
             className="relative aspect-square overflow-hidden"
           >
-            <Image 
-              src={imageUrl} 
-              alt={species.name} 
-              fill 
+            <Image
+              src={imageUrl}
+              alt={species.name}
+              fill
               sizes="(max-width: 1024px) 100vw, 40vw"
               className="object-cover"
               priority
             />
           </ClientMotionDiv>
         </div>
+
+        {/* Deep Content / Story & History */}
+        {species.content && species.content.length > 0 && (
+          <div className="mb-24 pt-16 border-t border-muted-oak/10 grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
+            <div className="lg:col-span-1">
+              <h2 className="text-3xl font-serif text-charcoal lowercase italic leading-tight">
+                Hitory &amp; Heritage
+              </h2>
+              <p className="text-muted-oak text-sm font-sans mt-4">
+                The history, sourcing, and architectural significance of {species.name} timber.
+              </p>
+            </div>
+            <div className="lg:col-span-2">
+              <div className="prose prose-charcoal-hansen max-w-none">
+                <PortableText value={species.content} components={ptComponents} />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Linked Products */}
         {species.products && species.products.length > 0 && (

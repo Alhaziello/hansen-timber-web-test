@@ -117,6 +117,7 @@ export default defineType({
         return !name.toLowerCase().includes('flooring') && !name.toLowerCase().includes('spc');
       }
     }),
+    /*
     defineField({
       name: 'boardOptions',
       title: 'Sizing & Pricing Menu (Boards)',
@@ -145,7 +146,16 @@ export default defineType({
           preview: {
             select: {
               title: 'species.name',
-              subtitle: 'notes'
+              subtitle: 'notes',
+              variantImage: 'variantImage',
+              speciesImage: 'species.image'
+            },
+            prepare({ title, subtitle, variantImage, speciesImage }) {
+              return {
+                title: title || 'Unnamed Variant',
+                subtitle: subtitle || 'No special notes',
+                media: variantImage || speciesImage
+              }
             }
           }
         }
@@ -153,5 +163,6 @@ export default defineType({
       description: 'Enable this to show a structured size/price grid (e.g. for Cladding, Decking, or Kitsets).',
       fieldset: 'specialized',
     }),
+    */
   ],
 })

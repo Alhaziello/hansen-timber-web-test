@@ -18,7 +18,21 @@ const config = defineConfig({
   projectId,
   dataset,
   // Add and edit the content schema in the './sanity/schemaTypes' folder
-  schema,
+  schema: {
+    types: schema.types,
+    templates: (prev) => [
+      ...prev,
+      {
+        id: 'productVariant-by-product',
+        title: 'Product Variant by Product',
+        schemaType: 'productVariant',
+        parameters: [{ name: 'productId', type: 'string' }],
+        value: (params: any) => ({
+          product: { _type: 'reference', _ref: params.productId }
+        })
+      }
+    ]
+  },
   plugins: [
     structureTool({structure}),
     // Vision is for querying with GROQ from inside the Studio

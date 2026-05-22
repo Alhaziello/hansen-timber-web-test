@@ -211,14 +211,22 @@ export default async function ProductSpeciesPage({ params }: PageProps) {
               <div className="prose-hansen text-charcoal/70 leading-relaxed text-base font-sans space-y-4">
                 {activeDescription ? (
                   <p>{activeDescription}</p>
-                ) : activeNotes ? (
-                  <p>{activeNotes}</p>
                 ) : (
                   <p>
                     Premium locally harvested timber milled at our MPI-certified site. Sourced using strict sustainable forestry processes and air-dried/kiln-finished to perfection.
                   </p>
                 )}
               </div>
+
+              {/* Special Variant Notes */}
+              {activeOption?.notes && (
+                <div className="p-4 bg-muted-oak/5 border-l-2 border-muted-oak/40 text-charcoal/80 font-sans text-sm italic rounded-r">
+                  <span className="not-italic font-bold text-[10px] uppercase tracking-widest text-muted-oak block mb-1">
+                    Special Note
+                  </span>
+                  "{activeOption.notes}"
+                </div>
+              )}
 
               {/* Sizes Matrix */}
               <div className="space-y-4 pt-4 border-t border-muted-oak/10">

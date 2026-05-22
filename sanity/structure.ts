@@ -22,9 +22,47 @@ export const structure: StructureResolver = (S) =>
             .documentId('homePage')
         ),
       S.documentTypeListItem("slab").title("Timber Slabs"),
+      
+      // Folder-like Products Navigation
+      S.listItem()
+        .title('Products')
+        .schemaType('product')
+        .child(
+          S.documentTypeList('product')
+            .title('Products')
+            .child((productId) =>
+              S.list()
+                .title('Product Options')
+                .items([
+                  // 1. Edit General Product Info
+                  S.listItem()
+                    .title('Edit General Info')
+                    .child(
+                      S.document()
+                        .schemaType('product')
+                        .documentId(productId)
+                    ),
+                  // 2. Manage Species Variant Cards
+                  S.listItem()
+                    .title('Variant Cards')
+                    .schemaType('productVariant')
+                    .child(
+                      S.documentList()
+                        .title('Variant Cards')
+                        .schemaType('productVariant')
+                        .filter('_type == "productVariant" && product._ref == $productId')
+                        .params({ productId })
+                        .initialValueTemplates([
+                          S.initialValueTemplateItem('productVariant-by-product', { productId })
+                        ])
+                    )
+                ])
+            )
+        ),
+      
       S.divider(),
-      // Filter out singletons AND slabs from the main document list
+      // Filter out singletons, slabs, products, and variants from the default list
       ...S.documentTypeListItems().filter(
-        (listItem) => !["siteSettings", "homePage", "slab", "media.tag"].includes(listItem.getId()!)
+        (listItem) => !["siteSettings", "homePage", "slab", "product", "productVariant", "media.tag"].includes(listItem.getId()!)
       ),
     ])

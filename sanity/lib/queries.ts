@@ -35,14 +35,16 @@ export const allProductsQuery = defineQuery(`
       "swatch": swatch.asset->url,
       "image": image.asset->url
     },
-    boardOptions[] {
+    "boardOptions": *[_type == "productVariant" && product._ref == ^._id] {
       species-> {
         name,
         "slug": slug.current,
         image
       },
       sizes,
-      notes
+      notes,
+      variantImage,
+      variantDescription
     }
   }
 `)
@@ -129,14 +131,16 @@ export const productBySlugQuery = defineQuery(`
       "swatch": swatch.asset->url,
       "image": image.asset->url
     },
-    boardOptions[] {
+    "boardOptions": *[_type == "productVariant" && product._ref == ^._id] {
       species-> {
         name,
         "slug": slug.current,
         image
       },
       sizes,
-      notes
+      notes,
+      variantImage,
+      variantDescription
     }
   }
 `)
@@ -165,14 +169,16 @@ export const categoryWithProductsQuery = defineQuery(`
         "swatch": swatch.asset->url,
         "image": image.asset->url
       },
-      boardOptions[] {
+      "boardOptions": *[_type == "productVariant" && product._ref == ^._id] {
         species-> {
           name,
           "slug": slug.current,
           image
         },
         sizes,
-        notes
+        notes,
+        variantImage,
+        variantDescription
       }
     }
   }
@@ -320,7 +326,7 @@ export const productAndSpeciesQuery = defineQuery(`
         "swatch": swatch.asset->url,
         "image": image.asset->url
       },
-      boardOptions[] {
+      "boardOptions": *[_type == "productVariant" && product._ref == ^._id] {
         species-> {
           name,
           "slug": slug.current,
@@ -352,7 +358,7 @@ export const productSpeciesCombinationsQuery = defineQuery(`
     species[]-> {
       "slug": slug.current
     },
-    boardOptions[] {
+    "boardOptions": *[_type == "productVariant" && product._ref == ^._id] {
       species-> {
         "slug": slug.current
       }

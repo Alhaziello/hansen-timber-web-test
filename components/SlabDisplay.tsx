@@ -11,13 +11,12 @@ interface SlabDisplayProps {
   slab: {
     name: string;
     slug: string;
-    dimensions: {
-      length: number;
-      width: number;
-      thickness: number;
+    dimensions?: {
+      length?: number;
+      width?: string | number;
+      thickness?: string | number;
     };
     status: string;
-    isSold?: boolean;
     description?: string;
     image: any;
     gallery?: any[];
@@ -30,7 +29,7 @@ interface SlabDisplayProps {
 
 export default function SlabDisplay({ slab }: SlabDisplayProps) {
   const imageUrl = slab.image ? urlFor(slab.image).url() : "/placeholder.png";
-  const isSold = slab.isSold || slab.status === "sold";
+  const isSold = slab.status === "sold";
 
   return (
     <div className="space-y-24">
@@ -50,10 +49,16 @@ export default function SlabDisplay({ slab }: SlabDisplayProps) {
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
             priority
+            loading="eager"
           />
           {isSold && (
             <div className="absolute top-8 left-8 bg-charcoal text-white px-6 py-2 rounded-full text-xs uppercase tracking-widest font-bold shadow-2xl backdrop-blur-md">
               Sold
+            </div>
+          )}
+          {slab.status === "reserved" && (
+            <div className="absolute top-8 left-8 bg-muted-oak text-white px-6 py-2 rounded-full text-xs uppercase tracking-widest font-bold shadow-2xl backdrop-blur-md">
+              Reserved
             </div>
           )}
         </ClientMotionDiv>
@@ -89,20 +94,26 @@ export default function SlabDisplay({ slab }: SlabDisplayProps) {
             <h3 className="text-xs uppercase tracking-widest font-bold text-muted-oak border-b border-muted-oak/10 pb-4">
               Specifications
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="space-y-1">
-                <p className="text-[10px] text-charcoal/40 uppercase tracking-widest font-bold">Length</p>
-                <p className="text-2xl font-serif text-charcoal">{slab.dimensions.length}mm</p>
+            {slab.dimensions?.length ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="space-y-1">
+                  <p className="text-[10px] text-charcoal/40 uppercase tracking-widest font-bold">Length</p>
+                  <p className="text-2xl font-serif text-charcoal">{slab.dimensions.length}mm</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[10px] text-charcoal/40 uppercase tracking-widest font-bold">Width</p>
+                  <p className="text-2xl font-serif text-charcoal">{slab.dimensions.width}mm</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[10px] text-charcoal/40 uppercase tracking-widest font-bold">Thickness</p>
+                  <p className="text-2xl font-serif text-charcoal">{slab.dimensions.thickness}mm</p>
+                </div>
               </div>
-              <div className="space-y-1">
-                <p className="text-[10px] text-charcoal/40 uppercase tracking-widest font-bold">Width</p>
-                <p className="text-2xl font-serif text-charcoal">{slab.dimensions.width}mm</p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-[10px] text-charcoal/40 uppercase tracking-widest font-bold">Thickness</p>
-                <p className="text-2xl font-serif text-charcoal">{slab.dimensions.thickness}mm</p>
-              </div>
-            </div>
+            ) : (
+              <p className="text-charcoal/60 font-sans text-sm italic">
+                Dimensions are currently unavailable for this unique piece. Please enquire below for full measurements.
+              </p>
+            )}
           </ClientMotionDiv>
 
           {/* Action Area */}

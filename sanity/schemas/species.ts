@@ -17,6 +17,14 @@ export default defineType({
       fieldset: 'general',
     }),
     defineField({
+      name: 'showOnSpeciesPage',
+      title: 'Show on Species Page',
+      type: 'boolean',
+      description: 'Uncheck to hide this species from the public /species listing (e.g. placeholder species used only for slab tagging).',
+      initialValue: true,
+      fieldset: 'general',
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',

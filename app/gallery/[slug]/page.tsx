@@ -34,7 +34,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const { data: project } = await sanityFetch({ 
     query: projectBySlugQuery, 
     params: { slug } 
-  });
+  }) as { data: any };
 
   if (!project) {
     notFound();

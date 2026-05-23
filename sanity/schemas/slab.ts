@@ -32,8 +32,8 @@ export default defineType({
       type: 'object',
       fields: [
         { name: 'length', title: 'Length (mm)', type: 'number' },
-        { name: 'width', title: 'Width (mm)', type: 'number' },
-        { name: 'thickness', title: 'Thickness (mm)', type: 'number' },
+        { name: 'width', title: 'Width (mm)', type: 'string' },
+        { name: 'thickness', title: 'Thickness (mm)', type: 'string' },
       ],
     }),
     defineField({
@@ -53,13 +53,6 @@ export default defineType({
         ],
       },
       initialValue: 'available',
-    }),
-    defineField({
-      name: 'isSold',
-      title: 'Is Sold?',
-      type: 'boolean',
-      initialValue: false,
-      description: 'Quick toggle to mark this slab as sold.'
     }),
     defineField({
       name: 'description',

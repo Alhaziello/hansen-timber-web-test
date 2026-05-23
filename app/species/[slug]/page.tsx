@@ -41,7 +41,7 @@ const getSpecies = cache(async (slug: string) => {
     query: speciesBySlugQuery,
     params: { slug }
   });
-  return data;
+  return data as any;
 });
 
 /**
@@ -130,6 +130,7 @@ export default async function SpeciesDetailPage({ params }: { params: Promise<{ 
               sizes="(max-width: 1024px) 100vw, 40vw"
               className="object-cover"
               priority
+              loading="eager"
             />
           </ClientMotionDiv>
         </div>

@@ -19,7 +19,7 @@ import { Species } from "@/lib/types";
  * meaning we can `await` data fetches directly inside the page without needing `useEffect`.
  */
 export default async function SpeciesPage() {
-  const { data: speciesList } = await sanityFetch({ query: allSpeciesQuery });
+  const { data: speciesList } = await sanityFetch({ query: allSpeciesQuery }) as { data: any };
 
   return (
     <main className="min-h-screen bg-sand pt-32 pb-24 px-6 md:px-12">

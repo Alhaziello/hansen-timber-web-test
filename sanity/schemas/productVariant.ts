@@ -33,11 +33,11 @@ export default defineType({
       description: 'e.g. Absolute Premium with No Knots!',
     }),
     defineField({
-      name: 'variantImage',
-      title: 'Variant Image Override',
-      type: 'image',
-      options: { hotspot: true },
-      description: 'Optional image override for this specific product/species variant.',
+      name: 'variantImages',
+      title: 'Variant Image Gallery',
+      type: 'array',
+      of: [{ type: 'image', options: { hotspot: true } }],
+      description: 'Upload one or more images specific to this product/species variant. These replace the species image on the card.',
     }),
     defineField({
       name: 'variantDescription',
@@ -51,14 +51,14 @@ export default defineType({
       productName: 'product.name',
       speciesName: 'species.name',
       notes: 'notes',
-      variantImage: 'variantImage',
+      firstImage: 'variantImages.0',
       speciesImage: 'species.image',
     },
-    prepare({ productName, speciesName, notes, variantImage, speciesImage }) {
+    prepare({ productName, speciesName, notes, firstImage, speciesImage }) {
       return {
         title: speciesName ? `${speciesName} (for ${productName || 'Unknown Product'})` : 'Unnamed Variant',
         subtitle: notes || 'No special notes',
-        media: variantImage || speciesImage,
+        media: firstImage || speciesImage,
       }
     },
   },

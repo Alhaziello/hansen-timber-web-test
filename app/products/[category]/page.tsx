@@ -15,7 +15,7 @@ const getCategory = cache(async (categoryId: string) => {
     query: categoryWithProductsQuery, 
     params: { slug: categoryId } 
   });
-  return data;
+  return data as any;
 });
 
 export async function generateMetadata({ params }: { params: Promise<{ category: string }> }): Promise<Metadata> {
@@ -61,7 +61,7 @@ export default async function CategoryDetailPage({ params }: { params: Promise<{
   let slabs = [];
 
   if (isSlabsCategory) {
-    const { data: slabsData } = await sanityFetch({ query: allSlabsQuery });
+    const { data: slabsData } = await sanityFetch({ query: allSlabsQuery }) as any;
     slabs = slabsData;
   }
 

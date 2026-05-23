@@ -20,7 +20,7 @@ export const metadata = {
 };
 
 export default async function GalleryPage() {
-  const { data: projects } = await sanityFetch({ query: allProjectsQuery });
+  const { data: projects } = await sanityFetch({ query: allProjectsQuery }) as { data: any };
 
   return (
     <main className="min-h-screen bg-sand pt-40 pb-24 px-6 md:px-12">

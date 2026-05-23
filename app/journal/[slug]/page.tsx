@@ -35,7 +35,7 @@ const getPost = cache(async (slug: string): Promise<SanityArticle | null> => {
     query: postBySlugQuery, 
     params: { slug } 
   });
-  return data;
+  return data as SanityArticle | null;
 });
 
 /**

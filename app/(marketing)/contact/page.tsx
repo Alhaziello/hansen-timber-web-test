@@ -5,11 +5,11 @@ import { siteSettingsQuery } from "@/sanity/lib/queries";
 import ContactForm from "@/components/ContactForm";
 
 export default async function ContactPage() {
-  const { data: settings } = await sanityFetch({ query: siteSettingsQuery });
+  const { data: settings } = await sanityFetch({ query: siteSettingsQuery }) as { data: any };
 
   const displayPhone = settings?.phoneNumber || "09 242 3644";
   const displayEmail = settings?.email || "enquiries@hansentimber.co.nz";
-  const displayAddress = settings?.address || "52 Eyres Road, Clevedon 2585, New Zealand";
+  const displayAddress = settings?.address || "32 Eyres Road, Clevedon 2585, New Zealand";
 
   return (
     <main className="min-h-screen bg-sand pt-32 pb-24 px-6 md:px-12">

@@ -58,13 +58,6 @@ export default defineType({
       fieldset: 'visuals',
     }),
     defineField({
-      name: 'content',
-      title: 'Deep Content (Story & Details)',
-      type: 'array',
-      of: [{ type: 'block' }],
-      fieldset: 'general',
-    }),
-    defineField({
       name: 'species',
       title: 'Available Timber Species',
       type: 'array',
@@ -84,7 +77,19 @@ export default defineType({
       name: 'specFiles',
       title: 'Downloadable Spec Files',
       type: 'array',
-      of: [{ type: 'file' }],
+      of: [
+        {
+          type: 'file',
+          fields: [
+            {
+              name: 'title',
+              type: 'string',
+              title: 'Display Title',
+              description: 'e.g. "Installation Guide" or "Technical Data Sheet" (falls back to filename if blank)'
+            }
+          ]
+        }
+      ],
       description: 'PDFs or Documents for architects (Spec files, user guides, etc.)',
       fieldset: 'technical',
     }),
@@ -162,7 +167,33 @@ export default defineType({
       ],
       description: 'Enable this to show a structured size/price grid (e.g. for Cladding, Decking, or Kitsets).',
       fieldset: 'specialized',
-    }),
     */
+    defineField({
+      name: 'faqs',
+      title: 'Frequently Asked Questions (FAQs)',
+      type: 'array',
+      fieldset: 'general',
+      description: 'Add product-specific FAQs here.',
+      of: [
+        {
+          type: 'object',
+          name: 'faqItem',
+          title: 'FAQ Item',
+          fields: [
+            defineField({
+              name: 'question',
+              title: 'Question',
+              type: 'string',
+            }),
+            defineField({
+              name: 'answer',
+              title: 'Answer',
+              type: 'array',
+              of: [{ type: 'block' }],
+            }),
+          ],
+        },
+      ],
+    }),
   ],
 })

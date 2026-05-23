@@ -144,7 +144,7 @@ export default function Footer() {
         <div className="flex gap-6 text-xs text-sand/70 font-light">
           <span>09 242 3644</span>
           <span className="hidden md:inline">&bull;</span>
-          <span>52 Eyres Road, Clevedon 2585, NZ</span>
+          <span>32 Eyres Road, Clevedon 2585, NZ</span>
         </div>
       </div>
     </footer>

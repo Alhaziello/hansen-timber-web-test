@@ -21,7 +21,37 @@ export const structure: StructureResolver = (S) =>
             .schemaType('homePage')
             .documentId('homePage')
         ),
-      S.documentTypeListItem("slab").title("Timber Slabs"),
+      S.listItem()
+        .title('Timber Slabs')
+        .schemaType('slab')
+        .child(
+          S.list()
+            .title('Timber Slabs')
+            .items([
+              S.listItem()
+                .title('All Slabs')
+                .schemaType('slab')
+                .child(
+                  S.documentTypeList('slab')
+                    .title('All Slabs')
+                ),
+              S.listItem()
+                .title('Slabs by Species')
+                .schemaType('species')
+                .child(
+                  S.documentTypeList('species')
+                    .title('Select Species')
+                    .child(speciesId =>
+                      S.documentList()
+                        .title('Slabs')
+                        .schemaType('slab')
+                        .apiVersion('2024-03-14')
+                        .filter('_type == "slab" && species._ref == $speciesId')
+                        .params({ speciesId })
+                    )
+                )
+            ])
+        ),
       
       // Folder-like Products Navigation
       S.listItem()
@@ -50,6 +80,7 @@ export const structure: StructureResolver = (S) =>
                       S.documentList()
                         .title('Variant Cards')
                         .schemaType('productVariant')
+                        .apiVersion('2024-03-14')
                         .filter('_type == "productVariant" && product._ref == $productId')
                         .params({ productId })
                         .initialValueTemplates([

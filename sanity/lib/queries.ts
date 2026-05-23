@@ -38,12 +38,11 @@ export const allProductsQuery = defineQuery(`
     "boardOptions": *[_type == "productVariant" && product._ref == ^._id] {
       species-> {
         name,
-        "slug": slug.current,
-        image
+        "slug": slug.current
       },
       sizes,
       notes,
-      variantImage,
+      "variantImages": variantImages[]{ "url": asset->url, hotspot, crop },
       variantDescription
     }
   }
@@ -86,7 +85,7 @@ export const allCategoriesQuery = defineQuery(`
 `)
 
 export const allSpeciesQuery = defineQuery(`
-  *[_type == "species"] | order(name asc) {
+  *[_type == "species" && coalesce(showOnSpeciesPage, true) == true] | order(name asc) {
     _id,
     name,
     "slug": slug.current,
@@ -102,10 +101,10 @@ export const productBySlugQuery = defineQuery(`
     name,
     "id": slug.current,
     description,
-    content,
     specs,
     image,
     specFiles[] {
+      title,
       asset-> {
         url,
         originalFilename
@@ -134,13 +133,16 @@ export const productBySlugQuery = defineQuery(`
     "boardOptions": *[_type == "productVariant" && product._ref == ^._id] {
       species-> {
         name,
-        "slug": slug.current,
-        image
+        "slug": slug.current
       },
       sizes,
       notes,
-      variantImage,
+      "variantImages": variantImages[]{ "url": asset->url, hotspot, crop },
       variantDescription
+    },
+    faqs[] {
+      question,
+      answer
     }
   }
 `)
@@ -172,12 +174,11 @@ export const categoryWithProductsQuery = defineQuery(`
       "boardOptions": *[_type == "productVariant" && product._ref == ^._id] {
         species-> {
           name,
-          "slug": slug.current,
-          image
+          "slug": slug.current
         },
         sizes,
         notes,
-        variantImage,
+        "variantImages": variantImages[]{ "url": asset->url, hotspot, crop },
         variantDescription
       }
     }
@@ -217,7 +218,6 @@ export const allSlabsQuery = defineQuery(`
     "slug": slug.current,
     dimensions,
     status,
-    isSold,
     image,
     species-> {
       name,
@@ -232,7 +232,6 @@ export const slabBySlugQuery = defineQuery(`
     "slug": slug.current,
     dimensions,
     status,
-    isSold,
     description,
     image,
     gallery,
@@ -297,10 +296,10 @@ export const productAndSpeciesQuery = defineQuery(`
       name,
       "id": slug.current,
       description,
-      content,
       specs,
       image,
       specFiles[] {
+        title,
         asset-> {
           url,
           originalFilename
@@ -329,13 +328,16 @@ export const productAndSpeciesQuery = defineQuery(`
       "boardOptions": *[_type == "productVariant" && product._ref == ^._id] {
         species-> {
           name,
-          "slug": slug.current,
-          image
+          "slug": slug.current
         },
         sizes,
         notes,
-        variantImage,
+        "variantImages": variantImages[]{ "url": asset->url, hotspot, crop },
         variantDescription
+      },
+      faqs[] {
+        question,
+        answer
       }
     },
     "activeSpecies": *[_type == "species" && slug.current == $species][0] {

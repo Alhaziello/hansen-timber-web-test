@@ -15,7 +15,7 @@ export default async function ProductsPage() {
   const [{ data: products }, { data: categories }] = await Promise.all([
     sanityFetch({ query: allProductsQuery }),
     sanityFetch({ query: allCategoriesQuery }),
-  ]);
+  ]) as any;
 
   return (
     <main className="min-h-screen bg-sand pt-32 pb-24 px-6 md:px-12">

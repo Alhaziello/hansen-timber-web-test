@@ -13,7 +13,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const { data: item } = await sanityFetch({ 
     query: isSlabs ? slabBySlugQuery : productBySlugQuery, 
     params: { slug: id } 
-  });
+  }) as any;
 
   if (!item) {
     notFound();

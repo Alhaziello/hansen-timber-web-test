@@ -34,7 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     sanityFetch({ query: allCategoriesQuery }),
     sanityFetch({ query: allProductsQuery }),
     sanityFetch({ query: allSpeciesQuery }),
-  ]);
+  ]) as any[];
 
   const articles = (postsResponse?.data || []) as SanitySitemapArticle[];
 

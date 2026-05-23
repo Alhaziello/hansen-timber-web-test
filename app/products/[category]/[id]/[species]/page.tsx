@@ -71,10 +71,12 @@ export default async function ProductSpeciesPage({ params }: PageProps) {
   const { category, id, species } = await params;
 
   // Combined fetch of parent product and specific active species info
-  const { data } = await sanityFetch({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: rawData } = await sanityFetch({
     query: productAndSpeciesQuery,
     params: { id, species },
   });
+  const data = rawData as any;
 
   if (!data || !data.product || !data.activeSpecies) {
     notFound();
@@ -89,15 +91,21 @@ export default async function ProductSpeciesPage({ params }: PageProps) {
   const activeSizes: string[] = activeOption?.sizes || [];
 
   // Coalescing: prefer variant override images/descriptions, fallback to generic species data
-  const heroImage = activeOption?.variantImage || activeSpecies.image;
+  const variantImageUrls: string[] = (activeOption?.variantImages ?? [])
+    .map((img: any) => img?.url)
+    .filter(Boolean);
+
   const activeDescription = activeOption?.variantDescription || activeSpecies.description;
   const activeNotes: string = activeOption?.notes || activeDescription || "";
+  const validSpecFiles = product.specFiles?.filter((f: any) => f?.asset?.url) || [];
 
-  // Set up carousel images
-  const carouselImages = [
-    getImageUrl(heroImage),
-    getImageUrl(product.image),
-  ].filter(Boolean);
+  // Build carousel: use variant images if available, otherwise fall back to species + product images
+  const carouselImages: string[] = variantImageUrls.length > 0
+    ? variantImageUrls
+    : [
+        getImageUrl(activeSpecies.image),
+        getImageUrl(product.image),
+      ].filter((u) => u && u !== "/placeholder.png");
 
   return (
     <main className="min-h-screen bg-sand pt-32 pb-24 px-6 md:px-12">
@@ -257,13 +265,13 @@ export default async function ProductSpeciesPage({ params }: PageProps) {
               </div>
 
               {/* Downloadable Spec Files */}
-              {product.specFiles && product.specFiles.length > 0 && (
+              {validSpecFiles.length > 0 && (
                 <div className="space-y-4 pt-4 border-t border-muted-oak/10">
                   <h4 className="text-xs uppercase tracking-widest font-sans font-semibold text-charcoal/40 pb-2">
                     Technical Specifications
                   </h4>
                   <div className="space-y-2">
-                    {product.specFiles.map((file: any, fIdx: number) => (
+                    {validSpecFiles.map((file: any, fIdx: number) => (
                       <a
                         key={fIdx}
                         href={`${file.asset.url}?dl=`}
@@ -276,9 +284,11 @@ export default async function ProductSpeciesPage({ params }: PageProps) {
                         </div>
                         <div className="flex-1 overflow-hidden">
                           <p className="text-[10px] uppercase tracking-widest font-bold text-charcoal truncate">
-                            {file.asset.originalFilename || "Specification PDF"}
+                            {file.title || file.asset.originalFilename || "Specification PDF"}
                           </p>
-                          <p className="text-[10px] text-charcoal/40">Technical Download</p>
+                          <p className="text-[10px] text-charcoal/40">
+                            {file.title ? (file.asset.originalFilename || "Technical Download") : "Technical Download"}
+                          </p>
                         </div>
                       </a>
                     ))}

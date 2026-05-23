@@ -1,6 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { urlFor } from "@/sanity/lib/image";
+
+interface VariantImage {
+  url: string;
+  hotspot?: any;
+  crop?: any;
+}
 
 interface Species {
   _id?: string;
@@ -9,14 +14,13 @@ interface Species {
   description?: string;
   tagline?: string;
   features?: string[];
-  image?: any;
 }
 
 interface BoardOption {
   species: Species;
   sizes?: string[];
   notes?: string;
-  variantImage?: any;
+  variantImages?: VariantImage[];
   variantDescription?: string;
 }
 
@@ -42,17 +46,6 @@ export default function SpeciesCardGrid({
         notes: s.description || s.tagline || "",
       }));
 
-  const getImageUrl = (source: any) => {
-    if (!source) return "/placeholder.png";
-    if (typeof source === "string") return source;
-    if (source.asset?.url) return source.asset.url;
-    try {
-      return urlFor(source).url();
-    } catch (e) {
-      return "/placeholder.png";
-    }
-  };
-
   if (items.length === 0) return null;
 
   return (
@@ -67,7 +60,7 @@ export default function SpeciesCardGrid({
       {/* Static Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {items.map((item, idx) => {
-          const speciesImage = getImageUrl(item.species.image);
+          const cardImageUrl = item.variantImages?.[0]?.url ?? "/placeholder.png";
           const hasSizes = item.sizes && item.sizes.length > 0;
           const speciesSlug = item.species.slug;
 
@@ -77,10 +70,10 @@ export default function SpeciesCardGrid({
                 href={`/products/${categorySlug}/${productSlug}/${speciesSlug}`}
                 className="group absolute inset-0 cursor-pointer overflow-hidden rounded-lg border border-muted-oak/10 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col justify-end p-8"
               >
-                {/* Background Timber Grain Image */}
+                {/* Background Variant Image */}
                 <div className="absolute inset-0 z-0 overflow-hidden">
                   <Image
-                    src={speciesImage}
+                    src={cardImageUrl}
                     alt={item.species.name}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

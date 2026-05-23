@@ -14,7 +14,7 @@ export default async function Home() {
   ] = await Promise.all([
     sanityFetch({ query: homePageQuery }),
     sanityFetch({ query: allSpeciesQuery }),
-  ]);
+  ]) as any;
 
 
   return (

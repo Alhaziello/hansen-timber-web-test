@@ -4,29 +4,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { PortableText } from "@portabletext/react";
 import { ClientMotionDiv } from "./ClientMotionDiv";
 import TechnicalTable from "./TechnicalTable";
 import SpeciesCardGrid from "./SpeciesCardGrid";
 import { urlFor } from "@/sanity/lib/image";
-
-const ptComponents = {
-  block: {
-    h3: ({ children }: { children?: React.ReactNode }) => <h3 className="text-2xl font-serif text-charcoal mt-10 mb-4">{children}</h3>,
-    normal: ({ children }: { children?: React.ReactNode }) => <p className="text-charcoal/70 mb-6 leading-relaxed text-lg">{children}</p>,
-  },
-  list: {
-    bullet: ({ children }: { children?: React.ReactNode }) => <ul className="space-y-3 mb-8 ml-4">{children}</ul>,
-  },
-  listItem: {
-    bullet: ({ children }: { children?: React.ReactNode }) => (
-      <li className="flex items-start gap-3 text-charcoal/70">
-        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-muted-oak shrink-0" />
-        <span>{children}</span>
-      </li>
-    ),
-  },
-};
+import FaqAccordion from "./FaqAccordion";
+import TechnicalDownloads from "./TechnicalDownloads";
 
 interface ColorVariant {
   name: string;
@@ -58,6 +41,9 @@ export default function ProductDisplay({ product, category }: ProductDisplayProp
 
   const mainImageUrl = selectedColor ? getImageUrl(selectedColor.image) : getImageUrl(product.image);
 
+  const validSchematics = product.schematics?.filter((s: any) => s?.asset?.url) || [];
+  const validSpecFiles = product.specFiles?.filter((f: any) => f?.asset?.url) || [];
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
       {/* Visual Side */}
@@ -74,7 +60,7 @@ export default function ProductDisplay({ product, category }: ProductDisplayProp
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover transition-all duration-700"
-            priority
+            loading="eager"
           />
         </div>
 
@@ -124,15 +110,11 @@ export default function ProductDisplay({ product, category }: ProductDisplayProp
           {product.name}
         </h1>
 
-        {/* Extended Editorial Content */}
+        {/* Short Product Description */}
         <div className="prose-hansen max-w-xl">
-          {product.content ? (
-            <PortableText value={product.content} components={ptComponents} />
-          ) : (
-            <p className="text-charcoal/70 text-lg font-sans leading-relaxed mb-12">
-              {product.description}
-            </p>
-          )}
+          <p className="text-charcoal/70 text-lg font-sans leading-relaxed mb-12">
+            {product.description}
+          </p>
         </div>
 
         {/* Global Premium Feature List (Key Attributes) */}
@@ -151,11 +133,11 @@ export default function ProductDisplay({ product, category }: ProductDisplayProp
         )}
 
         {/* Profiles & Schematics Section */}
-        {product.schematics && product.schematics.length > 0 && (
+        {validSchematics.length > 0 && (
           <div className="mt-12 pt-12 border-t border-muted-oak/10">
             <h2 className="text-xs uppercase tracking-widest font-sans font-semibold text-charcoal/40 mb-8">Technical Profiles</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {product.schematics.map((schematic: any, i: number) => (
+              {validSchematics.map((schematic: any, i: number) => (
                 <div key={i} className="bg-white p-8 rounded-lg border border-muted-oak/10 flex items-center justify-center">
                   <Image
                     src={urlFor(schematic).url()}
@@ -171,59 +153,17 @@ export default function ProductDisplay({ product, category }: ProductDisplayProp
         )}
 
         {/* Technical Downloads Section */}
-        {product.specFiles && product.specFiles.length > 0 && (
-          <div className="mt-12 pt-12 border-t border-muted-oak/10">
-            <h2 className="text-xs uppercase tracking-widest font-sans font-semibold text-charcoal/40 mb-8">Technical Downloads</h2>
-            <div className="space-y-3">
-              {product.specFiles.map((file: any, i: number) => (
-                <a
-                  key={i}
-                  href={`${file.asset.url}?dl=`}
-                  className="flex items-center gap-4 group p-4 border border-muted-oak/10 hover:border-charcoal transition-colors bg-white/50"
-                >
-                  <div className="w-10 h-10 flex items-center justify-center bg-muted-oak/5 text-muted-oak group-hover:bg-charcoal group-hover:text-white transition-colors">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-[10px] uppercase tracking-widest font-bold text-charcoal">Specification File</p>
-                    <p className="text-xs text-charcoal/50">Download technical data sheet</p>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Schematics Section */}
-        {product.schematics && product.schematics.length > 0 && (
-          <div className="mt-12 pt-12 border-t border-muted-oak/10">
-            <h2 className="text-xs uppercase tracking-widest font-sans font-semibold text-charcoal/40 mb-6">Profiles & Schematics</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {product.schematics.map((schematic: any, idx: number) => (
-                <div key={idx} className="relative aspect-square bg-white border border-muted-oak/10 p-4">
-                  <Image
-                    src={getImageUrl(schematic)}
-                    alt={`Schematic ${idx + 1}`}
-                    fill
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                    className="object-contain p-4 grayscale hover:grayscale-0 transition-all duration-500"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <Link
-          href={`/contact?subject=Sample Request - ${product.name}${selectedColor ? ` (${selectedColor.name})` : ""}&message=I would like to request a sample pack for the ${product.name} product${selectedColor ? ` in the ${selectedColor.name} color variant` : ""}.`}
-          className="mt-12 block w-fit"
-        >
-          <button className="bg-charcoal text-sand px-10 py-5 uppercase tracking-[0.2em] text-sm hover:bg-muted-oak hover:text-charcoal transition-all duration-300">
-            Request Sample Pack
-          </button>
-        </Link>
+        <div className="mt-12 pt-12 border-t border-muted-oak/10">
+          <TechnicalDownloads
+            downloads={validSpecFiles.length > 0 ? validSpecFiles.map((file: any) => ({
+              id: file._key || file.asset?._id || Math.random().toString(),
+              title: file.title || "Specification File",
+              filename: file.asset?.originalFilename || "Download file",
+              url: file.asset?.url ? `${file.asset.url}?dl=` : "#",
+            })) : undefined}
+            sampleRequestUrl={`/contact?subject=Sample Request - ${product.name}${selectedColor ? ` (${selectedColor.name})` : ""}&message=I would like to request a sample pack for the ${product.name} product${selectedColor ? ` in the ${selectedColor.name} color variant` : ""}.`}
+          />
+        </div>
       </ClientMotionDiv>
 
       {/* Interactive Species Specification Cards */}
@@ -234,6 +174,17 @@ export default function ProductDisplay({ product, category }: ProductDisplayProp
             species={product.species}
             categorySlug={category}
             productSlug={product.id}
+          />
+        </div>
+      )}
+
+      {/* Dynamic Product-Level FAQ Section */}
+      {product.faqs && product.faqs.length > 0 && (
+        <div className="lg:col-span-2 mt-16 pt-16 border-t border-muted-oak/10">
+          <FaqAccordion
+            title={`frequently asked questions about ${product.name}`}
+            subtitle="Product FAQ"
+            items={product.faqs}
           />
         </div>
       )}

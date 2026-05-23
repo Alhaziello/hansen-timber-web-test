@@ -1,11 +1,9 @@
-/* eslint-disable */
 "use client";
 
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ClientMotionDiv } from "./ClientMotionDiv";
-import TechnicalTable from "./TechnicalTable";
 import SpeciesCardGrid from "./SpeciesCardGrid";
 import { urlFor } from "@/sanity/lib/image";
 import FaqAccordion from "./FaqAccordion";

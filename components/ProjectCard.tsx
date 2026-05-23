@@ -1,3 +1,10 @@
+/**
+ * @file ProjectCard.tsx
+ * @description A visual card component displaying an individual architectural project from the gallery.
+ * Implements scroll-triggered, staggered entrance animations.
+ * @dependencies framer-motion, next/image, next/link
+ * @state Stateless client component (relies on Framer Motion viewport triggers).
+ */
 "use client";
 
 import { motion } from "framer-motion";
@@ -8,24 +15,24 @@ import { urlFor } from "@/sanity/lib/image";
 import { Project } from "@/lib/types";
 
 /**
- * ProjectCard Component
- * 
- * Displays an individual architectural project (like a home or commercial building) that utilized Hansen Timber products.
- * Includes a hover effect that scales the image and reveals an overlay.
- * 
- * Beginner Note:
- * We use the `index` prop alongside Framer Motion's `delay` property to create a cascading
- * entrance animation. If index = 1, it waits 0.1s. If index = 2, it waits 0.2s.
+ * Configuration properties for the ProjectCard component.
  */
 interface ProjectCardProps {
+  /** The project data object retrieved from Sanity CMS. */
   project: Project;
+  /** The index of the card in the gallery grid, used to calculate animation stagger delay. */
   index: number;
 }
 
+/**
+ * Renders an animated project summary card with hover reveals.
+ */
 export default function ProjectCard({ project, index }: ProjectCardProps) {
   const imageUrl = project.mainImage ? urlFor(project.mainImage).url() : "/placeholder.png";
 
   return (
+    // NOTE: `whileInView` triggers the animation only when the card scrolls into the viewport.
+    // EDGE CASE: `viewport={{ once: true }}` prevents the animation from re-playing if the user scrolls up and down rapidly, saving CPU overhead.
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}

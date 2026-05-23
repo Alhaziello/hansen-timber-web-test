@@ -1,3 +1,9 @@
+/**
+ * @file ProjectGallery.tsx
+ * @description Renders a responsive, staggered-animated grid of images for an individual architectural project.
+ * @dependencies framer-motion, next/image
+ * @state Stateless client component (relies on Framer Motion viewport triggers).
+ */
 /* eslint-disable */
 "use client";
 
@@ -6,19 +12,16 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 
 /**
- * ProjectGallery Component
- * 
- * Displays a Masonry-style grid of images (currently arranged in uniform squares/rectangles).
- * This component maps over an array of Sanity image references and renders them using `next/image`.
- * 
- * Beginner Note:
- * `next/image` is a core Next.js feature that automatically optimizes images. We use the `fill` 
- * property here, which means the image will stretch to fill its parent `<motion.div>`.
+ * Configuration properties for the ProjectGallery component.
  */
 interface ProjectGalleryProps {
+  /** An array of unresolved Sanity image objects. */
   images: any[];
 }
 
+/**
+ * Renders a Masonry-style grid of project images.
+ */
 export default function ProjectGallery({ images }: ProjectGalleryProps) {
   if (!images || images.length === 0) return null;
 
@@ -26,6 +29,8 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
       {images.map((image, index) => (
         <motion.div
+          // EDGE CASE: While using `index` as a key is generally an anti-pattern in React, 
+          // this image array is static (no reordering/deletions), making it safe here.
           key={index}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -45,4 +50,3 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
     </div>
   );
 }
-

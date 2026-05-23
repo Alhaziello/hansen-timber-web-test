@@ -1,3 +1,11 @@
+/**
+ * @file page.tsx (Journal Article)
+ * @description Dynamic route for rendering individual journal or blog articles.
+ * Integrates dynamic SEO metadata generation and PortableText rendering.
+ * @dependencies @portabletext/react, next/image, sanityFetch, ShareButton
+ * @route /journal/[slug]
+ * @state Dynamic Server Component (fetches post data based on URL slug).
+ */
 import { sanityFetch } from "@/sanity/lib/live";
 import { postBySlugQuery } from "@/sanity/lib/queries";
 import { ClientMotionDiv, ClientMotionHeader, ClientMotionFooter } from "@/components/ClientMotionDiv";
@@ -29,6 +37,8 @@ interface SanityArticle {
 
 /**
  * Memoized fetch function for Post data
+ * EDGE CASE: We wrap this in React's `cache()` so that calling it in both `generateMetadata` 
+ * and `ArticlePage` only results in a single network request to Sanity.
  */
 const getPost = cache(async (slug: string): Promise<SanityArticle | null> => {
   const { data } = await sanityFetch({ 
@@ -40,8 +50,11 @@ const getPost = cache(async (slug: string): Promise<SanityArticle | null> => {
 
 /**
  * Dynamic Metadata for SEO
+ * WARNING: Generates <title> and <meta> tags dynamically based on the post content.
+ * We use the `getPost` helper here which is automatically deduplicated by React `cache()`.
  */
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  // NOTE: Awaits the route params as required by Next.js 15.
   const { slug } = await params;
   const post = await getPost(slug);
   
@@ -56,10 +69,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+/**
+ * Asynchronously renders the individual journal article page.
+ * Uses the memoized `getPost` helper to fetch data.
+ */
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  // NOTE: Awaits the route params as required by Next.js 15 before extracting the slug.
   const { slug } = await params;
   const article = await getPost(slug);
 
+  // EDGE CASE: If the post is not found (e.g., unpublished or typo in URL), immediately trigger a 404 response.
   if (!article) notFound();
 
   return (

@@ -1,14 +1,28 @@
+/**
+ * @file FaqAccordion.tsx
+ * @description An interactive, animated accordion component for displaying Frequently Asked Questions.
+ * Handles both plain ReactNode content and rich text arrays originating from Sanity CMS via PortableText.
+ * @dependencies framer-motion, @portabletext/react
+ * @state Manages the currently expanded accordion item index (allows only one open at a time).
+ */
 "use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PortableText } from "@portabletext/react";
 
+/**
+ * Defines the structure for a single FAQ entry.
+ */
 export interface FaqItem {
+  /** The question displayed in the accordion header. */
   question: string;
+  /** The answer content. Can be a raw ReactNode or a Sanity Portable Text block array. */
   answer: any; // Accepts Sanity Portable Text array or custom ReactNode
 }
 
+// NOTE: Custom PortableText serializers specifically tuned for the FAQ context.
+// EDGE CASE: External links must open in a new tab securely to prevent tab hijacking (`noopener noreferrer`).
 const faqPtComponents = {
   block: {
     normal: ({ children }: { children?: React.ReactNode }) => (
@@ -33,10 +47,17 @@ const faqPtComponents = {
   },
 };
 
+/**
+ * Configuration properties for the FaqAccordion component.
+ */
 interface FaqAccordionProps {
+  /** Optional section title. Defaults to "frequently asked questions" */
   title?: string;
+  /** Optional eyebrow subtitle above the main title. */
   subtitle?: string;
+  /** Array of FAQ items to render. */
   items: FaqItem[];
+  /** Optional tailwind classes for the outer wrapper. */
   className?: string;
 }
 
@@ -112,6 +133,8 @@ export default function FaqAccordion({
                 </button>
 
                 {/* Collapsible Answer Panel */}
+                {/* WARNING: `AnimatePresence` allows Framer Motion to animate the component out of the DOM safely. 
+                    `initial={false}` prevents the layout from animating on initial server mount. */}
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div

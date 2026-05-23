@@ -1,3 +1,10 @@
+/**
+ * @file SlabDisplay.tsx
+ * @description The primary presentation component for individual, unique timber slabs.
+ * Handles specialized display logic such as conditional "Sold"/"Reserved" badges and dynamic dimension tables.
+ * @dependencies framer-motion, next/image, next/link
+ * @state Stateless client component, utilizes Framer Motion for scroll and entrance animations.
+ */
 /* eslint-disable */
 "use client";
 
@@ -7,7 +14,11 @@ import { motion } from "framer-motion";
 import { urlFor } from "@/sanity/lib/image";
 import { ClientMotionDiv } from "./ClientMotionDiv";
 
+/**
+ * Configuration properties for the SlabDisplay component.
+ */
 interface SlabDisplayProps {
+  /** The detailed slab data object retrieved from Sanity CMS. */
   slab: {
     name: string;
     slug: string;
@@ -27,8 +38,15 @@ interface SlabDisplayProps {
   };
 }
 
+/**
+ * Renders the detailed view of a single timber slab, including its gallery and specifications.
+ */
 export default function SlabDisplay({ slab }: SlabDisplayProps) {
+  // NOTE: Generates the main hero image, falling back to a placeholder if not provided by the CMS.
   const imageUrl = slab.image ? urlFor(slab.image).url() : "/placeholder.png";
+  
+  // EDGE CASE: If a slab is marked as sold, we change the enquiry button text and destination URL
+  // to prompt the user to ask for "similar slabs" rather than this exact piece.
   const isSold = slab.status === "sold";
 
   return (

@@ -1,3 +1,11 @@
+/**
+ * @file template.tsx (Global Page Transitions)
+ * @description Next.js 15 template file used to wrap route changes with Framer Motion animations.
+ * Unlike `layout.tsx`, `template.tsx` forces a remount on navigation, enabling exit/enter animations.
+ * @dependencies framer-motion, next/navigation
+ * @route / (Applies to all routes dynamically)
+ * @state Client Component.
+ */
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
@@ -10,8 +18,8 @@ import { usePathname } from "next/navigation";
 export default function Template({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   
-  // Sanity Studio handles its own internal routing and animations.
-  // We must bypass Framer Motion here to prevent the Studio from remounting/flashing on every click.
+  // EDGE CASE: Sanity Studio handles its own internal routing and animations.
+  // WARNING: We must bypass Framer Motion here to prevent the Studio from remounting/flashing on every click.
   if (pathname?.startsWith("/studio")) {
     return <>{children}</>;
   }

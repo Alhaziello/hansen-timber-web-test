@@ -1,23 +1,29 @@
+/**
+ * @file page.tsx (Privacy Policy)
+ * @description A static text-heavy legal page outlining Hansen Timber's privacy policies and data handling.
+ * Utilizes Tailwind Typography (prose) for effortless styling of HTML text blocks.
+ * @dependencies ClientMotionDiv
+ * @route /privacy-policy
+ * @state Server Component (static HTML rendering).
+ */
 import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 
 /**
- * Privacy Policy Page (Marketing Page)
- * 
- * A static marketing page located in the `(marketing)` folder, meaning it is NOT a product or species.
- * It lives at the route `/privacy-policy`.
- * 
- * Beginner Note:
- * This is a "Server Component" (no "use client"). We define `metadata` directly here.
- * Next.js automatically picks up this `metadata` object to generate the `<title>` and `<meta name="description">` tags 
- * in the HTML header, which helps Google understand what this page is about.
+ * Next.js Metadata configuration for the /privacy-policy route.
+ * @see https://nextjs.org/docs/app/building-your-application/optimizing/metadata
  */
 export const metadata = {
   title: "Privacy Policy | Hansen Timber",
   description: "Our commitment to the privacy and security of your personal information.",
 };
 
+/**
+ * Renders the static Privacy Policy page.
+ */
 export default function PrivacyPolicyPage() {
   return (
+    // NOTE: This page is purely informational and static.
+    // We heavily utilize the `prose` class from `@tailwindcss/typography` to style the raw text elements elegantly.
     <main className="min-h-screen bg-sand pt-32 pb-24 px-6 md:px-12">
       <ClientMotionDiv
         initial={{ opacity: 0, y: 20 }}

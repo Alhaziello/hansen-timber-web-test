@@ -1,8 +1,19 @@
+/**
+ * @file ContactForm.tsx
+ * @description A robust client-side form component integrating with Formspree for handling customer enquiries.
+ * Supports URL pre-filling for contextual enquiries (e.g., specific slab inquiries).
+ * @dependencies next/navigation, Formspree (via fetch API)
+ * @state Manages form data, submission lifecycle (idle, submitting, error), and error messaging.
+ */
 "use client";
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+/**
+ * Renders the contact form and handles stateful submission logic.
+ * Reads optional `subject` and `message` from URL parameters to pre-fill the form.
+ */
 export default function ContactForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -34,6 +45,9 @@ export default function ContactForm() {
     setStatus("submitting");
     setErrorMessage("");
 
+    // NOTE: Formspree endpoint integration.
+    // WARNING: Ensure `NEXT_PUBLIC_FORMSPREE_ID` is set in the environment variables.
+    // Without it, the form will fail to submit in production.
     const actionUrl = `https://formspree.io/f/${process.env.NEXT_PUBLIC_FORMSPREE_ID || "PLACEHOLDER"}`;
 
     try {
@@ -81,6 +95,7 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       <input type="hidden" name="_subject" value={formData._subject} />
+      {/* EDGE CASE: Formspree honeypot field to trap spam bots. Hidden from legitimate users via inline styles and attributes. */}
       <input type="text" name="_gotcha" style={{ display: "none" }} tabIndex={-1} autoComplete="false" />
 
       <div className="space-y-1">

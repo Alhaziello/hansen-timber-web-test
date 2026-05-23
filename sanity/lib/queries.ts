@@ -103,6 +103,11 @@ export const productBySlugQuery = defineQuery(`
     description,
     specs,
     image,
+    seo {
+      metaTitle,
+      metaDescription,
+      openGraphImage
+    },
     specFiles[] {
       title,
       asset-> {

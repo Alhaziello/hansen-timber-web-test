@@ -1,4 +1,11 @@
-"use client";
+/**
+ * @file SpeciesGallery.tsx
+ * @description A showcase section listing available timber species (e.g., Pine, Macrocarpa).
+ * Features a staggered scroll-entrance animation grid.
+ * @dependencies framer-motion, next/image, next/link, react
+ * @state Client component managing a local `mounted` state flag to prevent hydration mismatches.
+ */
+"use client"; // NOTE: Because this component renders dynamic animations on the browser, it starts with `"use client"`.
 
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
@@ -8,21 +15,19 @@ import { urlFor } from "@/sanity/lib/image";
 import { Species } from "@/lib/types";
 
 /**
- * SpeciesGallery Component
- * 
- * A showcase section that lists out the available timber species (e.g., Pine, Macrocarpa).
- * Uses Framer Motion's `whileInView` to trigger an entrance animation ONLY when the user scrolls down to this section.
- * 
- * Beginner Note:
- * Because this component renders dynamic animations on the browser, it starts with `"use client"`.
- * We use `useState` and `useEffect` to set `mounted` to true only after the component has safely loaded
- * in the client's browser, preventing SSR hydration errors.
+ * Configuration properties for the SpeciesGallery component.
  */
 interface SpeciesGalleryProps {
+  /** Array of species data objects to display in the grid. */
   speciesList?: Species[];
 }
 
+/**
+ * Renders an animated, responsive grid of timber species cards.
+ */
 export default function SpeciesGallery({ speciesList = [] }: SpeciesGalleryProps) {
+  // EDGE CASE: We use `useState` and `useEffect` to set `mounted` to true only after the component 
+  // has safely loaded in the client's browser, preventing SSR hydration errors with Framer Motion.
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

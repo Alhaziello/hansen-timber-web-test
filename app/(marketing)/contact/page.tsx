@@ -1,10 +1,24 @@
+/**
+ * @file page.tsx (Contact)
+ * @description The main contact page. Fetches site-wide settings (phone, email, address) from Sanity CMS 
+ * and integrates an interactive Google Map and the ContactForm component.
+ * @dependencies next/image, ClientMotionDiv, sanityFetch, ContactForm
+ * @route /contact
+ * @state Server Component (fetches dynamic settings at request time).
+ */
 import { Suspense } from "react";
 import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 import { sanityFetch } from "@/sanity/lib/live";
 import { siteSettingsQuery } from "@/sanity/lib/queries";
 import ContactForm from "@/components/ContactForm";
 
+/**
+ * Asynchronously renders the Contact Page.
+ * Fetches site settings to display accurate contact information.
+ */
 export default async function ContactPage() {
+  // NOTE: We fetch the global site settings from Sanity to ensure phone numbers and emails are always up to date.
+  // EDGE CASE: If the CMS request fails or returns empty, we provide hardcoded fallbacks to ensure the page doesn't crash.
   const { data: settings } = await sanityFetch({ query: siteSettingsQuery }) as { data: any };
 
   const displayPhone = settings?.phoneNumber || "09 242 3644";
@@ -66,6 +80,8 @@ export default async function ContactPage() {
           </div>
 
           <div>
+            {/* WARNING: ContactForm relies on `useSearchParams` (which is dynamic).
+                Wrapping it in a Suspense boundary ensures the rest of this page can still be statically rendered or streamed efficiently. */}
             <Suspense fallback={<div className="font-serif italic text-charcoal/40">Loading form...</div>}>
               <ContactForm />
             </Suspense>

@@ -1,3 +1,11 @@
+/**
+ * @file page.tsx (Journal Index)
+ * @description The main journal/blog listing page. Queries Sanity for all published articles
+ * and displays them in a vertically scrolling feed.
+ * @dependencies sanityFetch, next/image, next/link, ClientMotionDiv
+ * @route /journal
+ * @state Server Component (Data fetching at request time).
+ */
 import { ClientMotionDiv, ClientMotionArticle } from "@/components/ClientMotionDiv";
 import Link from "next/link";
 import Image from "next/image";
@@ -17,7 +25,13 @@ interface SanityArticle {
   image: string;
 }
 
+/**
+ * Asynchronously renders the Journal Index page.
+ * Fetches all available journal articles from Sanity CMS.
+ */
 export default async function JournalPage() {
+  // NOTE: This page fetches data via Sanity's `sanityFetch` helper which is configured 
+  // to automatically handle Next.js 15 cache revalidation based on Sanity tags.
   const { data: articles } = await sanityFetch({ query: allPostsQuery });
 
   return (

@@ -1,24 +1,30 @@
+/**
+ * @file page.tsx (Trees Wanted)
+ * @description A static marketing page designed to solicit locally grown trees from property owners.
+ * Features a clean, prose-heavy layout with a prominent call to action.
+ * @dependencies next/link, ClientMotionDiv
+ * @route /nz-grown-trees-wanted
+ * @state Server Component (fully static).
+ */
 import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 import Link from "next/link";
 
 /**
- * Trees Wanted Page (Marketing Page)
- * 
- * A static marketing page located in the `(marketing)` folder, meaning it is NOT a product or species.
- * It lives at the route `/nz-grown-trees-wanted`.
- * 
- * Beginner Note:
- * This is a "Server Component" (no "use client"). We define `metadata` directly here.
- * Next.js automatically picks up this `metadata` object to generate the `<title>` and `<meta name="description">` tags 
- * in the HTML header, which helps Google understand what this page is about.
+ * Next.js Metadata configuration for the /nz-grown-trees-wanted route.
+ * @see https://nextjs.org/docs/app/building-your-application/optimizing/metadata
  */
 export const metadata = {
   title: "NZ Grown Trees Wanted | Hansen Timber",
   description: "Have premium New Zealand grown timber on your property? Hansen Timber is always looking to sustainably source local wood.",
 };
 
+/**
+ * Renders the static Trees Wanted landing page.
+ */
 export default function TreesWantedPage() {
   return (
+    // NOTE: Uses a minimalist structure to focus the user on the primary CTA (Get In Touch).
+    // Built entirely statically for optimal indexing and instant load times.
     <main className="min-h-screen bg-sand pt-32 pb-24 px-6 md:px-12">
       <ClientMotionDiv
         initial={{ opacity: 0, y: 20 }}

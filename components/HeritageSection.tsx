@@ -1,3 +1,10 @@
+/**
+ * @file HeritageSection.tsx
+ * @description A premium landing page section highlighting the company's long history and connection to the land.
+ * Features a large image, elegant typography, and scroll-triggered animations.
+ * @dependencies framer-motion, next/image, next/link
+ * @state Stateless client component (relies on Framer Motion viewport triggers).
+ */
 "use client";
 
 import { motion } from "framer-motion";
@@ -5,10 +12,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 /**
- * HeritageSection Component
- * 
- * A premium section for the landing page that highlights the company's long history
- * and connection to the land. Features a large image and elegant typography.
+ * Renders the Heritage & Trust section with animated image reveals and typography.
+ * NOTE: Uses `whileInView` for scroll-triggered animations.
  */
 export default function HeritageSection() {
   return (
@@ -23,6 +28,7 @@ export default function HeritageSection() {
             transition={{ duration: 1, ease: [0.25, 1, 0.5, 1] }}
             className="relative h-[400px] md:h-[600px] rounded-3xl overflow-hidden shadow-2xl group"
           >
+            {/* EDGE CASE: Ensure `sizes` prop is accurate to prevent Next.js Image component from downloading unnecessarily large images on mobile. */}
             <Image
               src="/images/about/IMG_2022.jpg"
               alt="The Hansen Timber Farm and Operations"

@@ -1,15 +1,26 @@
+/**
+ * @file TechnicalTable.tsx
+ * @description A straightforward, responsive data table component for displaying key-value technical specifications.
+ * @dependencies react
+ * @state Stateless functional component.
+ */
 "use client";
 
 /**
- * TechnicalTable Component
- * 
- * A simple table that displays technical specifications (like dimensions, grade, or treatment).
- * 
- * Beginner Note:
- * It takes an array of strings formatted like "Label: Value" (e.g., "Moisture: 12%").
- * It uses javascript `.split(":")` to separate the bold label from the value before rendering.
+ * Configuration properties for the TechnicalTable component.
  */
-export default function TechnicalTable({ specs }: { specs: string[] }) {
+interface TechnicalTableProps {
+  /** 
+   * An array of unparsed strings from the CMS, expected in a "Label: Value" format.
+   * e.g., ["Moisture: 12%", "Grade: Select"]
+   */
+  specs: string[];
+}
+
+/**
+ * Renders a stylized HTML table mapping raw spec strings into semantic label/value columns.
+ */
+export default function TechnicalTable({ specs }: TechnicalTableProps) {
   return (
     <div className="w-full border border-muted-oak/20 bg-white/50 backdrop-blur-sm overflow-hidden">
       <div className="grid grid-cols-2 bg-charcoal text-sand p-4 text-xs uppercase tracking-widest font-sans font-semibold">
@@ -18,6 +29,8 @@ export default function TechnicalTable({ specs }: { specs: string[] }) {
       </div>
       <div className="divide-y divide-muted-oak/10">
         {specs && specs.map((spec, index) => {
+          // NOTE: We split only on the first colon to separate the label from the value.
+          // EDGE CASE: If a value itself contains a colon (e.g., "Ratio: 1:4"), we must rejoin the remaining parts.
           const [label, ...valueParts] = spec.split(":");
           const value = valueParts.join(":").trim();
           

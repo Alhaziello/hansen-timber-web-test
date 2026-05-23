@@ -9,6 +9,7 @@ export default defineType({
     { name: 'visuals', title: 'Visual Assets' },
     { name: 'technical', title: 'Technical Specifications' },
     { name: 'specialized', title: 'Specialized Data (Flooring / Boards)' },
+    { name: 'seo', title: 'SEO & Metadata', options: { collapsible: true, collapsed: true } },
   ],
   fields: [
     defineField({
@@ -193,6 +194,36 @@ export default defineType({
             }),
           ],
         },
+      ],
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO Settings',
+      type: 'object',
+      fieldset: 'seo',
+      fields: [
+        defineField({
+          name: 'metaTitle',
+          title: 'Meta Title',
+          type: 'string',
+          description: 'Overrides the default product name for search engines. Optimal length: 50-60 chars.',
+          validation: (Rule) => Rule.max(60).warning('Titles longer than 60 characters will likely be truncated by Google.'),
+        }),
+        defineField({
+          name: 'metaDescription',
+          title: 'Meta Description',
+          type: 'text',
+          rows: 3,
+          description: 'A compelling summary for search results. Optimal length: 150-160 chars.',
+          validation: (Rule) => Rule.max(160).warning('Descriptions longer than 160 characters will likely be truncated in search results.'),
+        }),
+        defineField({
+          name: 'openGraphImage',
+          title: 'Social Share Image (Open Graph)',
+          type: 'image',
+          description: 'Image displayed when sharing the link on social media. Recommended size: 1200x630px.',
+          options: { hotspot: true },
+        }),
       ],
     }),
   ],

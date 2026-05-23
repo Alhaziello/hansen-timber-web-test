@@ -1,15 +1,14 @@
+/**
+ * @file Footer.tsx
+ * @description The global site footer containing branding, external social links, secondary navigation, and legal/contact information.
+ * @dependencies next/link
+ * @state Stateless Server Component.
+ */
 import Link from "next/link";
 
 /**
- * Footer Component
- * 
- * The main global footer that appears at the bottom of every page.
- * Contains the brand messaging, social media links, quick navigation to important pages,
- * and contact information. 
- * 
- * Beginner Note:
- * This component is "static" (it doesn't use any hooks or state), which is why we don't 
- * need the "use client" directive at the top. It renders on the server for better performance.
+ * Renders the static site footer.
+ * NOTE: Rendered entirely on the server for optimal LCP and zero client-side JS overhead.
  */
 export default function Footer() {
   return (
@@ -30,6 +29,7 @@ export default function Footer() {
           </p>
 
           <div className="flex gap-4 items-center">
+            {/* EDGE CASE: Social links must use `target="_blank"` with `rel="noopener noreferrer"` to prevent tab-hijacking vulnerabilities. */}
             {/* Instagram Icon */}
             <a
               href="https://instagram.com"

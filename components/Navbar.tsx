@@ -1,4 +1,11 @@
-"use client"; // Marks this component to be rendered on the client-side, allowing the use of React hooks like useState and useEffect.
+/**
+ * @file Navbar.tsx
+ * @description The main fixed global navigation bar. Orchestrates the transition from a transparent
+ * to a solid background based on scroll position and route context, and controls the MenuDrawer state.
+ * @dependencies next/link, next/navigation, MenuDrawer
+ * @state Manages scroll threshold boolean (`scrolled`) and drawer visibility (`isOpen`).
+ */
+"use client"; // NOTE: Marks this component to be rendered on the client-side, allowing the use of React hooks like useState and useEffect.
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -6,15 +13,7 @@ import { usePathname } from "next/navigation";
 import MenuDrawer from "./MenuDrawer";
 
 /**
- * Navbar Component
- * 
- * The main fixed navigation bar for the Hansen Timber website.
- * It features a transparent to solid background transition when scrolling,
- * and controls the state of the full-screen MenuDrawer.
- * 
- * Beginner Note:
- * - We use `useState` to track if the menu is open (`isOpen`) and if the user has scrolled down (`scrolled`).
- * - `useEffect` attaches a scroll listener to the browser window so we can change the navbar styling smoothly.
+ * Renders the responsive global navigation header.
  */
 export default function Navbar() {
   // `isOpen` tracks whether the full-screen hamburger menu is visible
@@ -22,7 +21,9 @@ export default function Navbar() {
   // `scrolled` tracks if the user has scrolled down the page, changing the navbar from transparent to a solid color
   const [scrolled, setScrolled] = useState(false);
   
-  // `usePathname` gets the current URL path.
+  // NOTE: `usePathname` gets the current URL path.
+  // EDGE CASE: If the navbar background remains transparent on internal pages, text might blend into light backgrounds.
+  // We force a solid background on all routes EXCEPT the homepage.
   const pathname = usePathname();
 
   // The useEffect hook runs once when the component mounts

@@ -1,3 +1,11 @@
+/**
+ * @file page.tsx (Species Detail)
+ * @description Dynamic route rendering deep architectural information about a specific timber species (e.g., Macrocarpa).
+ * Includes history, PortableText content, and a grid of related products that use this wood.
+ * @dependencies @portabletext/react, next/image, sanityFetch, ProductGrid
+ * @route /species/[slug]
+ * @state Dynamic Server Component (data fetches based on the slug URL parameter).
+ */
 import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -29,12 +37,9 @@ const ptComponents = {
 };
 
 /**
- * Memoized fetch function
- * 
- * Beginner Note:
- * `cache` is a React function that remembers the result of this data fetch. 
- * Because we need the species data TWICE (once to generate the `<title>` tags for SEO, 
- * and once to actually build the page html), this cache ensures we only make ONE request to Sanity CMS.
+ * Memoized fetch function for Species data
+ * EDGE CASE: We wrap this in React's `cache()` because Next.js needs this data TWICE: 
+ * once for generating metadata tags, and once for rendering the page body.
  */
 const getSpecies = cache(async (slug: string) => {
   const { data } = await sanityFetch({
@@ -45,8 +50,8 @@ const getSpecies = cache(async (slug: string) => {
 });
 
 /**
- * generateMetadata
- * Next.js automatically looks for this exact function name to build out SEO logic for dynamic pages!
+ * Dynamic Metadata for SEO
+ * WARNING: Generates <title> and <meta> tags dynamically based on the species content.
  */
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -64,15 +69,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 /** 
- * Species Detail Page (Dynamic Server Component)
- * 
- * Resolves URLs like `/species/macrocarpa`. 
- * Displays deep information about the wood type and maps out which products use it.
+ * Asynchronously renders the individual species detail page.
  */
 export default async function SpeciesDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  // NOTE: Awaits the route params as required by Next.js 15 before extracting the slug.
   const { slug } = await params;
   const species = await getSpecies(slug);
 
+  // EDGE CASE: If the species does not exist in Sanity, return a 404 immediately.
   if (!species) {
     notFound();
   }

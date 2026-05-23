@@ -1,3 +1,10 @@
+/**
+ * @file ArchitecturalCarousel.tsx
+ * @description A high-performance, continuously draggable image carousel with hardware-accelerated parallax effects.
+ * Designed specifically for architectural showcases, providing fluid motion and precise scroll progress tracking.
+ * @dependencies embla-carousel-react, framer-motion (implicitly via architecture), next/image
+ * @state Manages scroll progress (0-1), active slide index, and dynamic parallax translation offsets per slide.
+ */
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
@@ -5,6 +12,9 @@ import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import { EmblaCarouselType } from "embla-carousel";
 
+/**
+ * Represents a single slide within the architectural carousel.
+ */
 export interface CarouselItem {
   id: string;
   title: string;
@@ -13,6 +23,9 @@ export interface CarouselItem {
   imageUrl: string;
 }
 
+/**
+ * Configuration properties for the ArchitecturalCarousel component.
+ */
 interface ArchitecturalCarouselProps {
   items?: CarouselItem[];
   title?: string;
@@ -62,6 +75,8 @@ export default function ArchitecturalCarousel({
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "center",
     containScroll: false,
+    // WARNING: dragFree allows fluid momentum scrolling instead of rigid slide snapping.
+    // This breaks standard pagination semantics but drastically improves architectural feel.
     dragFree: true, // Enables fluid, continuous drag physics without rigid snapping
     loop: false,
   });
@@ -76,7 +91,8 @@ export default function ArchitecturalCarousel({
     setScrollProgress(progress);
 
     // 2. Parallax Calculation
-    // Compares each slide's snap position against the current scroll progress
+    // NOTE: Compares each slide's snap position against the current scroll progress
+    // EDGE CASE: Rapid scrolling can cause visual tearing if translation isn't hardware accelerated.
     const snaps = api.scrollSnapList();
     const currentScroll = api.scrollProgress();
 

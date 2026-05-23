@@ -1,3 +1,10 @@
+/**
+ * @file CollectionsView.tsx
+ * @description The primary interactive layout for browsing the architectural timber inventory. 
+ * Provides client-side filtering capabilities across loaded product and category data.
+ * @dependencies framer-motion, ProductGrid
+ * @state Manages active category filter ID to dynamically derive the rendered product list.
+ */
 "use client";
 
 import { motion } from "framer-motion";
@@ -6,25 +13,22 @@ import ProductGrid from "./ProductGrid";
 import { Product, Category } from "@/lib/types";
 
 /**
- * CollectionsView Component
- * 
- * The main interactive component for browsing products. It takes an array of products
- * and categories, and allows the user to filter the list using a row of buttons.
- * 
- * Beginner Note:
- * - `useState` tracks `activeFilter`. When a user clicks a button, this state updates.
- * - Because `activeFilter` changes, React re-renders this component.
- * - During re-render, `filteredProducts` is dynamically recalculated using the `.filter()` method.
+ * Configuration properties for the CollectionsView component.
  */
 interface CollectionsViewProps {
+  /** Full inventory of statically generated product items. */
   products: Product[];
+  /** Available architectural categories for filtering. */
   categories: Category[];
 }
 
 export default function CollectionsView({ products, categories }: CollectionsViewProps) {
-  // `activeFilter` tracks the ID of the currently selected category. Defaults to "all".
+  // NOTE: `activeFilter` tracks the ID of the currently selected category. Defaults to "all".
+  // Because `activeFilter` changes, React re-renders this component.
+  // During re-render, `filteredProducts` is dynamically recalculated using the `.filter()` method.
   const [activeFilter, setActiveFilter] = useState("all");
 
+  // EDGE CASE: Ensure type safety for `p.category?.id` to prevent crashes on products missing a category mapping.
   const filteredProducts = activeFilter === "all" 
     ? products 
     : products.filter((p: any) => p.category?.id === activeFilter);

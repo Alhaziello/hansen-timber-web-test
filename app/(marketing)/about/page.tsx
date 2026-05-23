@@ -1,16 +1,17 @@
+/**
+ * @file page.tsx (About)
+ * @description The main marketing page detailing the history and legacy of Hansen Timber.
+ * Uses a split layout with sticky images and a scrolling prose section.
+ * @dependencies next/image, ClientMotionDiv
+ * @route /about
+ * @state Server Component (static rendering by default).
+ */
 import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 import Image from "next/image";
 
 /**
- * About Page (Marketing Page)
- * 
- * A static marketing page located in the `(marketing)` folder, meaning it is NOT a product or species.
- * It lives at the route `/about`.
- * 
- * Beginner Note:
- * This is a "Server Component" (no "use client"). We define `metadata` directly here.
- * Next.js automatically picks up this `metadata` object to generate the `<title>` and `<meta name="description">` tags 
- * in the HTML header, which helps Google understand what this page is about.
+ * Next.js Metadata configuration for the /about route.
+ * @see https://nextjs.org/docs/app/building-your-application/optimizing/metadata
  */
 export const metadata = {
   title: "About Us | Hansen Timber",
@@ -18,8 +19,13 @@ export const metadata = {
     "Learn about the rich history of Hansen Timber, dating back to 1874.",
 };
 
+/**
+ * Renders the static About Us marketing page.
+ */
 export default function AboutPage() {
   return (
+    // NOTE: This page is fully static. Since it doesn't fetch dynamic data or use request-time 
+    // headers/cookies, Next.js will prerender this as static HTML at build time for maximum performance.
     <main className="min-h-screen bg-sand pt-32 pb-32">
       {/* Hero Section */}
       <section className="px-6 md:px-12 max-w-6xl mx-auto mb-20 text-center">
@@ -52,6 +58,8 @@ export default function AboutPage() {
         {/* Left Column - Sticky Images */}
         <div className="lg:sticky top-28 self-start h-[80vh] lg:h-[80vh] xl:h-[calc(100vh_-_8rem)] flex flex-col gap-6 lg:gap-8 w-full">
           {/* First Image */}
+          {/* EDGE CASE: We use WebkitMaskImage here to create a subtle radial fade out on the borders. 
+              Be aware this might not render consistently on older browsers without webkit prefixes. */}
           <div
             className="relative flex-1 w-full rounded-3xl overflow-hidden shadow-xl group border border-white/10"
             style={{ WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}

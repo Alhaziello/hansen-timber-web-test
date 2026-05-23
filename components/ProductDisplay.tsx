@@ -1,3 +1,11 @@
+/**
+ * @file ProductDisplay.tsx
+ * @description The primary presentation layer for individual product pages (e.g., Exterior Cladding).
+ * Orchestrates the display of imagery, technical specifications, color swatches, and deep-link routing
+ * to specific species variants.
+ * @dependencies framer-motion, next/image, SpeciesCardGrid, FaqAccordion, TechnicalDownloads
+ * @state Manages localized state for the currently selected visual color swatch variant.
+ */
 "use client";
 
 import { useState } from "react";
@@ -9,23 +17,37 @@ import { urlFor } from "@/sanity/lib/image";
 import FaqAccordion from "./FaqAccordion";
 import TechnicalDownloads from "./TechnicalDownloads";
 
+/**
+ * Defines the structure for an interactive color swatch variant.
+ */
 interface ColorVariant {
   name: string;
   swatch: string;
   image: string;
 }
 
+/**
+ * Configuration properties for the ProductDisplay component.
+ */
 interface ProductDisplayProps {
+  /** The heavily populated product data object retrieved from Sanity CMS. */
   product: any;
+  /** The routing category slug (e.g., "exterior", "interior"). */
   category: string;
 }
 
+/**
+ * Renders the comprehensive product details, dynamically adapting to the presence 
+ * of color swatches, technical schematics, and species variants.
+ */
 export default function ProductDisplay({ product, category }: ProductDisplayProps) {
+  // NOTE: Initial state gracefully falls back to the first available color variant if defined.
   const [selectedColor, setSelectedColor] = useState<ColorVariant | null>(
     product.colorVariants && product.colorVariants.length > 0 ? product.colorVariants[0] : null
   );
 
-  // Helper to handle both expanded URLs and raw Sanity image objects
+  // EDGE CASE: Image sources from Sanity can be raw strings (URLs), direct asset objects, 
+  // or fully qualified Sanity Image objects requiring `urlFor` resolution. This helper handles all three.
   const getImageUrl = (source: any) => {
     if (!source) return "/placeholder.png";
     if (typeof source === 'string') return source;
@@ -39,6 +61,8 @@ export default function ProductDisplay({ product, category }: ProductDisplayProp
 
   const mainImageUrl = selectedColor ? getImageUrl(selectedColor.image) : getImageUrl(product.image);
 
+  // WARNING: We must filter out empty or malformed asset records before rendering
+  // to prevent crashes inside the mapping loops.
   const validSchematics = product.schematics?.filter((s: any) => s?.asset?.url) || [];
   const validSpecFiles = product.specFiles?.filter((f: any) => f?.asset?.url) || [];
 

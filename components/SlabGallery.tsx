@@ -1,3 +1,10 @@
+/**
+ * @file SlabGallery.tsx
+ * @description A dynamic gallery component designed specifically for browsing unique timber slabs.
+ * Features client-side filtering by species and fluid layout animations utilizing Framer Motion.
+ * @dependencies react, framer-motion, next/image, next/link
+ * @state Client component managing active species filter state (`selectedSpecies`).
+ */
 /* eslint-disable */
 "use client";
 
@@ -7,6 +14,9 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { urlFor } from "@/sanity/lib/image";
 
+/**
+ * Represents the structure of an individual timber slab within the gallery.
+ */
 interface Slab {
   name: string;
   slug: string;
@@ -23,14 +33,22 @@ interface Slab {
   };
 }
 
+/**
+ * Configuration properties for the SlabGallery component.
+ */
 interface SlabGalleryProps {
+  /** Array of all available slab data objects retrieved from Sanity. */
   slabs: Slab[];
 }
 
+/**
+ * Renders an interactive, filterable grid of timber slabs.
+ */
 export default function SlabGallery({ slabs }: SlabGalleryProps) {
   const [selectedSpecies, setSelectedSpecies] = useState<string | null>(null);
 
-  // Extract unique species from slabs
+  // NOTE: We derive the unique species list dynamically from the provided slabs array
+  // to ensure the filter buttons perfectly match the available inventory.
   const speciesList = useMemo(() => {
     const speciesMap = new Map<string, string>();
     slabs.forEach((slab) => {
@@ -41,7 +59,8 @@ export default function SlabGallery({ slabs }: SlabGalleryProps) {
     return Array.from(speciesMap.entries()).map(([slug, name]) => ({ slug, name }));
   }, [slabs]);
 
-  // Filter slabs based on selection
+  // EDGE CASE: If no species is selected (null), we return the entire array.
+  // We use `useMemo` to prevent unnecessary recalculations on re-renders.
   const filteredSlabs = useMemo(() => {
     if (!selectedSpecies) return slabs;
     return slabs.filter((slab) => slab.species?.slug === selectedSpecies);

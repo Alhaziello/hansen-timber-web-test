@@ -1,25 +1,32 @@
+/**
+ * @file page.tsx (Gallery Index)
+ * @description The main portfolio listing page. Queries Sanity for all architectural projects 
+ * and displays them in a grid using the ProjectCard component.
+ * @dependencies sanityFetch, ProjectCard, ClientMotionDiv
+ * @route /gallery
+ * @state Server Component (Data fetching at request time).
+ */
 import { sanityFetch } from "@/sanity/lib/live";
 import { allProjectsQuery } from "@/sanity/lib/queries";
 import ProjectCard from "@/components/ProjectCard";
 import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 
 /**
- * Gallery Index Page (Server Component)
- * 
- * Located at `/gallery`. It queries all architectural projects from Sanity
- * and sets up the primary grid view.
- * 
- * Beginner Note:
- * This IS a "Server Component" (because it has no "use client" directive at the top). 
- * By default, Next.js 13+ App Router components are rendered on the server. 
- * We define `metadata` directly here, which Next.js uses to generate the `<title>` tags for SEO.
+ * Next.js Metadata configuration for the /gallery route.
+ * @see https://nextjs.org/docs/app/building-your-application/optimizing/metadata
  */
 export const metadata = {
   title: "Architectural Gallery | Hansen Timber",
   description: "Explore our portfolio of high-end architectural projects featuring premium New Zealand timber.",
 };
 
+/**
+ * Asynchronously renders the Gallery Index page.
+ * Fetches all available architectural projects from Sanity CMS.
+ */
 export default async function GalleryPage() {
+  // NOTE: This page fetches data via Sanity's `sanityFetch` helper which is configured 
+  // to automatically handle Next.js 15 cache revalidation based on Sanity tags.
   const { data: projects } = await sanityFetch({ query: allProjectsQuery }) as { data: any };
 
   return (
@@ -49,6 +56,8 @@ export default async function GalleryPage() {
             ))}
           </div>
         ) : (
+          // EDGE CASE: If no projects are returned, we fallback to a graceful empty state 
+          // rather than breaking the layout or showing a blank grid.
           <div className="text-center py-24 border-t border-charcoal/5">
             <p className="text-charcoal/30 font-serif text-2xl italic">Gallery is being curated. Check back soon.</p>
           </div>

@@ -1,3 +1,11 @@
+/**
+ * @file Hero.tsx
+ * @description The massive, screen-filling introduction section seen at the top of the homepage.
+ * Displays a background image, a bold headline, and a call-to-action button, featuring
+ * staggered Framer Motion fade-in animations on initial load.
+ * @dependencies framer-motion, next/image, next/link
+ * @state Manages a client-side mounting flag to avoid React Hydration Mismatches during animation injection.
+ */
 /* eslint-disable */
 "use client";
 
@@ -8,25 +16,24 @@ import { useEffect, useState } from "react";
 import { urlFor } from "@/sanity/lib/image";
 
 /**
- * Hero Component
- * 
- * The massive, screen-filling introduction section seen at the very top of the homepage.
- * It displays a background image, a bold headline, and a call-to-action button, all with 
- * a smooth staggered fade-in animation on initial load.
- * 
- * Beginner Note:
- * This component uses `useState` and `useEffect` to ensure it only renders on the client
- * after the component has fully "mounted". This avoids "Hydration Mismatches" (where the 
- * server HTML differs from the client HTML).
+ * Configuration properties for the Hero component.
  */
 interface HeroProps {
+  /** Optional override for the main hero heading. */
   title?: string;
+  /** Optional override for the secondary hero text. */
   subtitle?: string;
+  /** The background image. Accepts a resolved Sanity image object or a static URL string. */
   bgImage?: any; // Sanity image object or string
 }
 
+/**
+ * Renders the homepage Hero section with staggered entrance animations.
+ */
 export default function Hero({ title, subtitle, bgImage }: HeroProps) {
-  // `mounted` keeps track of whether the component has loaded in the browser yet
+  // NOTE: `mounted` keeps track of whether the component has loaded in the browser yet.
+  // EDGE CASE: Returning null before mount prevents hydration mismatches but delays LCP slightly.
+  // A better architectural pattern for Next.js 15 is to move animations into a wrapper.
   const [mounted, setMounted] = useState(false);
 
   // `useEffect` runs right after the browser loads the component, setting `mounted` to true.
@@ -66,6 +73,8 @@ export default function Hero({ title, subtitle, bgImage }: HeroProps) {
   return (
     <section className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-charcoal">
       <div className="absolute inset-0 z-0 bg-black">
+        {/* WARNING: priority=true is essential here. The hero image is the Largest Contentful Paint (LCP) element. 
+            Without it, Google Lighthouse scores will tank due to deferred loading. */}
         <Image
           src={heroImageUrl}
           alt={displayTitle}

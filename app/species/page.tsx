@@ -1,3 +1,11 @@
+/**
+ * @file page.tsx (Species Index)
+ * @description The main timber species index page. Queries Sanity for all timber types
+ * and maps them out in a visually striking grid.
+ * @dependencies sanityFetch, next/image, next/link, ClientMotionDiv
+ * @route /species
+ * @state Server Component (Fetches all species data at request time).
+ */
 import Link from "next/link";
 import Image from "next/image";
 import { sanityFetch } from "@/sanity/lib/live";
@@ -8,17 +16,12 @@ import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 import { Species } from "@/lib/types";
 
 /**
- * Species Index Page (Server Component)
- * 
- * Rendered when a user navigates to `/species`.
- * This page queries Sanity CMS for every available timber species and displays 
- * them in a grid format with links to a deeper "deep dive" page for each specific wood type.
- * 
- * Beginner Note:
- * Any functional page inside the `app` router gets to automatically be an "async" function, 
- * meaning we can `await` data fetches directly inside the page without needing `useEffect`.
+ * Asynchronously renders the Species Index page.
+ * Retrieves all available timber species from Sanity CMS.
  */
 export default async function SpeciesPage() {
+  // NOTE: This page fetches data via Sanity's `sanityFetch` helper which is configured 
+  // to automatically handle Next.js 15 cache revalidation based on Sanity tags.
   const { data: speciesList } = await sanityFetch({ query: allSpeciesQuery }) as { data: any };
 
   return (

@@ -1,3 +1,10 @@
+/**
+ * @file ProductCard.tsx
+ * @description An individual card component displaying a brief summary of a product.
+ * Heavily utilized in grid layouts (e.g., CollectionsView) for inventory browsing.
+ * @dependencies framer-motion, next/image, next/link
+ * @state Client component orchestrating layout animations and routing logic based on product category.
+ */
 /* eslint-disable */
 "use client";
 
@@ -9,22 +16,24 @@ import { urlFor } from "@/sanity/lib/image";
 import { Product } from "@/lib/types";
 
 /**
- * ProductCard Component
- * 
- * An individual card displaying a brief summary of a product.
- * It's heavily used in grids (like CollectionsView) to let the user browse inventory.
- * 
- * Beginner Note:
- * - `priority` is a Next.js Image property. If true, it tells the browser to load this image
- *   immediately, which is great for images at the very top of the page (Above the Fold) to prevent layout shifts.
+ * Configuration properties for the ProductCard component.
  */
 interface ProductCardProps {
+  /** The product data object adhering to the unified schema. */
   product: Product;
+  /** Instructs the Next.js Image component to load this image eagerly (great for LCP). */
   priority?: boolean;
 }
 
+/**
+ * Renders an animated product summary card.
+ */
 export default function ProductCard({ product, priority = false }: ProductCardProps) {
   const imageUrl = product.image ? urlFor(product.image).url() : "/placeholder.png";
+  
+  // NOTE: Generates the routing slug dynamically.
+  // EDGE CASE: If a product is missing a category, it defaults to 'interior' to prevent broken links.
+  // Slabs use a hardcoded `/products/slabs` route, while other categories use dynamic routing.
   const categorySlug = product.category?.id || "interior";
 
   return (

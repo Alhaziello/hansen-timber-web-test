@@ -1,16 +1,23 @@
-"use client"; // Marks this component for client-side rendering because it relies on Framer Motion animations and browser path tracking.
+/**
+ * @file MenuDrawer.tsx
+ * @description A full-screen slide-in navigation menu overlay, primarily used for mobile layouts.
+ * Orchestrates exit animations utilizing Framer Motion's AnimatePresence.
+ * @dependencies framer-motion, next/link, next/navigation
+ * @state Controlled by parent (isOpen), tracks current route pathname to highlight active link.
+ */
+"use client"; // NOTE: Marks this component for client-side rendering because it relies on Framer Motion animations and browser path tracking.
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 /**
- * MenuDrawerProps defines the structure of the data passed into MenuDrawer.
- * @property {boolean} isOpen - Boolean flag passed down from the Navbar determining if the drawer should be on-screen.
- * @property {function} onClose - Function passed from the Navbar to close the drawer when a user clicks a link or the exit button.
+ * Configuration properties for the MenuDrawer component.
  */
 interface MenuDrawerProps {
+  /** Boolean flag passed down from the Navbar determining if the drawer should be on-screen. */
   isOpen: boolean;
+  /** Function passed from the Navbar to close the drawer when a user clicks a link or the exit button. */
   onClose: () => void;
 }
 
@@ -27,19 +34,14 @@ const navLinks = [
 ];
 
 /**
- * MenuDrawer Component
- * 
- * A full-screen slide-in navigation menu primarily used on mobile devices (but styled to look great on desktop too).
- * Uses Framer Motion's `AnimatePresence` to smoothly animate the mounting (entering) and unmounting (exiting) of the menu.
- * 
- * Beginner Note:
- * Normally in React, when you remove a component, it instantly disappears. 
- * `AnimatePresence` allows us to play an "exit" animation before React actually removes the HTML element from the screen.
+ * Renders the off-canvas menu drawer and its overlay.
  */
 export default function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
   const pathname = usePathname();
 
   return (
+    // WARNING: `AnimatePresence` must wrap the conditional rendering logic (not be inside it).
+    // This allows Framer Motion to intercept the unmount sequence and play the `exit` animation.
     <AnimatePresence>
       {isOpen && (
         <>

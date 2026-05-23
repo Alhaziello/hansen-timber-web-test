@@ -1,3 +1,11 @@
+/**
+ * @file page.tsx (Product Species Variant)
+ * @description Deeply nested dynamic route rendering a specific species variant of a product (e.g., TGV Paneling in Pine).
+ * Handles complex image coalescing (product vs species vs variant images) and dynamic sizing data.
+ * @dependencies next/image, next/link, sanityFetch, SpeciesCardGrid
+ * @route /products/[category]/[id]/[species]
+ * @state Dynamic Server Component (fetches highly specific coalesced data based on 3 URL parameters).
+ */
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -28,7 +36,10 @@ const getImageUrl = (source: any) => {
   }
 };
 
-// SEO Pre-build parameter mapping for Next.js 15 Static Site Generation (SSG)
+/**
+ * Generates static paths at build time for all valid product-species combinations.
+ * This is crucial for SSG (Static Site Generation) performance on dynamic routes.
+ */
 export async function generateStaticParams() {
   try {
     const products = await client.fetch(productSpeciesCombinationsQuery);
@@ -67,7 +78,12 @@ export async function generateStaticParams() {
   }
 }
 
+/**
+ * Asynchronously renders the specific species variant page for a product.
+ * Coalesces data from the parent product, the global species definition, and the specific variant overrides.
+ */
 export default async function ProductSpeciesPage({ params }: PageProps) {
+  // NOTE: Next.js 15 requires `params` to be awaited before use in Server Components.
   const { category, id, species } = await params;
 
   // Combined fetch of parent product and specific active species info
@@ -79,6 +95,7 @@ export default async function ProductSpeciesPage({ params }: PageProps) {
   const data = rawData as any;
 
   if (!data || !data.product || !data.activeSpecies) {
+    // EDGE CASE: If the combined query fails or returns incomplete data (e.g., URL tampering), we immediately 404.
     notFound();
   }
 
@@ -90,7 +107,8 @@ export default async function ProductSpeciesPage({ params }: PageProps) {
   );
   const activeSizes: string[] = activeOption?.sizes || [];
 
-  // Coalescing: prefer variant override images/descriptions, fallback to generic species data
+  // NOTE: Coalescing logic. We prefer specific variant override images (from `boardOptions`) 
+  // but gracefully fall back to the generic species image, then the generic product image.
   const variantImageUrls: string[] = (activeOption?.variantImages ?? [])
     .map((img: any) => img?.url)
     .filter(Boolean);

@@ -1,3 +1,11 @@
+/**
+ * @file layout.tsx (Root Layout)
+ * @description The ultimate wrapper for the entire Next.js application. Configures global fonts,
+ * baseline SEO metadata, and injects global providers (SanityLive, Vercel Analytics).
+ * @dependencies next/font/google, @vercel/analytics, SanityLive, ClientLayoutWrapper
+ * @route / (Root)
+ * @state Server Component (Applies globally to all routes).
+ */
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
@@ -60,12 +68,7 @@ export const metadata: Metadata = {
 /**
  * Root Layout Component
  * 
- * The ultimate wrapper for the entire Next.js application. Every single page in the 
- * `/app` directory is injected into the `{children}` prop here. 
- * 
- * Beginner Note:
- * We use `ClientLayoutWrapper` to conditionally render the Navbar and Footer,
- * ensuring they don't break the layout of the Sanity Studio backend.
+ * Injects global HTML structure, fonts, analytics, and Sanity real-time updates.
  */
 export default function RootLayout({
   children,
@@ -73,13 +76,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // NOTE: The `scroll-smooth` class enables CSS-based smooth scrolling for anchor links globally.
     <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
       <body
         className={`${inter.variable} ${playfair.variable} antialiased selection:bg-muted-oak/30 m-0 p-0`}
       >
+        {/* WARNING: We use `ClientLayoutWrapper` to conditionally render the Navbar and Footer,
+            ensuring they don't break the layout of the Sanity Studio backend (/studio route). */}
         <ClientLayoutWrapper>
           {children}
         </ClientLayoutWrapper>
+        
+        {/* EDGE CASE: SanityLive enables real-time preview drafting updates across the entire site. */}
         <SanityLive />
 
         <Analytics />

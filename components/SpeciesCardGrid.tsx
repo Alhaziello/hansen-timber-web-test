@@ -1,3 +1,11 @@
+/**
+ * @file SpeciesCardGrid.tsx
+ * @description Displays a static grid of timber species options available for a specific product.
+ * Handles the visual presentation and deep-linking into species-specific nested product pages.
+ * @dependencies next/image, next/link
+ * @state Stateless functional component, relies on props passed from ProductDisplay.
+ */
+/* eslint-disable */
 import Link from "next/link";
 import Image from "next/image";
 
@@ -24,20 +32,32 @@ interface BoardOption {
   variantDescription?: string;
 }
 
+/**
+ * Configuration properties for the SpeciesCardGrid component.
+ */
 interface SpeciesCardGridProps {
+  /** Complex board options array combining species with available dimensions and variant imagery. */
   boardOptions?: BoardOption[];
+  /** Simpler fallback array of standalone species objects. */
   species?: Species[];
+  /** The parent category slug used for constructing the deep-link URL. */
   categorySlug: string;
+  /** The parent product slug used for constructing the deep-link URL. */
   productSlug: string;
 }
 
+/**
+ * Renders a grid of cards representing the different timber species variants available for a product.
+ */
 export default function SpeciesCardGrid({
   boardOptions,
   species,
   categorySlug,
   productSlug,
 }: SpeciesCardGridProps) {
-  // Unify boardOptions and standalone species list
+  // NOTE: Unify `boardOptions` (which contain rich dimension/variant data) and `species` 
+  // (which is just a basic list) into a single, predictable `items` array for rendering.
+  // EDGE CASE: If a product only defines a basic `species` array, we map it into the shape of a `BoardOption`.
   const items: BoardOption[] = boardOptions && boardOptions.length > 0
     ? boardOptions
     : (species || []).map((s) => ({

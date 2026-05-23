@@ -1,3 +1,11 @@
+/**
+ * @file page.tsx (Product Category Detail)
+ * @description Dynamic route rendering a specific category of products (e.g., Exterior, Interior, Slabs).
+ * Determines whether to render a standard `ProductGrid` or a specialized `SlabGallery`.
+ * @dependencies framer-motion, sanityFetch, ProductGrid, SlabGallery, ClientMotionDiv
+ * @route /products/[category]
+ * @state Dynamic Server Component (data fetches based on the category URL parameter).
+ */
 import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -33,11 +41,17 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   };
 }
 
+/**
+ * Asynchronously renders the category detail page.
+ * Acts as a router between standard products and the unique "Slabs" category.
+ */
 export default async function CategoryDetailPage({ params }: { params: Promise<{ category: string }> }) {
+  // NOTE: Awaits the route params as required by Next.js 15 before extracting the category ID.
   const { category: categoryId } = await params;
   const category = await getCategory(categoryId);
 
   if (!category) {
+    // EDGE CASE: If the category does not exist, trigger a 404 response immediately.
     notFound();
   }
 
@@ -57,6 +71,9 @@ export default async function CategoryDetailPage({ params }: { params: Promise<{
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
+  
+  // NOTE: "Slabs" have entirely different data structures in Sanity than standard products.
+  // If the category is "slabs", we run a completely separate query and render a dedicated component.
   const isSlabsCategory = categoryId === "slabs";
   let slabs = [];
 

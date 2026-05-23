@@ -1,3 +1,11 @@
+/**
+ * @file page.tsx (Project Detail)
+ * @description Dynamic route rendering a specific architectural project. 
+ * Combines a hero image, PortableText CMS content, and a masonry gallery.
+ * @dependencies @portabletext/react, next/image, sanityFetch, ProjectGallery
+ * @route /gallery/[slug]
+ * @state Dynamic Server Component (fetches project data based on URL slug parameter).
+ */
 import { sanityFetch } from "@/sanity/lib/live";
 import { projectBySlugQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
@@ -19,18 +27,14 @@ const ptComponents = {
 };
 
 /**
- * Project Detail Page (Dynamic Server Component)
- * 
- * Handles URLs like `/gallery/clevedon-estate`.
- * It fetches the specific project based on the `slug` parameter in the URL.
- * 
- * Beginner Note:
- * This page blends a full-screen image "Hero" section with a custom `PortableText` 
- * article below it. The `ptComponents` object above tells Sanity how to convert 
- * raw block text into our specific Tailwind-styled HTML tags (like `<h3 className="...">`).
+ * Asynchronously renders the detailed view for a single project.
+ * Fetches data from Sanity using the provided slug parameter.
  */
 export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  // NOTE: Awaits the route params as required by Next.js 15 before extracting the slug.
   const { slug } = await params;
+  
+  // EDGE CASE: Fetches exactly one project matching the slug. If missing, we explicitly trigger a 404 (notFound).
   const { data: project } = await sanityFetch({ 
     query: projectBySlugQuery, 
     params: { slug } 
@@ -151,6 +155,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           {/* Project Gallery Grid */}
           <div className="mt-32 border-t border-charcoal/5 pt-32">
             <h2 className="text-4xl md:text-6xl font-serif text-charcoal mb-24 tracking-tight">Project Details</h2>
+            {/* WARNING: ProjectGallery expects an array of Sanity image objects. It handles its own layout and null checks. */}
             <ProjectGallery images={project.gallery} />
           </div>
         </div>

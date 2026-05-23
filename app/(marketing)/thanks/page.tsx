@@ -1,24 +1,29 @@
+/**
+ * @file page.tsx (Thanks)
+ * @description A static confirmation page displayed after a user successfully submits a contact or enquiry form.
+ * @dependencies next/link, ClientMotionDiv
+ * @route /thanks
+ * @state Server Component (static HTML rendering).
+ */
 import { ClientMotionDiv } from "@/components/ClientMotionDiv";
 import Link from "next/link";
 
 /**
- * Thank You Page (Marketing Page)
- * 
- * A static marketing page located in the `(marketing)` folder, meaning it is NOT a product or species.
- * It lives at the route `/thanks`.
- * 
- * Beginner Note:
- * This is a "Server Component" (no "use client"). We define `metadata` directly here.
- * Next.js automatically picks up this `metadata` object to generate the `<title>` and `<meta name="description">` tags 
- * in the HTML header, which helps Google understand what this page is about.
+ * Next.js Metadata configuration for the /thanks route.
+ * @see https://nextjs.org/docs/app/building-your-application/optimizing/metadata
  */
 export const metadata = {
   title: "Thank You | Hansen Timber",
   description: "A professional acknowledgement for your enquiry to Hansen Timber.",
 };
 
+/**
+ * Renders the static Thank You confirmation page.
+ */
 export default function ThankYouPage() {
   return (
+    // NOTE: This page provides a necessary UX confirmation for successful form submissions.
+    // EDGE CASE: If a user navigates here directly without submitting a form, it simply acts as a polite message with a link home.
     <main className="min-h-screen bg-sand flex items-center justify-center px-6">
       <ClientMotionDiv
         initial={{ opacity: 0, y: 20 }}

@@ -9,8 +9,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { SanityLive } from "@/sanity/lib/live";
 import { Analytics } from "@vercel/analytics/next";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
@@ -77,7 +75,24 @@ export default function RootLayout({
 }>) {
   return (
     // NOTE: The `scroll-smooth` class enables CSS-based smooth scrolling for anchor links globally.
-    <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
+    <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  if (window.sessionStorage && window.sessionStorage.getItem('hasSeenSplash')) {
+                    document.documentElement.classList.add('splash-seen');
+                  } else {
+                    document.documentElement.classList.add('splash-active');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${inter.variable} ${playfair.variable} antialiased selection:bg-muted-oak/30 m-0 p-0`}
       >

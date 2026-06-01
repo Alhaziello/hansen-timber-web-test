@@ -14,7 +14,7 @@ import { defineQuery } from 'next-sanity'
  */
 
 export const allProductsQuery = defineQuery(`
-  *[_type == "product"] {
+  *[_type == "product" && isArchived != true] {
     _id,
     name,
     "id": slug.current,
@@ -22,7 +22,7 @@ export const allProductsQuery = defineQuery(`
     content,
     specs,
     image,
-    category-> {
+    categories[]-> {
       "id": id.current,
       title
     },
@@ -96,7 +96,7 @@ export const allSpeciesQuery = defineQuery(`
 `)
 
 export const productBySlugQuery = defineQuery(`
-  *[_type == "product" && slug.current == $slug][0] {
+  *[_type == "product" && slug.current == $slug && isArchived != true][0] {
     _id,
     name,
     "id": slug.current,
@@ -120,7 +120,7 @@ export const productBySlugQuery = defineQuery(`
         url
       }
     },
-    category-> {
+    categories[]-> {
       "id": id.current,
       title
     },
@@ -159,7 +159,7 @@ export const categoryWithProductsQuery = defineQuery(`
     "id": id.current,
     description,
     image,
-    "products": *[_type == "product" && references(^._id)] {
+    "products": *[_type == "product" && $slug in categories[]->id.current && isArchived != true] {
       _id,
       name,
       "id": slug.current,
@@ -201,7 +201,7 @@ export const speciesBySlugQuery = defineQuery(`
     description,
     content,
     image,
-    "products": *[_type == "product" && references(^._id)] {
+    "products": *[_type == "product" && $slug in species[]->slug.current && isArchived != true] {
       _id,
       name,
       "id": slug.current,
@@ -209,7 +209,7 @@ export const speciesBySlugQuery = defineQuery(`
       content,
       specs,
       image,
-      category-> {
+      categories[]-> {
         "id": id.current,
         title
       }
@@ -296,7 +296,7 @@ export const homePageQuery = defineQuery(`
 
 export const productAndSpeciesQuery = defineQuery(`
   {
-    "product": *[_type == "product" && slug.current == $id][0] {
+    "product": *[_type == "product" && slug.current == $id && isArchived != true][0] {
       _id,
       name,
       "id": slug.current,
@@ -315,7 +315,7 @@ export const productAndSpeciesQuery = defineQuery(`
           url
         }
       },
-      category-> {
+      categories[]-> {
         "id": id.current,
         title
       },
@@ -357,9 +357,9 @@ export const productAndSpeciesQuery = defineQuery(`
 `)
 
 export const productSpeciesCombinationsQuery = defineQuery(`
-  *[_type == "product"] {
+  *[_type == "product" && isArchived != true] {
     "id": slug.current,
-    category-> {
+    categories[]-> {
       "id": id.current
     },
     species[]-> {

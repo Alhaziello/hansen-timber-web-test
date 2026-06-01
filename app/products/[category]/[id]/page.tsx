@@ -52,9 +52,26 @@ export async function generateMetadata({
     ogImages.push(urlFor(item.image).width(1200).height(630).url());
   }
 
+  let canonicalCategory = category;
+  if (!isSlabs && item.categories && Array.isArray(item.categories)) {
+    const hasExterior = item.categories.some((c: any) => c.id === 'exterior');
+    const hasInterior = item.categories.some((c: any) => c.id === 'interior');
+    if (hasExterior && hasInterior) {
+      canonicalCategory = 'exterior';
+    }
+  }
+
+  const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hansentimber.co.nz';
+  const canonicalUrl = isSlabs 
+    ? `${BASE_URL}/products/slabs/${id}`
+    : `${BASE_URL}/products/${canonicalCategory}/${id}`;
+
   return {
     title,
     description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title,
       description,

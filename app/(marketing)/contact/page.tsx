@@ -22,7 +22,7 @@ export default async function ContactPage() {
   const { data: settings } = await sanityFetch({ query: siteSettingsQuery }) as { data: any };
 
   const displayPhone = settings?.phoneNumber || "09 242 3644";
-  const displayEmail = settings?.email || "enquiries@hansentimber.co.nz";
+  const displayEmail = settings?.email || "sales@hansentimber.co.nz";
   const displayAddress = settings?.address || "32 Eyres Road, Clevedon 2585, New Zealand";
 
   return (

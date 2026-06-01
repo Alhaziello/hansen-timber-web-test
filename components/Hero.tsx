@@ -12,7 +12,7 @@
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { urlFor } from "@/sanity/lib/image";
 
 /**
@@ -27,6 +27,14 @@ interface HeroProps {
   bgImage?: any; // Sanity image object or string
 }
 
+const PLAYLIST = [
+  "/videos/LOGSSHOWCASE.mp4",
+  "/videos/panoramica.mp4",
+  "/videos/mill-crane.mp4",
+  "/videos/truck.mp4",
+  "/videos/truckarrives.mp4",
+];
+
 /**
  * Renders the homepage Hero section with staggered entrance animations.
  */
@@ -35,21 +43,31 @@ export default function Hero({ title, subtitle, bgImage }: HeroProps) {
   // EDGE CASE: Returning null before mount prevents hydration mismatches but delays LCP slightly.
   // A better architectural pattern for Next.js 15 is to move animations into a wrapper.
   const [mounted, setMounted] = useState(false);
+  const [currentVideoIdx, setCurrentVideoIdx] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // `useEffect` runs right after the browser loads the component, setting `mounted` to true.
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load();
+      videoRef.current.play().catch(() => {
+        // Safe catch for browser auto-play prevention policies
+      });
+    }
+  }, [currentVideoIdx]);
 
-  // Use Sanity image URL if bgImage is an object, otherwise fallback to placeholder
-  const heroImageUrl = bgImage?.asset
-    ? urlFor(bgImage).url()
-    : (typeof bgImage === 'string' ? bgImage : "/images/home/HERO-NEW2.png");
+  if (!mounted) return null;
 
   const displayTitle = title || "Precision in Wood Crafting";
   const displaySubtitle = subtitle || "Discover the natural beauty and unmatched durability of New Zealand grown Eucalyptus and Macrocarpa timber.";
+
+  const handleVideoEnded = () => {
+    setCurrentVideoIdx((prev) => (prev + 1) % PLAYLIST.length);
+  };
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -73,18 +91,18 @@ export default function Hero({ title, subtitle, bgImage }: HeroProps) {
   return (
     <section className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-charcoal">
       <div className="absolute inset-0 z-0 bg-black">
-        {/* WARNING: priority=true is essential here. The hero image is the Largest Contentful Paint (LCP) element. 
-            Without it, Google Lighthouse scores will tank due to deferred loading. */}
-        <Image
-          src={heroImageUrl}
-          alt={displayTitle}
-          fill
-          priority
-          quality={95}
-          sizes="100vw"
-          className="object-cover opacity-90"
-        />
-        <div className="absolute inset-0 bg-charcoal/30"></div>
+        <video
+          ref={videoRef}
+          key={PLAYLIST[currentVideoIdx]}
+          autoPlay
+          muted
+          playsInline
+          onEnded={handleVideoEnded}
+          className="absolute inset-0 w-full h-full object-cover opacity-75"
+        >
+          <source src={PLAYLIST[currentVideoIdx]} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-charcoal/20 mix-blend-multiply"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-charcoal/40"></div>
       </div>
 

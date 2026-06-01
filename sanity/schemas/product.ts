@@ -27,6 +27,14 @@ export default defineType({
       fieldset: 'general',
     }),
     defineField({
+      name: 'isArchived',
+      title: 'Archive / Temporarily Hide',
+      type: 'boolean',
+      description: 'Hide this product from the website without unpublishing it.',
+      initialValue: false,
+      fieldset: 'general',
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
@@ -37,10 +45,11 @@ export default defineType({
       fieldset: 'general',
     }),
     defineField({
-      name: 'category',
-      title: 'Category',
-      type: 'reference',
-      to: [{ type: 'category' }],
+      name: 'categories',
+      title: 'Categories',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'category' }] }],
+      description: 'Which architectural categories does this product belong to? (e.g. Exterior, Interior)',
       fieldset: 'general',
     }),
     defineField({

@@ -51,7 +51,7 @@ export default async function JournalPage() {
         <div className="space-y-32">
           {(articles as SanityArticle[]).map((article: SanityArticle, index: number) => (
             <ClientMotionArticle 
-              key={article.slug}
+              key={article._id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

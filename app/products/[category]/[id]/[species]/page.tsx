@@ -325,7 +325,7 @@ export default async function ProductSpeciesPage({ params }: PageProps) {
               </Link>
 
               <Link
-                href={`/contact?subject=Enquiry - ${product.name} (${activeSpecies.name})`}
+                href={`/contact?subject=Enquiry - ${product.name} (${activeSpecies.name})&source=Product Species - ${product.name} (${activeSpecies.name})`}
                 className="w-full sm:w-auto px-8 py-4 bg-charcoal hover:bg-muted-oak hover:text-charcoal text-white text-xs uppercase tracking-widest font-bold rounded-none transition-all duration-300 shadow-md text-center"
               >
                 Enquire for Spec Profile

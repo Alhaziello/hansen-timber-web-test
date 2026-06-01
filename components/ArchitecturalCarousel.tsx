@@ -158,10 +158,10 @@ export default function ArchitecturalCarousel({
             return (
               <div
                 key={item.id}
-                className="flex-[0_0_75%] md:flex-[0_0_65%] min-w-0 pr-6 md:pr-10 relative group"
+                className="flex-[0_0_55%] md:flex-[0_0_35%] min-w-0 pr-6 md:pr-10 relative group"
               >
                 {/* Slide Card */}
-                <div className="relative aspect-[16/10] md:aspect-[2/1] w-full overflow-hidden border border-muted-oak/10 bg-charcoal/5">
+                <div className="relative aspect-[4/3] md:aspect-[16/10] w-full overflow-hidden border border-muted-oak/10 bg-charcoal/5">
                   {/* Parallax Wrapper: Scale ensures safety margin so translation doesn't peek behind container */}
                   <div
                     className="absolute inset-0 w-[120%] -left-[10%] max-w-none"

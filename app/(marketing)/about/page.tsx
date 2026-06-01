@@ -65,8 +65,8 @@ export default function AboutPage() {
             style={{ WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}
           >
             <Image
-              src="/images/ui/Gemini_Generated_Image_wvbie6wvbie6wvbi.png"
-              alt="Hansen Timber Heritage"
+              src="/images/about/sawmill.jpg"
+              alt="Hansen Timber Sawmill Operations"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
@@ -90,8 +90,8 @@ export default function AboutPage() {
             style={{ WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}
           >
             <Image
-              src="/images/ui/Gemini_Generated_Image_6z47ys6z47ys6z47.png"
-              alt="Hansen Timber Craftsmanship"
+              src="/images/about/Crane.jpg"
+              alt="Hansen Timber Crane Loading Logs"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-transform duration-1000 group-hover:scale-105"

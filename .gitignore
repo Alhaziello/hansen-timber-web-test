@@ -47,3 +47,5 @@ docs
 DATA_AUDIT_REPORT.md
 .AGENTS/
 /scripts/
+/screenshots/
+migrate-categories.mjs

@@ -46,6 +46,10 @@ export interface Product {
     id: string;
     title: string;
   };
+  categories?: Array<{
+    id: string;
+    title: string;
+  }>;
   species?: Species[];
 }
 

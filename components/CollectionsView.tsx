@@ -28,10 +28,10 @@ export default function CollectionsView({ products, categories }: CollectionsVie
   // During re-render, `filteredProducts` is dynamically recalculated using the `.filter()` method.
   const [activeFilter, setActiveFilter] = useState("all");
 
-  // EDGE CASE: Ensure type safety for `p.category?.id` to prevent crashes on products missing a category mapping.
+  // EDGE CASE: Ensure type safety for `p.categories` to prevent crashes on products missing a category mapping.
   const filteredProducts = activeFilter === "all" 
     ? products 
-    : products.filter((p: any) => p.category?.id === activeFilter);
+    : products.filter((p: any) => p.categories?.some((c: any) => c.id === activeFilter));
 
   const filterOptions = [
     { label: "All", id: "all" },

@@ -105,14 +105,14 @@ export default function SpeciesCardGrid({
 
                 {/* Card Meta Content */}
                 <div className="relative z-10 space-y-2">
-                  <span className="text-[10px] uppercase tracking-[0.2em] font-sans font-bold text-muted-oak">
+                  <span className="text-[9px] uppercase tracking-[0.2em] font-sans font-bold text-muted-oak">
                     {hasSizes ? `${item.sizes?.length} standard sizes` : "Timber Spec Profile"}
                   </span>
-                  <h3 className="text-3xl font-serif text-sand lowercase italic">
+                  <h3 className="text-2xl font-serif text-sand lowercase italic">
                     {item.species.name}
                   </h3>
                   {item.notes && (
-                    <p className="text-xs text-sand/70 font-sans line-clamp-1 group-hover:text-sand transition-colors">
+                    <p className="text-[11px] text-sand/70 font-sans line-clamp-1 group-hover:text-sand transition-colors">
                       {item.notes}
                     </p>
                   )}

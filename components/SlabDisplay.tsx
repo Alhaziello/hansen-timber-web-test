@@ -149,7 +149,7 @@ export default function SlabDisplay({ slab }: SlabDisplayProps) {
 
             <div className="flex flex-col sm:flex-row gap-6">
               <Link
-                href={`/contact?subject=${isSold ? 'Request Similar Slab to ' : 'Enquiry for '}${slab.name}`}
+                href={`/contact?subject=${isSold ? 'Request Similar Slab to ' : 'Enquiry for '}${slab.name}&source=Slab Detail - ${slab.name}`}
                 className="flex-1 bg-charcoal hover:bg-muted-oak text-white py-6 px-12 rounded-full text-[10px] uppercase tracking-[0.3em] font-bold transition-all duration-500 text-center shadow-xl hover:shadow-2xl hover:-translate-y-1 flex items-center justify-center"
               >
                 {isSold ? 'Enquire for Similar' : 'Enquire Now'}

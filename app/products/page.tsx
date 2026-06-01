@@ -9,6 +9,8 @@ import CollectionsView from "@/components/CollectionsView";
 import { sanityFetch } from "@/sanity/lib/live";
 import { allProductsQuery, allCategoriesQuery } from "@/sanity/lib/queries";
 
+export const dynamic = 'force-dynamic';
+
 /**
  * Asynchronously renders the primary Products Hub page.
  * Fetches all products and categories simultaneously to pass down to the client layout.

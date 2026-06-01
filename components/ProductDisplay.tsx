@@ -82,7 +82,7 @@ export default function ProductDisplay({ product, category }: ProductDisplayProp
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover transition-all duration-700"
-            loading="eager"
+            priority
           />
         </div>
 
@@ -183,7 +183,7 @@ export default function ProductDisplay({ product, category }: ProductDisplayProp
               filename: file.asset?.originalFilename || "Download file",
               url: file.asset?.url ? `${file.asset.url}?dl=` : "#",
             })) : undefined}
-            sampleRequestUrl={`/contact?subject=Sample Request - ${product.name}${selectedColor ? ` (${selectedColor.name})` : ""}&message=I would like to request a sample pack for the ${product.name} product${selectedColor ? ` in the ${selectedColor.name} color variant` : ""}.`}
+            sampleRequestUrl={`/contact?subject=Sample Request - ${product.name}${selectedColor ? ` (${selectedColor.name})` : ""}&message=I would like to request a sample pack for the ${product.name} product${selectedColor ? ` in the ${selectedColor.name} color variant` : ""}.&source=Product Page - ${product.name}${selectedColor ? ` (${selectedColor.name})` : ""}`}
           />
         </div>
       </ClientMotionDiv>

@@ -49,6 +49,11 @@ const nextConfig: NextConfig = {
         destination: '/gallery',
         permanent: true,
       },
+      {
+        source: '/products/structural/:slug*',
+        destination: '/products/exterior/:slug*',
+        permanent: true,
+      },
     ];
   },
 };

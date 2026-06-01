@@ -10,6 +10,8 @@ import Hero from "@/components/Hero";
 import SpeciesGallery from "@/components/SpeciesGallery";
 import HeritageSection from "@/components/HeritageSection";
 import ArchitecturalCarousel from "@/components/ArchitecturalCarousel";
+import SplashScreen from "@/components/SplashScreen";
+import CinematicDivider from "@/components/CinematicDivider";
 
 import { sanityFetch } from "@/sanity/lib/live";
 import { allSpeciesQuery, homePageQuery, allProductsQuery } from "@/sanity/lib/queries";
@@ -35,7 +37,7 @@ export default async function Home() {
   // Map products to matching shape for the carousel items
   // EDGE CASE: If Sanity image resolution fails on a product (e.g. malformed reference), 
   // we catch the error and fallback to a generic placeholder rather than crashing the carousel map loop.
-  const productCarouselItems = (productsList || []).slice(0, 5).map((product: any, idx: number) => {
+  const productCarouselItems = (productsList || []).map((product: any, idx: number) => {
     let imageUrl = "/placeholder.png";
     if (product.image) {
       try {
@@ -47,7 +49,7 @@ export default async function Home() {
     return {
       id: product._id || `product-fallback-${idx}`,
       title: product.name || "Specification Timber",
-      subtitle: product.category?.title || "Product Range",
+      subtitle: product.categories?.[0]?.title || "Product Range",
       description: product.description || "Premium architectural grade New Zealand wood.",
       imageUrl,
     };
@@ -56,24 +58,28 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-sand">
-      <Hero 
-        title={homeData?.title} 
-        subtitle={homeData?.heroSubtitle}
-        bgImage={homeData?.heroImage}
-      />
+      <SplashScreen />
+      <div id="homepage-content">
+        <Hero 
+          title={homeData?.title} 
+          subtitle={homeData?.heroSubtitle}
+          bgImage={homeData?.heroImage}
+        />
 
 
 
-      <HeritageSection />
+        <HeritageSection />
 
-      <ArchitecturalCarousel 
-        items={productCarouselItems} 
-        title="featured collections" 
-        subtitle="our product range" 
-      />
+        <CinematicDivider />
 
-      <SpeciesGallery speciesList={speciesList} />
+        <ArchitecturalCarousel 
+          items={productCarouselItems} 
+          title="featured collections" 
+          subtitle="our product range" 
+        />
 
+        <SpeciesGallery speciesList={speciesList} />
+      </div>
     </main>
   );
 }

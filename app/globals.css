@@ -21,3 +21,15 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
+
+/* Splash Screen Optimization Helper Styles */
+#homepage-content {
+  transition: opacity 0.8s ease-in-out;
+}
+html.splash-active #homepage-content {
+  opacity: 0;
+  pointer-events: none;
+}
+html.splash-seen #splash-screen {
+  display: none !important;
+}

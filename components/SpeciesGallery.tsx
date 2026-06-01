@@ -79,8 +79,8 @@ export default function SpeciesGallery({ speciesList = [] }: SpeciesGalleryProps
                 variants={itemVariants}
                 className="group flex flex-col h-full bg-white/40 border border-muted-oak/10 backdrop-blur-sm"
               >
-                <Link href={`/species/${species.slug}`} className="block flex-1">
-                  <div className="relative aspect-[3/4] overflow-hidden">
+                <Link href={`/species/${species.slug}`} className="flex flex-col flex-1">
+                  <div className="relative aspect-[3/4] overflow-hidden shrink-0">
                     <Image
                       src={imageUrl}
                       alt={species.name}
@@ -91,16 +91,16 @@ export default function SpeciesGallery({ speciesList = [] }: SpeciesGalleryProps
                     <div className="absolute inset-0 bg-charcoal/10 group-hover:bg-charcoal/0 transition-colors duration-500"></div>
                   </div>
 
-                  <div className="p-8 flex flex-col h-full">
-                    <h3 className="text-2xl font-serif mb-4 group-hover:text-muted-oak transition-colors duration-300">
+                  <div className="p-8 flex flex-col flex-1">
+                    <h3 className="text-xl font-serif mb-4 group-hover:text-muted-oak transition-colors duration-300">
                       {species.name}
                     </h3>
-                    <p className="text-charcoal/70 text-sm font-sans leading-relaxed mb-8 flex-1">
+                    <p className="text-charcoal/70 text-xs font-sans leading-relaxed mb-8">
                       {species.description}
                     </p>
 
                     <div className="mt-auto">
-                      <span className="inline-block px-6 py-2 border border-muted-oak text-muted-oak text-[10px] uppercase tracking-[0.2em] font-sans font-bold rounded-full group-hover:bg-muted-oak group-hover:text-charcoal transition-all duration-300">
+                      <span className="inline-block px-5 py-2 border border-muted-oak text-muted-oak text-[9px] uppercase tracking-[0.2em] font-sans font-bold rounded-full group-hover:bg-muted-oak group-hover:text-charcoal transition-all duration-300">
                         Learn More
                       </span>
                     </div>

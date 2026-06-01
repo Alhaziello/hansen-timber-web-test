@@ -33,8 +33,17 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   
   // NOTE: Generates the routing slug dynamically.
   // EDGE CASE: If a product is missing a category, it defaults to 'interior' to prevent broken links.
-  // Slabs use a hardcoded `/products/slabs` route, while other categories use dynamic routing.
-  const categorySlug = product.category?.id || "interior";
+  // If it has multiple, prioritize 'exterior' for SEO canonical alignment.
+  let categorySlug = "interior";
+  if (product.categories && product.categories.length > 0) {
+    const hasExterior = product.categories.some((c: any) => c.id === 'exterior');
+    const hasInterior = product.categories.some((c: any) => c.id === 'interior');
+    if (hasExterior && hasInterior) {
+      categorySlug = "exterior";
+    } else {
+      categorySlug = product.categories[0].id || "interior";
+    }
+  }
 
   return (
     <motion.div
@@ -54,23 +63,23 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
             />
         ) : (
           <div className="w-full h-full bg-charcoal/5 flex items-center justify-center transition-transform duration-700 group-hover:scale-110">
-            <span className="text-charcoal/40 text-[10px] uppercase tracking-widest font-bold">Image Coming Soon</span>
+            <span className="text-charcoal/40 text-[9px] uppercase tracking-widest font-bold">Image Coming Soon</span>
           </div>
         )}
         <div className="absolute inset-0 bg-charcoal/20 group-hover:bg-charcoal/0 transition-colors duration-500"></div>
       </div>
 
       <div className="flex-1">
-        <h3 className="text-2xl font-serif text-charcoal mb-4 group-hover:text-muted-oak transition-colors duration-300">
+        <h3 className="text-xl font-serif text-charcoal mb-4 group-hover:text-muted-oak transition-colors duration-300">
           {product.name}
         </h3>
-        <p className="text-charcoal/70 text-sm leading-relaxed mb-6 line-clamp-2">
+        <p className="text-charcoal/70 text-xs leading-relaxed mb-6 line-clamp-2">
           {product.description}
         </p>
 
         <ul className="space-y-2 mb-8">
           {product.specs?.slice(0, 3).map((spec, idx) => (
-            <li key={idx} className="text-[10px] uppercase tracking-widest text-muted-oak font-bold flex items-center gap-2">
+            <li key={idx} className="text-[9px] uppercase tracking-widest text-muted-oak font-bold flex items-center gap-2">
               <span className="w-1 h-1 bg-muted-oak rounded-full"></span>
               {spec}
             </li>
@@ -81,7 +90,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
       <div className="mt-auto">
         <Link
           href={categorySlug === "slabs" ? "/products/slabs" : `/products/${categorySlug}/${product.id}`}
-          className="inline-block px-10 py-3 bg-muted-oak text-charcoal text-[10px] uppercase tracking-[0.2em] font-sans font-bold rounded-full hover:bg-charcoal hover:text-sand transition-all duration-300"
+          className="inline-block px-8 py-2.5 bg-muted-oak text-charcoal text-[9px] uppercase tracking-[0.2em] font-sans font-bold rounded-full hover:bg-charcoal hover:text-sand transition-all duration-300"
         >
           Learn More
         </Link>
@@ -94,4 +103,3 @@ const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 };
-

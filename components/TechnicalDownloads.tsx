@@ -117,13 +117,13 @@ export default function TechnicalDownloads({
         </>
       )}
 
-      {/* Premium Request Sample Button */}
+      {/* Premium Contact for sales Button */}
       {onRequestSample ? (
         <button
           onClick={onRequestSample}
           className={`w-full bg-charcoal text-sand py-5 text-center text-xs uppercase tracking-[0.25em] font-sans font-bold hover:bg-muted-oak hover:text-charcoal transition-all duration-500 focus:outline-none cursor-pointer ${items.length > 0 ? "mt-8" : ""}`}
         >
-          Request Sample Pack
+          Contact for sales
         </button>
       ) : (
         <Link
@@ -132,7 +132,7 @@ export default function TechnicalDownloads({
           className={`w-full block ${items.length > 0 ? "mt-8" : ""}`}
         >
           <div className="w-full bg-charcoal text-sand py-5 text-center text-xs uppercase tracking-[0.25em] font-sans font-bold hover:bg-muted-oak hover:text-charcoal transition-all duration-500 cursor-pointer">
-            Request Sample Pack
+            Contact for sales
           </div>
         </Link>
       )}

@@ -24,18 +24,21 @@ export default function ContactForm() {
     fullName: "",
     email: "",
     message: "",
-    _subject: "New Enquiry from Hansen Timber Website"
+    _subject: "New Enquiry from Hansen Timber Website",
+    enquirySource: ""
   });
 
   useEffect(() => {
     const subject = searchParams.get("subject");
     const message = searchParams.get("message");
+    const source = searchParams.get("source");
 
-    if (subject || message) {
+    if (subject || message || source) {
       setFormData(prev => ({
         ...prev,
         _subject: subject || prev._subject,
-        message: message || prev.message
+        message: message || prev.message,
+        enquirySource: source || prev.enquirySource
       }));
     }
   }, [searchParams]);
@@ -95,6 +98,7 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       <input type="hidden" name="_subject" value={formData._subject} />
+      <input type="hidden" name="enquirySource" value={formData.enquirySource} />
       {/* EDGE CASE: Formspree honeypot field to trap spam bots. Hidden from legitimate users via inline styles and attributes. */}
       <input type="text" name="_gotcha" style={{ display: "none" }} tabIndex={-1} autoComplete="false" />
 

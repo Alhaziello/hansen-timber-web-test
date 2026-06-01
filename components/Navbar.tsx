@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import MenuDrawer from "./MenuDrawer";
-
+import { TreeIcon } from '@/components/TreeIcon';
 /**
  * Renders the responsive global navigation header.
  */
@@ -20,7 +20,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   // `scrolled` tracks if the user has scrolled down the page, changing the navbar from transparent to a solid color
   const [scrolled, setScrolled] = useState(false);
-  
+
   // NOTE: `usePathname` gets the current URL path.
   // EDGE CASE: If the navbar background remains transparent on internal pages, text might blend into light backgrounds.
   // We force a solid background on all routes EXCEPT the homepage.
@@ -31,7 +31,7 @@ export default function Navbar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-    
+
     // Check initial scroll position
     handleScroll();
 
@@ -47,18 +47,18 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-[90] transition-all duration-500 border-b ${
-          showSolidNav
-            ? "bg-charcoal/90 backdrop-blur-md border-white/10 py-4 shadow-2xl"
-            : "bg-transparent border-transparent py-6"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-[90] transition-all duration-500 border-b ${showSolidNav
+          ? "bg-charcoal/90 backdrop-blur-md border-white/10 py-4 shadow-2xl"
+          : "bg-transparent border-transparent py-6"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
           <Link
             href="/"
-            className="text-2xl md:text-3xl font-serif text-sand hover:text-muted-oak transition-colors duration-300"
+            className="flex items-center gap-3 text-2xl md:text-3xl font-serif text-sand hover:text-muted-oak transition-colors duration-300"
           >
             Hansen Timber
+            <TreeIcon className="w-6 h-6 md:w-8 md:h-8" />
           </Link>
 
           <button

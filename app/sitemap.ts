@@ -17,7 +17,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hansentimber.c
 interface SanitySitemapData {
   products: Array<{
     slug: string | null;
-    category?: { id: string | null } | null;
+    categories?: Array<{ id: string | null }> | null;
     _updatedAt: string;
     species?: Array<{ slug: string | null }> | null;
     boardOptions?: Array<{ species?: { slug: string | null } | null }> | null;
@@ -43,9 +43,9 @@ interface SanitySitemapData {
 // Single aggregated sitemap query for optimal data fetching performance (single DB hit)
 const sitemapQuery = defineQuery(`
   {
-    "products": *[_type == "product"] {
+    "products": *[_type == "product" && isArchived != true] {
       "slug": slug.current,
-      category-> {
+      categories[]-> {
         "id": id.current
       },
       _updatedAt,
@@ -144,33 +144,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (data.products && Array.isArray(data.products)) {
     data.products.forEach((product) => {
       if (!product.slug) return;
-      const categorySlug = product.category?.id || 'other';
+      const categorySlugs = product.categories && product.categories.length > 0 
+        ? product.categories.map(c => c.id || 'other') 
+        : ['other'];
 
-      // Base product detail route
-      dynamicRoutes.push({
-        url: `${BASE_URL}/products/${categorySlug}/${product.slug}`,
-        lastModified: product._updatedAt ? new Date(product._updatedAt) : new Date(),
-        changeFrequency: 'weekly',
-        priority: 0.8,
-      });
-
-      // Extract unique species slugs from both direct species references and board options (deep routing variants)
-      const speciesSlugs = new Set<string>();
-      product.species?.forEach((s) => {
-        if (s?.slug) speciesSlugs.add(s.slug);
-      });
-      product.boardOptions?.forEach((opt) => {
-        if (opt.species?.slug) speciesSlugs.add(opt.species.slug);
-      });
-
-      // Product + Species variant route combinations
-      speciesSlugs.forEach((speciesSlug) => {
+      categorySlugs.forEach((categorySlug) => {
+        // Base product detail route
         dynamicRoutes.push({
-          url: `${BASE_URL}/products/${categorySlug}/${product.slug}/${speciesSlug}`,
+          url: `${BASE_URL}/products/${categorySlug}/${product.slug}`,
           lastModified: product._updatedAt ? new Date(product._updatedAt) : new Date(),
           changeFrequency: 'weekly',
-          priority: 0.7,
-         });
+          priority: 0.8,
+        });
+
+        // Extract unique species slugs from both direct species references and board options (deep routing variants)
+        const speciesSlugs = new Set<string>();
+        product.species?.forEach((s) => {
+          if (s?.slug) speciesSlugs.add(s.slug);
+        });
+        product.boardOptions?.forEach((opt) => {
+          if (opt.species?.slug) speciesSlugs.add(opt.species.slug);
+        });
+
+        // Product + Species variant route combinations
+        speciesSlugs.forEach((speciesSlug) => {
+          dynamicRoutes.push({
+            url: `${BASE_URL}/products/${categorySlug}/${product.slug}/${speciesSlug}`,
+            lastModified: product._updatedAt ? new Date(product._updatedAt) : new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.7,
+           });
+        });
       });
     });
   }

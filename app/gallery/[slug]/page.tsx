@@ -140,7 +140,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 )}
                 <div>
                   <Link 
-                    href={`/contact?subject=Enquiry - ${project.title}&message=I am interested in learning more about the ${project.title} project style.`} 
+                    href={`/contact?subject=Enquiry - ${project.title}&message=I am interested in learning more about the ${project.title} project style.&source=Project Gallery - ${project.title}`} 
                     className="block w-full"
                   >
                     <button className="bg-charcoal text-sand w-full py-5 uppercase tracking-[0.3em] text-xs font-bold hover:bg-muted-oak hover:text-charcoal transition-all duration-500">

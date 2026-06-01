@@ -30,7 +30,7 @@ export default function HeritageSection() {
           >
             {/* EDGE CASE: Ensure `sizes` prop is accurate to prevent Next.js Image component from downloading unnecessarily large images on mobile. */}
             <Image
-              src="/images/about/IMG_2022.jpg"
+              src="/images/about/sawmill.jpg"
               alt="The Hansen Timber Farm and Operations"
               fill
               className="object-cover transition-transform duration-[2s] group-hover:scale-110"

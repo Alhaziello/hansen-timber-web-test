@@ -39,7 +39,7 @@ const DEFAULT_SLIDES: CarouselItem[] = [
     title: "Commercial Fitout",
     subtitle: "Clevedon, NZ",
     description: "Architectural detailing featuring sustainable, locally-milled Macrocarpa boards.",
-    imageUrl: "/images/about/IMG_2022.jpg",
+    imageUrl: "/images/about/sawmill.jpg",
   },
   {
     id: "coastal-residence",
@@ -53,7 +53,7 @@ const DEFAULT_SLIDES: CarouselItem[] = [
     title: "Architectural Pavilion",
     subtitle: "Auckland, NZ",
     description: "Structural Eucalyptus posts forming a seamless canopy that bridges indoor and outdoor spaces.",
-    imageUrl: "/images/about/IMG_2022.jpg",
+    imageUrl: "/images/about/sawmill.jpg",
   },
   {
     id: "forest-retreat",

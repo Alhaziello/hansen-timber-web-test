@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     description: "Discover our range of premium, sustainably sourced NZ timber products.",
     images: [
       {
-        url: "/images/home/hero-high-res.png",
+        url: "/images/about/sawmill.jpg",
         width: 1200,
         height: 630,
         alt: "Hansen Timber Premium NZ Wood Crafting",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Hansen Timber | Custom Timber Products",
     description: "Precision in wood crafting with NZ grown timber.",
-    images: ["/images/home/hero-high-res.png"],
+    images: ["/images/about/sawmill.jpg"],
   },
 };
 
@@ -82,7 +82,7 @@ export default function RootLayout({
             __html: `
               (function() {
                 try {
-                  if (window.sessionStorage && window.sessionStorage.getItem('hasSeenSplash')) {
+                  if (window.innerWidth < 768 || (window.sessionStorage && window.sessionStorage.getItem('hasSeenSplash'))) {
                     document.documentElement.classList.add('splash-seen');
                   } else {
                     document.documentElement.classList.add('splash-active');

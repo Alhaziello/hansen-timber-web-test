@@ -93,15 +93,13 @@ export default function Hero({ title, subtitle, bgImage }: HeroProps) {
       <div className="absolute inset-0 z-0 bg-black">
         <video
           ref={videoRef}
-          key={PLAYLIST[currentVideoIdx]}
+          src={PLAYLIST[currentVideoIdx]}
           autoPlay
           muted
           playsInline
           onEnded={handleVideoEnded}
           className="absolute inset-0 w-full h-full object-cover opacity-75"
-        >
-          <source src={PLAYLIST[currentVideoIdx]} type="video/mp4" />
-        </video>
+        />
         <div className="absolute inset-0 bg-charcoal/20 mix-blend-multiply"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-charcoal/40"></div>
       </div>

@@ -43,8 +43,12 @@ export default function Hero({ title, subtitle, bgImage }: HeroProps) {
   // EDGE CASE: Returning null before mount prevents hydration mismatches but delays LCP slightly.
   // A better architectural pattern for Next.js 15 is to move animations into a wrapper.
   const [mounted, setMounted] = useState(false);
-  const [currentVideoIdx, setCurrentVideoIdx] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isAActive, setIsAActive] = useState(true);
+  const [videoASrc, setVideoASrc] = useState(PLAYLIST[0]);
+  const [videoBSrc, setVideoBSrc] = useState(PLAYLIST[1]);
+
+  const videoARef = useRef<HTMLVideoElement>(null);
+  const videoBRef = useRef<HTMLVideoElement>(null);
 
   // `useEffect` runs right after the browser loads the component, setting `mounted` to true.
   useEffect(() => {
@@ -52,21 +56,51 @@ export default function Hero({ title, subtitle, bgImage }: HeroProps) {
   }, []);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.load();
-      videoRef.current.play().catch(() => {
-        // Safe catch for browser auto-play prevention policies
-      });
+    if (mounted) {
+      if (videoARef.current && isAActive) {
+        videoARef.current.play().catch(() => {});
+      }
+      if (videoBRef.current && !isAActive) {
+        videoBRef.current.play().catch(() => {});
+      }
     }
-  }, [currentVideoIdx]);
+  }, [mounted, isAActive]);
 
   if (!mounted) return null;
 
   const displayTitle = title || "Precision in Wood Crafting";
   const displaySubtitle = subtitle || "Discover the natural beauty and unmatched durability of New Zealand grown Eucalyptus and Macrocarpa timber.";
 
-  const handleVideoEnded = () => {
-    setCurrentVideoIdx((prev) => (prev + 1) % PLAYLIST.length);
+  const handleVideoAEnded = () => {
+    if (videoBRef.current) {
+      videoBRef.current.play().catch(() => {});
+    }
+    setIsAActive(false);
+    
+    setTimeout(() => {
+      const currentBIdx = PLAYLIST.indexOf(videoBSrc);
+      const nextASrc = PLAYLIST[(currentBIdx + 1) % PLAYLIST.length];
+      setVideoASrc(nextASrc);
+      if (videoARef.current) {
+        videoARef.current.load();
+      }
+    }, 1000);
+  };
+
+  const handleVideoBEnded = () => {
+    if (videoARef.current) {
+      videoARef.current.play().catch(() => {});
+    }
+    setIsAActive(true);
+
+    setTimeout(() => {
+      const currentAIdx = PLAYLIST.indexOf(videoASrc);
+      const nextBSrc = PLAYLIST[(currentAIdx + 1) % PLAYLIST.length];
+      setVideoBSrc(nextBSrc);
+      if (videoBRef.current) {
+        videoBRef.current.load();
+      }
+    }, 1000);
   };
 
   const containerVariants: Variants = {
@@ -91,14 +125,27 @@ export default function Hero({ title, subtitle, bgImage }: HeroProps) {
   return (
     <section className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-charcoal">
       <div className="absolute inset-0 z-0 bg-black">
+        {/* Video A */}
         <video
-          ref={videoRef}
-          src={PLAYLIST[currentVideoIdx]}
-          autoPlay
+          ref={videoARef}
+          src={videoASrc}
+          autoPlay={isAActive}
           muted
           playsInline
-          onEnded={handleVideoEnded}
-          className="absolute inset-0 w-full h-full object-cover opacity-75"
+          onEnded={handleVideoAEnded}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: isAActive ? 0.75 : 0 }}
+        />
+        {/* Video B */}
+        <video
+          ref={videoBRef}
+          src={videoBSrc}
+          autoPlay={!isAActive}
+          muted
+          playsInline
+          onEnded={handleVideoBEnded}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: !isAActive ? 0.75 : 0 }}
         />
         <div className="absolute inset-0 bg-charcoal/20 mix-blend-multiply"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-charcoal/40"></div>
